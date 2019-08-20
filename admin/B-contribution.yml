@@ -9,9 +9,9 @@ declaration: >-
 # members).  
 contributions:
   - uid: u6870923
-    contribution: finish task two, task three, discuess the design
+    contribution: 50
   - uid: u6987162
-    contribution: create the basic classes and enums, discuess the design
+    contribution: 50
 
 
 # Sign *your* name and uids here. (Remove entries if you have fewer
