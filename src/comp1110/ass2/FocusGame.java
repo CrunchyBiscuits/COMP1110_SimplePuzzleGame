@@ -24,7 +24,16 @@ public class FocusGame {
      */
     static boolean isPiecePlacementWellFormed(String piecePlacement) {
         // FIXME Task 2: determine whether a piece placement is well-formed
-        return false;
+        if (piecePlacement.length()!=4)
+            return false;
+        else {
+            char tile = piecePlacement.charAt(0);
+            char col = piecePlacement.charAt(1);
+            char row = piecePlacement.charAt(2);
+            char ori = piecePlacement.charAt(3);
+
+            return (tile>='a'&&tile<='j')&&(col>='0'&&col<='8')&&(row>='0'&&row<='4')&&(ori>='0'&&ori<='3');
+        }
     }
 
     /**
@@ -38,7 +47,28 @@ public class FocusGame {
      */
     public static boolean isPlacementStringWellFormed(String placement) {
         // FIXME Task 3: determine whether a placement is well-formed
-        return false;
+        if (placement.length()%4!=0||placement=="")
+            return false;
+        else {
+            int pieceNum = placement.length()/4;
+            String[] pieceplacements = new String[pieceNum];
+            for (int i=0;i<pieceNum;i++){
+                pieceplacements[i]=placement.substring(i*4,i*4+4);
+            }
+            for (int i=0;i<pieceNum;i++){
+                if (!isPiecePlacementWellFormed(pieceplacements[i]))
+                    return false;
+                else {
+                    for (int j=0;j<pieceNum;j++){
+                        if (j==i)
+                            continue;
+                        if (pieceplacements[i].charAt(0)==pieceplacements[j].charAt(0))
+                            return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     /**
