@@ -42,7 +42,7 @@ declaration: >-
 # Sign *your* name and uids here. (Remove entries if you have fewer
 # than three members.)
 signatures:
-  - name:Zheyuan Zhang
-    uid:u6870923
-  - name:Jianwu Yao
-    uid:u6987162
+  - name: Zheyuan Zhang
+    uid: u6870923
+  - name: Jianwu Yao
+    uid: u6987162
