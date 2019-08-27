@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
@@ -30,6 +32,7 @@ public class Viewer extends Application {
     private final Group root = new Group();
     private final Group controls = new Group();
     private TextField textField;
+    private final Group image = new Group();
 
     /**
      * Draw a placement in the window, removing any previously drawn one
@@ -38,6 +41,58 @@ public class Viewer extends Application {
      */
     void makePlacement(String placement) {
         // FIXME Task 4: implement the simple placement viewer
+        image.getChildren().clear();
+        for(int i = 0; i<placement.length() - 3;i += 4){
+            String place = placement.substring(i, i + 4);
+            char tile = place.charAt(0);
+            char orientetion = place.charAt(3);
+            if (tile > 'j' || tile < 'a') {
+                throw new IllegalArgumentException("Bad tile: \"" + tile + "\"");
+            }
+            ImageView imageView = new ImageView();
+            imageView.imageProperty().set(null);
+
+            if (tile == 'a' || tile == 'd' || tile == 'e' || tile == 'g') {
+                imageView.setFitHeight(2 * SQUARE_SIZE);
+                imageView.setFitWidth(3 * SQUARE_SIZE);
+            } else if (tile == 'b' || tile == 'c' || tile == 'j') {
+                imageView.setFitHeight(2 * SQUARE_SIZE);
+                imageView.setFitWidth(4 * SQUARE_SIZE);
+            } else if (tile == 'f') {
+                imageView.setFitHeight(SQUARE_SIZE);
+                imageView.setFitWidth(3 * SQUARE_SIZE);
+            } else if (tile == 'i') {
+                imageView.setFitHeight(2 * SQUARE_SIZE);
+                imageView.setFitWidth(2 * SQUARE_SIZE);
+            } else {
+                imageView.setFitHeight(3 * SQUARE_SIZE);
+                imageView.setFitWidth(3 * SQUARE_SIZE);
+            }
+
+            switch (orientetion){
+                case '0':
+                    imageView.setRotate(0);
+                    break;
+                case '1':
+                    imageView.setRotate(90);
+                    break;
+                case '2':
+                    imageView.setRotate(180);
+                    break;
+                case '3':
+                    imageView.setRotate(270);
+                    break;
+            }
+            double x = Character.getNumericValue(place.charAt(1));
+            double y = Character.getNumericValue(place.charAt(2));
+
+            imageView.setX(x*SQUARE_SIZE);
+            imageView.setY(y*SQUARE_SIZE);
+            String imgPath = (URI_BASE + tile + ".png");
+            Image img = new Image(Viewer.class.getResourceAsStream(imgPath));
+            imageView.setImage(img);
+            image.getChildren().add(imageView);
+        }
     }
 
     /**
