@@ -40,7 +40,6 @@ public class Viewer extends Application {
      * @param placement A valid placement string
      */
     void makePlacement(String placement) {
-        // FIXME Task 4: implement the simple placement viewer
         image.getChildren().clear();
         for(int i = 0; i<placement.length() - 3;i += 4){
             String place = placement.substring(i, i + 4);
@@ -86,6 +85,7 @@ public class Viewer extends Application {
             double x = Character.getNumericValue(place.charAt(1));
             double y = Character.getNumericValue(place.charAt(2));
 
+
             imageView.setX(x*SQUARE_SIZE);
             imageView.setY(y*SQUARE_SIZE);
             String imgPath = (URI_BASE + tile + ".png");
@@ -126,7 +126,8 @@ public class Viewer extends Application {
         root.getChildren().add(controls);
 
         makeControls();
-
+        //add the image!!!!!!!!!!!!!!!!!!!!
+        root.getChildren().add(image);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
