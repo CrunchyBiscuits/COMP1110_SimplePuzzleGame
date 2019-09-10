@@ -41,13 +41,12 @@ declaration: >-
 
 
 # sign *your* name and uid here
-signatures:
- - name: Zheyuan Zhang
-   uid: u6870923
- - name: Jianwu Yao
-   uid: u6987162
- - name: Siyu Zhou
-   uid: u6692356
+name: Zheyuan Zhang
+uid: u6870923
+name: Jianwu Yao
+uid: u6987162
+name: Siyu Zhou
+uid: u6692356
 
 
 
