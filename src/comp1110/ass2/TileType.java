@@ -7,69 +7,30 @@ public enum TileType {
 
     public State getOnePointState(TileType tileType, Orientation orientation, int colOff, int rowOff) {
         State[] states = statemap[this.ordinal()];
-        if(tileType == A) { // checked
+        if(tileType == A || tileType == D || tileType == E || tileType == G) { // checked
             if(colOff < 0 || rowOff < 0 || colOff > 3 || rowOff > 3) return  null;
             switch (orientation) {
                 case NORTH:
                     return (colOff == 3) ? null : states[(rowOff * 3) + colOff];
                 case EAST:
-                    return (rowOff == 3) ? null : states[(1 - colOff) * 3 + rowOff];
+                    return (rowOff == 3) ? null : states[((1 - colOff) * 3) + rowOff];
                 case SOUTH:
-                    return (colOff == 3) ? null : states[(1 - rowOff) * 3 + (2 - colOff)];
+                    return (colOff == 3) ? null : states[((1 - rowOff) * 3) + (2 - colOff)];
                 case WEST:
-                    return (rowOff == 3) ? null : states[colOff*3 + 2-rowOff];
+                    return (rowOff == 3) ? null : states[(colOff*3) + (2 - rowOff)];
             }
         }
-        if(tileType == B) { // checked
+        if(tileType == B || tileType == C || tileType == J) { // checked
             if(colOff < 0 || rowOff < 0 || colOff > 4 || rowOff > 4) return  null;
             switch (orientation) {
                 case NORTH:
                     return (colOff == 4) ? null : states[(rowOff * 4) + colOff];
                 case EAST:
-                    return (rowOff == 4) ? null : states[(1 - colOff) * 4 + rowOff];
+                    return (rowOff == 4) ? null : states[((1 - colOff) * 4) + rowOff];
                 case SOUTH:
-                    return (colOff == 4) ? null : states[(1 - rowOff) * 4 + (3 - colOff)];
+                    return (colOff == 4) ? null : states[((1 - rowOff) * 4) + (3 - colOff)];
                 case WEST:
-                    return (rowOff == 4) ? null : states[colOff * 4 + 3 - rowOff];
-            }
-        }
-        if(tileType == C) { // checked
-            if(colOff < 0 || rowOff < 0 || colOff > 4 || rowOff > 4) return  null;
-            switch (orientation) {
-                case NORTH:
-                    return (colOff == 4) ? null : states[(rowOff * 4) + colOff];
-                case EAST:
-                    return (rowOff == 4) ? null : states[(1 - colOff) * 4 + rowOff];
-                case SOUTH:
-                    return (colOff == 4) ? null : states[(1 - rowOff) * 4 + (3 - colOff)];
-                case WEST:
-                    return (rowOff == 4) ? null : states[colOff*4 + 3 - rowOff];
-            }
-        }
-        if(tileType == D) { // checked
-            if(colOff < 0 || rowOff < 0 || colOff > 3 || rowOff > 3) return  null;
-            switch (orientation) {
-                case NORTH:
-                    return (colOff == 3) ? null : states[(rowOff * 3) + colOff];
-                case EAST:
-                    return (rowOff == 3) ? null : states[(1 - colOff) * 3 + rowOff];
-                case SOUTH:
-                    return (colOff == 3) ? null : states[(1 - rowOff) * 3 + (2 - colOff)];
-                case WEST:
-                    return (rowOff == 3) ? null : states[colOff*3 + 2 - rowOff];
-            }
-        }
-        if(tileType == E) { // checked
-            if(colOff < 0 || rowOff < 0 || colOff > 3 || rowOff > 3) return  null;
-            switch (orientation) {
-                case NORTH:
-                    return (colOff == 3) ? null : states[(rowOff * 3) + colOff];
-                case EAST:
-                    return (rowOff == 3) ? null : states[(1 - colOff) * 3 + rowOff];
-                case SOUTH:
-                    return (colOff == 3) ? null : states[(1 - rowOff) * 3 + (2 - colOff)];
-                case WEST:
-                    return (rowOff == 3) ? null : states[colOff*3 + 2 - rowOff];
+                    return (rowOff == 4) ? null : states[(colOff * 4) + (3 - rowOff)];
             }
         }
         if(tileType == F) { // checked
@@ -83,19 +44,6 @@ public enum TileType {
                     return (colOff == 3) ? null : states[2 - colOff];
                 case WEST:
                     return (rowOff == 3) ? null : states[2 - rowOff];
-            }
-        }
-        if(tileType == G) { // checked
-            if(colOff < 0 || rowOff < 0 || colOff > 3 || rowOff > 3) return  null;
-            switch (orientation) {
-                case NORTH:
-                    return (colOff == 3) ? null : states[(rowOff * 3) + colOff];
-                case EAST:
-                    return (rowOff == 3) ? null : states[(1 - colOff) * 3 + rowOff];
-                case SOUTH:
-                    return (colOff == 3) ? null : states[(1 - rowOff) * 3 + (2 - colOff)];
-                case WEST:
-                    return (rowOff == 3) ? null : states[colOff*3 + 2-rowOff];
             }
         }
         if(tileType == H) { // checked
@@ -122,19 +70,6 @@ public enum TileType {
                     return (colOff == 2) ? null : states[(1 - rowOff) * 2 + (1 - colOff)];
                 case WEST:
                     return (rowOff == 2) ? null : states[colOff*2 + 1-rowOff];
-            }
-        }
-        if(tileType == J) { // checked
-            if(colOff < 0 || rowOff < 0 || colOff > 4 || rowOff > 4) return  null;
-            switch (orientation) {
-                case NORTH:
-                    return (colOff == 4) ? null : states[(rowOff * 4) + colOff];
-                case EAST:
-                    return (rowOff == 4) ? null : states[(1 - colOff) * 4 + rowOff];
-                case SOUTH:
-                    return (colOff == 4) ? null : states[(1 - rowOff) * 4 + (3 - colOff)];
-                case WEST:
-                    return (rowOff == 4) ? null : states[colOff*4 + 3 - rowOff];
             }
         }
         return null;

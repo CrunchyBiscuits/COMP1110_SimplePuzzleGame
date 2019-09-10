@@ -17,7 +17,7 @@ public class FocusGame {
 
 
     // pre-initial state of the board
-    private State[][] boardState = {
+    private State[][] boardStates = {
             {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
             {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
             {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
@@ -25,240 +25,104 @@ public class FocusGame {
             {BLOCK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, BLOCK}
     };
 
-    private Tile[][] tilesState = new Tile[8][4]; // same type with the game : col/row
+    private Tile[][] tilesState = new Tile[5][9]; // same type with the game : col/row
+
+    public void printBoardStates() {
+        for(int i = 0; i < 5; ++ i) {
+            for(int j = 0; j < 9; ++ j) {
+                System.out.print(boardStates[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public void printTilesStates() {
+        for(int i = 0; i < 4; ++ i) {
+            for(int j = 0; j < 8; ++ j) {
+                System.out.print(tilesState[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
 
     // initialize the state of the board
-    public void initializeBoardState(String boardState) {
+    public boolean initializeBoardState(String boardState) {
         for(int i = 0; i < boardState.length()/4; i ++) {
             String placement = boardState.substring(i*4, (i+1)*4);
-            addTileToBoard(placement);
+            if(!addTileToBoard(placement))
+                return false;
         }
+        return true;
 
     }
 
     // method: add a tile into the board
-    public void addTileToBoard(String placement) {
+    public boolean addTileToBoard(String placement) {
         Tile tile = new Tile(placement);
-        updateTilesState(tile);
-        updateBoardState(tile);
+        return updateBoardStateAndTilesState(tile);
     }
 
-    public void addTilesToTilesState(Tile tile, TileType tileType, Orientation orientation, int locationCol, int locationRow) {
-        if(tileType == A || tileType == D || tileType == E || tileType ==G) {
-            if (orientation == NORTH || orientation == SOUTH) {
-                for(int i = 0; i < 3; i ++) { // i - column
-                    for(int j = 0; j < 2; j ++) { // j - row
-                        if(tileType.getOnePointState(tileType, orientation, i, j) != EMPTY) {
-                            tilesState[locationCol+i][locationRow+j] = tile;
-                        }
-                    }
-                }
-            }
-            if (orientation == EAST || orientation == WEST) {
-                for(int i = 0; i < 2; i ++) { // i - row
-                    for(int j = 0; j < 3; j ++) { // j - column
-                        if(tileType.getOnePointState(tileType, orientation, i, j) != EMPTY) {
-                            tilesState[locationCol+i][locationRow+j] = tile;
-                        }
-                    }
-                }
-            }
-        }
-        if(tileType == B || tileType == C) {
-            if (orientation == NORTH || orientation == SOUTH) {
-                for(int i = 0; i < 4; i ++) { // i - column
-                    for(int j = 0; j < 2; j ++) { // j - row
-                        if(tileType.getOnePointState(tileType, orientation, i, j) != EMPTY) {
-                            tilesState[locationCol+i][locationRow+j] = tile;
-                        }
-                    }
-                }
-            }
-            if (orientation == EAST || orientation == WEST) {
-                for(int i = 0; i < 2; i ++) { // i - row
-                    for(int j = 0; j < 4; j ++) { // j - column
-                        if(tileType.getOnePointState(tileType, orientation, i, j) != EMPTY) {
-                            tilesState[locationCol+i][locationRow+j] = tile;
-                        }
-                    }
-                }
-            }
-        }
-        if(tileType == H) {
-            if (orientation == NORTH || orientation == SOUTH) {
-                for(int i = 0; i < 3; i ++) { // i - column
-                    for(int j = 0; j < 3; j ++) { // j - row
-                        if(tileType.getOnePointState(tileType, orientation, i, j) != EMPTY) {
-                            tilesState[locationCol+i][locationRow+j] = tile;
-                        }
-                    }
-                }
-            }
-            if (orientation == EAST || orientation == WEST) {
-                for(int i = 0; i < 3; i ++) { // i - row
-                    for(int j = 0; j < 3; j ++) { // j - column
-                        if(tileType.getOnePointState(tileType, orientation, i, j) != EMPTY) {
-                            tilesState[locationCol+i][locationRow+j] = tile;
-                        }
-                    }
-                }
-            }
-        }
-        if(tileType == I) {
-            if (orientation == NORTH || orientation == SOUTH) {
-                for(int i = 0; i < 2; i ++) { // i - column
-                    for(int j = 0; j < 2; j ++) { // j - row
-                        if(tileType.getOnePointState(tileType, orientation, i, j) != EMPTY) {
-                            tilesState[locationCol+i][locationRow+j] = tile;
-                        }
-                    }
-                }
-            }
-            if (orientation == EAST || orientation == WEST) {
-                for(int i = 0; i < 2; i ++) { // i - row
-                    for(int j = 0; j < 2; j ++) { // j - column
-                        if(tileType.getOnePointState(tileType, orientation, i, j) != EMPTY) {
-                            tilesState[locationCol+i][locationRow+j] = tile;
-                        }
-                    }
-                }
-            }
-        }
-        if(tileType == F) {
-            if (orientation == NORTH || orientation == SOUTH) {
-                for(int i = 0; i < 3; i ++) { // i - column
-                    if(tileType.getOnePointState(tileType, orientation, i, 0) != EMPTY) {
-                        tilesState[locationCol+i][locationRow+0] = tile;
-                    }
-                }
-            }
-            if (orientation == EAST || orientation == WEST) {
-                for(int i = 0; i < 3; i ++) { // i - row
-                    if(tileType.getOnePointState(tileType, orientation, 0, i) != EMPTY) {
-                        tilesState[locationCol+0][locationRow+i] = tile;
-                    }
-                }
-            }
-        }
-    }
-
-    public void addTilesToboardState(Tile tile, TileType tileType, Orientation orientation, int locationCol, int locationRow) {
-        if(tileType == A || tileType == D || tileType == E || tileType ==G) {
-            if (orientation == NORTH || orientation == SOUTH) {
-                for(int i = 0; i < 3; i ++) { // i - column
-                    for(int j = 0; j < 2; j ++) { // j - row
-                        if(tileType.getOnePointState(tileType, orientation, i, j) != EMPTY) {
-                            boardState[locationCol+i][locationRow+j] = tileType.getOnePointState(tileType, orientation, i, j);
-                        }
-                    }
-                }
-            }
-            if (orientation == EAST || orientation == WEST) {
-                for(int i = 0; i < 2; i ++) { // i - row
-                    for(int j = 0; j < 3; j ++) { // j - column
-                        if(tileType.getOnePointState(tileType, orientation, i, j) != EMPTY) {
-                            boardState[locationCol+i][locationRow+j] = tileType.getOnePointState(tileType, orientation, i, j);
-                        }
-                    }
-                }
-            }
-        }
-        if(tileType == B || tileType == C) {
-            if (orientation == NORTH || orientation == SOUTH) {
-                for(int i = 0; i < 4; i ++) { // i - column
-                    for(int j = 0; j < 2; j ++) { // j - row
-                        if(tileType.getOnePointState(tileType, orientation, i, j) != EMPTY) {
-                            boardState[locationCol+i][locationRow+j] = tileType.getOnePointState(tileType, orientation, i, j);
-                        }
-                    }
-                }
-            }
-            if (orientation == EAST || orientation == WEST) {
-                for(int i = 0; i < 2; i ++) { // i - row
-                    for(int j = 0; j < 4; j ++) { // j - column
-                        if(tileType.getOnePointState(tileType, orientation, i, j) != EMPTY) {
-                            boardState[locationCol+i][locationRow+j] = tileType.getOnePointState(tileType, orientation, i, j);
-                        }
-                    }
-                }
-            }
-        }
-        if(tileType == H) {
-            if (orientation == NORTH || orientation == SOUTH) {
-                for(int i = 0; i < 3; i ++) { // i - column
-                    for(int j = 0; j < 3; j ++) { // j - row
-                        if(tileType.getOnePointState(tileType, orientation, i, j) != EMPTY) {
-                            boardState[locationCol+i][locationRow+j] = tileType.getOnePointState(tileType, orientation, i, j);
-                        }
-                    }
-                }
-            }
-            if (orientation == EAST || orientation == WEST) {
-                for(int i = 0; i < 3; i ++) { // i - row
-                    for(int j = 0; j < 3; j ++) { // j - column
-                        if(tileType.getOnePointState(tileType, orientation, i, j) != EMPTY) {
-                            boardState[locationCol+i][locationRow+j] = tileType.getOnePointState(tileType, orientation, i, j);
-                        }
-                    }
-                }
-            }
-        }
-        if(tileType == I) {
-            if (orientation == NORTH || orientation == SOUTH) {
-                for(int i = 0; i < 2; i ++) { // i - column
-                    for(int j = 0; j < 2; j ++) { // j - row
-                        if(tileType.getOnePointState(tileType, orientation, i, j) != EMPTY) {
-                            boardState[locationCol+i][locationRow+j] = tileType.getOnePointState(tileType, orientation, i, j);
-                        }
-                    }
-                }
-            }
-            if (orientation == EAST || orientation == WEST) {
-                for(int i = 0; i < 2; i ++) { // i - row
-                    for(int j = 0; j < 2; j ++) { // j - column
-                        if(tileType.getOnePointState(tileType, orientation, i, j) != EMPTY) {
-                            boardState[locationCol+i][locationRow+j] = tileType.getOnePointState(tileType, orientation, i, j);
-                        }
-                    }
-                }
-            }
-        }
-        if(tileType == F) {
-            if (orientation == NORTH || orientation == SOUTH) {
-                for(int i = 0; i < 3; i ++) { // i - column
-                    if(tileType.getOnePointState(tileType, orientation, i, 0) != EMPTY) {
-                        boardState[locationCol+i][locationRow+0] = tileType.getOnePointState(tileType, orientation, i, 0);
-                    }
-                }
-            }
-            if (orientation == EAST || orientation == WEST) {
-                for(int i = 0; i < 3; i ++) { // i - row
-                    if(tileType.getOnePointState(tileType, orientation, 0, i) != EMPTY) {
-                        boardState[locationCol+0][locationRow+i] = tileType.getOnePointState(tileType, orientation, 0, i);
-                    }
-                }
-            }
-        }
-    }
-
-    // update the tiles state
-    public void updateTilesState(Tile tile) {
+    public boolean updateBoardStateAndTilesState(Tile tile) {
         TileType tileType = tile.getTileType();
         Location location = tile.getLocation();
         int locationCol = location.getCol();
         int locationRow = location.getRow();
         Orientation orientation = tile.getOrientation();
-        addTilesToTilesState(tile, tileType, orientation, locationCol, locationRow);
+        return addTilesToTilesStateAndBoardState(tile, tileType, orientation, locationCol, locationRow);
     }
 
-    // update the board state
-    public void updateBoardState(Tile tile) {
-        TileType tileType = tile.getTileType();
-        Location location = tile.getLocation();
-        int locationCol = location.getCol();
-        int locationRow = location.getRow();
-        Orientation orientation = tile.getOrientation();
-        addTilesToboardState(tile, tileType, orientation, locationCol, locationRow);
+    public boolean addTilesToTilesStateAndBoardState(Tile tile, TileType tileType, Orientation orientation, int locationCol, int locationRow) {
+        int row = 0;
+        int col = 0;
+        if(tileType == A || tileType == D || tileType == E || tileType ==G) {
+            row = 2;
+            col = 3;
+        }
+        if(tileType == B || tileType == C || tileType == J) {
+            row = 2;
+            col = 4;
+        }
+        if(tileType == H) {
+            row = 3;
+            col = 3;
+        }
+        if(tileType == I) {
+            row = 2;
+            col = 2;
+        }
+        if(tileType == F) {
+            row = 1;
+            col = 3;
+        }
+        return checkAndChangeStatesTiles(tile, tileType, row, col, orientation, locationCol, locationRow);
+    }
+
+    public boolean checkAndChangeStatesTiles(Tile tile, TileType tileType, int row, int col, Orientation orientation, int locationCol, int locationRow) {
+
+        if(orientation == EAST || orientation == WEST) {
+            int temp = row;
+            row = col;
+            col = temp;
+        }
+        for(int i = 0; i < col; ++i) {
+            for(int j = 0; j < row; ++j) {
+                if(locationRow+j > 4 || locationCol+i > 8)
+                    return false;
+                State tilePointState = tileType.getOnePointState(tileType, orientation, i, j);
+                if(tilePointState != EMPTY && boardStates[locationRow+j][locationCol+i] != BLOCK) {
+                    if(tilesState[locationRow+j][locationCol+i] == null)
+                        tilesState[locationRow+j][locationCol+i] = tile;
+                    else
+                        return false;
+
+                    boardStates[locationRow+j][locationCol+i] = tilePointState;
+                } else if(tilePointState != EMPTY && boardStates[locationRow+j][locationCol+i] == BLOCK) {
+                    return false;
+                }
+
+            }
+        }
+        return true;
     }
 
     /**
@@ -337,120 +201,10 @@ public class FocusGame {
      */
     public static boolean isPlacementStringValid(String placement) {
         // FIXME Task 5: determine whether a placement string is valid
-        if (!isPlacementStringWellFormed(placement))
-            return false;
-        for(int i = 0; i < placement.length()/4; i ++) {
-            String piecePlacement = placement.substring(i*4, (i+1)*4);
-            Tile tile = new Tile(piecePlacement);
-            TileType tileType = tile.getTileType();
-            Orientation orientation = tile.getOrientation();
-            int locationCol = tile.getLocation().getCol();
-            int locationRow = tile.getLocation().getRow();
-            if (!isPiecePlacementWellFormed(piecePlacement))
-                return false;
-            if(tileType == A || tileType == D || tileType == E || tileType == G) {
-                if(orientation == NORTH || orientation == SOUTH) {
-                    if(locationCol + 3 > 9 || locationRow + 2 > 5) {
-                        return false;
-                    }
-                    if(locationCol == 0 && locationRow == 3 && tileType.getOnePointState(tileType, orientation, locationCol, locationRow+1) != EMPTY)
-                        return false;
-                    if(locationCol == 6 && locationRow == 3 && tileType.getOnePointState(tileType, orientation, locationCol+2, locationRow+1) != EMPTY)
-                        return false;
-                }
-                if(orientation == EAST || orientation == WEST) {
-                    if(locationCol + 2 > 9 || locationRow + 3 > 5) {
-                        return false;
-                    }
-                    if(locationCol == 0 && locationRow == 2 && tileType.getOnePointState(tileType, orientation, locationCol, locationRow+2) != EMPTY)
-                        return false;
-                    if(locationCol == 7 && locationRow == 2 && tileType.getOnePointState(tileType, orientation, locationCol+2, locationRow+1) != EMPTY)
-                        return false;
-                }
-            }
-            if(tileType == B || tileType == C || tileType == J) {
-                if(orientation == NORTH || orientation == SOUTH) {
-                    if(locationCol + 4 > 9 || locationRow + 2 > 5) {
-                        return false;
-                    }
-                    if(locationCol == 0 && locationRow == 3 && tileType.getOnePointState(tileType, orientation, locationCol, locationRow+1) != EMPTY)
-                        return false;
-                    if(locationCol == 5 && locationRow == 3 && tileType.getOnePointState(tileType, orientation, locationCol+3, locationRow+1) != EMPTY)
-                        return false;
-                }
-                if(orientation == EAST || orientation == WEST) {
-                    if(locationCol + 2 > 9 || locationRow + 4 > 5) {
-                        return false;
-                    }
-                    if(locationCol == 0 && locationRow == 1 && tileType.getOnePointState(tileType, orientation, locationCol, locationRow+3) != EMPTY)
-                        return false;
-                    if(locationCol == 7 && locationRow == 1 && tileType.getOnePointState(tileType, orientation, locationCol+1, locationRow+3) != EMPTY)
-                        return false;
-                }
-            }
-            if(tileType == H) {
-                if(orientation == NORTH || orientation == SOUTH) {
-                    if(locationCol + 3 > 8 || locationRow + 3 > 4) {
-                        return false;
-                    }
-                    if(locationCol == 0 && locationRow == 2 && tileType.getOnePointState(tileType, orientation, locationCol, locationRow+2) != EMPTY)
-                        return false;
-                    if(locationCol == 6 && locationRow == 2 && tileType.getOnePointState(tileType, orientation, locationCol+2, locationRow+2) != EMPTY)
-                        return false;
-                }
-                if(orientation == EAST || orientation == WEST) {
-                    if(locationCol + 3 > 8 || locationRow + 3 > 4) {
-                        return false;
-                    }
-                    if(locationCol == 0 && locationRow == 2 && tileType.getOnePointState(tileType, orientation, locationCol, locationRow+2) != EMPTY)
-                        return false;
-                    if(locationCol == 6 && locationRow == 2 && tileType.getOnePointState(tileType, orientation, locationCol+2, locationRow+2) != EMPTY)
-                        return false;
-                }
-            }
-            if(tileType == I) {
-                if(orientation == NORTH || orientation == SOUTH) {
-                    if(locationCol + 2 > 8 || locationRow + 2 > 4) {
-                        return false;
-                    }
-                    if(locationCol == 0 && locationRow == 3)
-                        return false;
-                    if(locationCol == 7 && locationRow == 3)
-                        return false;
-                }
-                if(orientation == EAST || orientation == WEST) {
-                    if(locationCol + 2 > 8 || locationRow + 2 > 4) {
-                        return false;
-                    }
-                    if(locationCol == 0 && locationRow == 3 && tileType.getOnePointState(tileType, orientation, locationCol, locationRow+1) != EMPTY)
-                        return false;
-                    if(locationCol == 7 && locationRow == 3 && tileType.getOnePointState(tileType, orientation, locationCol+1, locationRow+1) != EMPTY)
-                        return false;
-                }
-            }
-            if(tileType == F) {
-                if(orientation == NORTH || orientation == SOUTH) {
-                    if(locationCol + 3 > 8) {
-                        return false;
-                    }
-                    if(locationCol == 0 && locationRow == 4)
-                        return false;
-                    if(locationCol == 6 && locationRow == 4)
-                        return false;
-                }
-                if(orientation == EAST || orientation == WEST) {
-                    if(locationRow + 3 > 4) {
-                        return false;
-                    }
-                    if(locationCol == 0 && locationRow == 2)
-                        return false;
-                    if(locationCol == 8 && locationRow == 2)
-                        return false;
-                }
-            }
-        }
-
-        return true;
+        FocusGame focusGame = new FocusGame();
+        if(isPlacementStringWellFormed(placement))
+            return focusGame.initializeBoardState(placement);
+        return false;
     }
 
     /**
