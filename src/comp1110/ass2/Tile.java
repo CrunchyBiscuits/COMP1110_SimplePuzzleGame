@@ -9,7 +9,7 @@ public class Tile {
     private Orientation orientation;
 
     public Tile(String placement) {
-        this.tileType = placementToTiletype(placement); // enum value of tileType : a, b, c, d, e, f, g, h, i, j
+        this.tileType = TileType.valueOf(Character.toString(placement.charAt(0)-32)); // enum value of tileType : a, b, c, d, e, f, g, h, i, j
         this.location = placementToLocation(placement); // top-left point's location
         this.orientation = placementToOrientation(placement); // enum value of tileType: N(0), E(1), S(2), W(3)
     }
@@ -18,7 +18,7 @@ public class Tile {
     public TileType getTileType() { return tileType; }
     public Orientation getOrientation() { return orientation; }
 
-    public static TileType placementToTiletype(String placement) {
+    /*public static TileType placementToTiletype(String placement) {
         char tileType = placement.charAt(0);
         switch (tileType) {
             case 'a':
@@ -43,7 +43,7 @@ public class Tile {
                 return J;
         }
         return null;
-    }
+    }*/
 
     public static Orientation placementToOrientation(String placement) {
         int direction = placement.charAt(3) - '0';
