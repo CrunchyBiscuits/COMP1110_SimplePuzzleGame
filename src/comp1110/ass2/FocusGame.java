@@ -1,5 +1,6 @@
 package comp1110.ass2;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import static comp1110.ass2.TileType.*;
@@ -53,7 +54,6 @@ public class FocusGame {
                 return false;
         }
         return true;
-
     }
 
     // method: add a tile into the board
@@ -234,7 +234,8 @@ public class FocusGame {
      */
     static Set<String> getViablePiecePlacements(String placement, String challenge, int col, int row) {
         // FIXME Task 6: determine the set of all viable piece placements given existing placements and a challenge
-        return null;
+        Set<String> result=new HashSet<>();
+        return result;
     }
 
     /**
