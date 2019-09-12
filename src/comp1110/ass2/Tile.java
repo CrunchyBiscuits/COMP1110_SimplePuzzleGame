@@ -61,9 +61,9 @@ public class Tile {
     }
 
     public static Location placementToLocation(String placement) {
-        int locationCol = placement.charAt(1) - '0';
-        int locationRow = placement.charAt(2) - '0';
-        return new Location(locationCol, locationRow);
+        int x = placement.charAt(1) - '0';
+        int y = placement.charAt(2) - '0';
+        return new Location(x, y);
     }
 
 

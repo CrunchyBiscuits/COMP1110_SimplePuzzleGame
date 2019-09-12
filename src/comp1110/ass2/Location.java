@@ -2,8 +2,8 @@ package comp1110.ass2;
 
 
 /**
- *  @param col: the first number of placement
- *  @param row: the second number of placement
+ *  param col: the first number of placement
+ *  param row: the second number of placement
  *
  *  getCol: get the number of the column
  *  getRow: get the number of the row
