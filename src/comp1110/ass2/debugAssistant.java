@@ -10,7 +10,8 @@ import comp1110.ass2.FocusGame;
 public class debugAssistant {
     public static void main(String[] args) {
         FocusGame focusGame = new FocusGame();
-        focusGame.addTileToBoard("f001");
+
+        focusGame.addTileToBoard("j011", false, 0, 0);
         focusGame.printBoardStates();
         focusGame.printTilesStates();
     }
