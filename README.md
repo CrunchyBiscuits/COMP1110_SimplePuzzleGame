@@ -92,7 +92,9 @@ example, in the game above, the first piece is put on position `30`
 and the second is put on `32`.  Note that pieces are addressed as `XY`
 where `X` identifies the column where the left-most square of the
 piece is in, and `Y` identifies the row where the top square of the
-piece is in.
+piece is in.   Yellow dots in the diagram above indicate the
+point of reference (i.e. the top-most row and left-most column
+occupied by the piece).
 
 #### Pieces
 
@@ -103,7 +105,9 @@ plastic board formed by the 43 locations.
 
 Each piece can be **rotated** at 90 degree increments, allowing for 4
 different **orientations**.  The following illustration shows all 40
-possible combinations of the 10 pieces and 4 orientations.
+possible combinations of the 10 pieces and 4 orientations.   (Yellow
+dots indicate the point of reference for the piece's location,
+described below).
 
 <img src="assets/all_pieces.png">
 
