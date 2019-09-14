@@ -1,5 +1,6 @@
 package comp1110.ass2.gui;
 
+import comp1110.ass2.FocusGame;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -51,6 +52,11 @@ public class Board extends Application {
     /* marker for unplaced tiles */
     public static final char NOT_PLACED = 255;
 
+    /* where to find media assets */
+    private static final String URI_BASE = "assets/";
+    private static final String BASEBOARD_URI = Board.class.getResource(URI_BASE + "board.png").toString();
+
+
     /* node groups */
     private final Group root = new Group();
     private final Group gtiles = new Group();
@@ -61,6 +67,9 @@ public class Board extends Application {
     private final Group objective = new Group();
 
     private static String solutionString;
+
+    /* The underlying game */
+    FocusGame focusgame;
 
     class GameTile extends ImageView{
         int tileID;
@@ -79,27 +88,92 @@ public class Board extends Application {
                 setFitHeight(2*SQUARE_SIZE);
                 setFitWidth(3*SQUARE_SIZE);
             }else if (tileID==1||tileID==2||tileID==9){
-                setFitHeight(2);
-                setFitWidth(4);
+                setFitHeight(2*SQUARE_SIZE);
+                setFitWidth(4*SQUARE_SIZE);
             }else if (tileID==5){
-                setFitHeight(1);
-                setFitWidth(3);
+                setFitHeight(SQUARE_SIZE);
+                setFitWidth(3*SQUARE_SIZE);
             }else if (tileID==7){
-                setFitHeight(3);
-                setFitWidth(3);
+                setFitHeight(3*SQUARE_SIZE);
+                setFitWidth(3*SQUARE_SIZE);
             }else {
-                setFitHeight(2);
-                setFitWidth(2);
+                setFitHeight(2*SQUARE_SIZE);
+                setFitWidth(2*SQUARE_SIZE);
             }
         }
 
         /**
+         * Construct a playing tile, which is placed on the board at the start of the game,
+         * as a part of some challenges
          *
+         * @param tile  The letter representing the tile to be created.
+         * @param orientation   The integer representation of the tile to be constructed
          */
+        GameTile(char tile, int orientation) {
+            if (tile > 'f' || tile < 'a') {
+                throw new IllegalArgumentException("Bad tile: \"" + tile + "\"");
+            }
+            this.tileID = tile - 'a';
+            if (orientation%2 == 0) {
+                if (tileID==0||tileID==3||tileID==4||tileID==6){
+                    setFitHeight(2*SQUARE_SIZE);
+                    setFitWidth(3*SQUARE_SIZE);
+                }else if (tileID==1||tileID==2||tileID==9){
+                    setFitHeight(2*SQUARE_SIZE);
+                    setFitWidth(4*SQUARE_SIZE);
+                }else if (tileID==5){
+                    setFitHeight(SQUARE_SIZE);
+                    setFitWidth(3*SQUARE_SIZE);
+                }else if (tileID==7){
+                    setFitHeight(3*SQUARE_SIZE);
+                    setFitWidth(3*SQUARE_SIZE);
+                }else {
+                    setFitHeight(2*SQUARE_SIZE);
+                    setFitWidth(2*SQUARE_SIZE);
+                }
+            }
+            else {
+                if (tileID==0||tileID==3||tileID==4||tileID==6){
+                    setFitHeight(3*SQUARE_SIZE);
+                    setFitWidth(2*SQUARE_SIZE);
+                }else if (tileID==1||tileID==2||tileID==9){
+                    setFitHeight(4*SQUARE_SIZE);
+                    setFitWidth(2*SQUARE_SIZE);
+                }else if (tileID==5){
+                    setFitHeight(3*SQUARE_SIZE);
+                    setFitWidth(SQUARE_SIZE);
+                }else if (tileID==7){
+                    setFitHeight(3*SQUARE_SIZE);
+                    setFitWidth(3*SQUARE_SIZE);
+                }else {
+                    setFitHeight(2*SQUARE_SIZE);
+                    setFitWidth(2*SQUARE_SIZE);
+                }
+            }
+            setImage(new Image(Board.class.getResource(URI_BASE + tile + "-" + (char)(orientation+'0') + ".png").toString()));
+        }
     }
 
     // FIXME Task 7: Implement a basic playable Focus Game in JavaFX that only allows pieces to be placed in valid places
+    class DraggableTile extends GameTile{
+        int homeX, homeY;
 
+        double mouseX, mouseY;
+        Image[] images = new Image[4];
+        int orientation; // 0=North ... 3=West
+        long lastRotationTime = System.currentTimeMillis();
+
+        /**
+         * Construct a draggable tile
+         *
+         * @param tile The tile identifier ('a' - 'f')
+         */
+        DraggableTile(char tile){
+            super(tile);
+
+
+        }
+    }
 
     // FIXME Task 8: Implement challenges (you may use challenges and assets provided for you in comp1110.ass2.gui.assets: sq-b.png, sq-g.png, sq-r.png & sq-w.png)
 
