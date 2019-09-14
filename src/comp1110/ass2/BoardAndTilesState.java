@@ -2,7 +2,7 @@ package comp1110.ass2;
 
 /**
  * get and update the board state
- * @param placement
+ * param placement
  */
 public class BoardAndTilesState {
     private String placement;
