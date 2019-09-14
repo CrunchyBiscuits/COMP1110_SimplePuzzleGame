@@ -106,9 +106,11 @@ public class FocusGame {
         }
         for(int i = 0; i < col; ++i) {
             for(int j = 0; j < row; ++j) {
+                //check whether the tile is out of board
                 if(locationRow+j > 4 || locationCol+i > 8)
                     return false;
                 State tilePointState = tileType.getOnePointState(tileType, orientation, i, j);
+                //check whether the tile is overlap or placed in the block
                 if(tilePointState != EMPTY && boardStates[locationRow+j][locationCol+i] != BLOCK) {
                     if(tilesState[locationRow+j][locationCol+i] == null)
                         tilesState[locationRow+j][locationCol+i] = tile;
@@ -235,6 +237,11 @@ public class FocusGame {
     static Set<String> getViablePiecePlacements(String placement, String challenge, int col, int row) {
         // FIXME Task 6: determine the set of all viable piece placements given existing placements and a challenge
         Set<String> result=new HashSet<>();
+        if (isPiecePlacementWellFormed(placement))
+            return null;
+        if (isPlacementStringValid(placement))
+            return null;
+
         return result;
     }
 
