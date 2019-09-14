@@ -72,6 +72,8 @@ public class FocusGame {
         Location location = tile.getLocation();
         int locationCol = location.getCol();
         int locationRow = location.getRow();
+        System.out.println(locationCol);
+        System.out.println(locationRow);
         Orientation orientation = tile.getOrientation();
         return addTilesToTilesStateAndBoardState(tile, tileType, orientation, locationCol, locationRow, ifchallenge, testCol, testRow);
     }
@@ -109,32 +111,36 @@ public class FocusGame {
             row = col;
             col = temp;
         }
+        
         int count = 0;
         for(int i = 0; i < col; ++i) {
             for(int j = 0; j < row; ++j) {
+                System.out.println(i);
+                System.out.println(j);
                 if(locationRow+j > 4 || locationCol+i > 8)
                     return false;
                 State tilePointState = tileType.getOnePointState(tileType, orientation, i, j);
                 if(ifchallenge) {
-                    System.out.println("下面输出点的地址");
-                    System.out.print(locationCol+i);
-                    System.out.print(locationRow+j);
-                    System.out.println();
-                    System.out.println("输出完毕");
 
-                    if(locationCol+i == testCol && locationRow+j == testRow && tilePointState == EMPTY)
+                    if(locationCol+i == testCol && locationRow+j == testRow && tilePointState == EMPTY) {
                         return false;
+                    }
 
-                    if(locationCol+i != testCol && locationRow+j != testRow)
+                    if(!(locationCol+i == testCol && locationRow+j == testRow))
                         count ++;
 
+                    if(tilePointState != EMPTY && tilesState[locationRow+j][locationCol+i] != null)
+                        return false;
+
                     if(locationRow+j >= 1 && locationRow+j <= 3 && locationCol+i >= 3 && locationCol+i <= 5) {
-                        if(tilePointState != EMPTY && tilePointState != boardStates[locationRow+j][locationCol+i])
+                        if(tilePointState != EMPTY && tilePointState != boardStates[locationRow+j][locationCol+i]) {
                             return false;
+                        }
                     } else {
                         if(tilePointState != EMPTY && boardStates[locationRow+j][locationCol+i] != BLOCK) {
-                            if(boardStates[locationRow+j][locationCol+i] != EMPTY)
+                            if(boardStates[locationRow+j][locationCol+i] != EMPTY) {
                                 return false;
+                            }
                         } else if(tilePointState != EMPTY && boardStates[locationRow+j][locationCol+i] == BLOCK) {
                             return false;
                         }
@@ -156,9 +162,9 @@ public class FocusGame {
             }
         }
 
-        if(ifchallenge  && count == col*row)
+        if(ifchallenge  && count == col*row) {
             return false;
-        System.out.println("count数为： "+count);
+        }
         return true;
     }
 
@@ -269,12 +275,7 @@ public class FocusGame {
      * @param //row      The cell's row.
      * @return A set of viable piece placements, or null if there are none.
      */
-//    private boolean validChallengeCheck(String pieceplacement) {
-//        if(!initializeBoardState(pieceplacement))
-//            return false;
-//
-//        return true;
-//    }
+
 
     private void challengeBoardStates(FocusGame focusGame, String challenge) {
         int iter = 0;
@@ -304,8 +305,7 @@ public class FocusGame {
 
     static Set<String> getViablePiecePlacements(String placement, String challenge, int col, int row) {
         // FIXME Task 6: determine the set of all viable piece placements given existing placements and a challenge
-        System.out.println("placement: "+placement);
-        System.out.println("新测试开始");
+
         int testCol = col;
         int testRow = row;
         System.out.println(testCol);
@@ -344,15 +344,9 @@ public class FocusGame {
             }
         }
 
-        System.out.println("----------------");
-        for(String point : possiblePoints) {
-            System.out.println(point);
-        }
-        System.out.println("aha");
 
         focusGame.challengeBoardStates(focusGame, challenge);
 
-        focusGame.printBoardStates();
 
         for(int i = 0; i < placement.length()/4; i ++) {
             String piecePlacement = placement.substring(i * 4, (i + 1) * 4);
@@ -374,13 +368,14 @@ public class FocusGame {
         Set<String> solutionSet = new HashSet<>();
 
         for(String possibleSolution : possibleSolutions) {
+            System.out.println(possibleSolution);
             if (focusGame.initializeBoardState(possibleSolution, true, testCol, testRow)) {
                 solutionSet.add(possibleSolution);
                 focusGame.printBoardStates();
             }
-            System.out.println(possibleSolution);
+
         }
-        System.out.println(challenge);
+
         return (solutionSet.size() != 0) ? solutionSet : null;
     }
 
