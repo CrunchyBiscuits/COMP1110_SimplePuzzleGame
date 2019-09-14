@@ -7,7 +7,7 @@ stages:
 
 before_script:
   - export PATH_TO_FX=/usr/share/openjfx/lib
-  - export JAVAFX_OPTIONS="--module-path $PATH_TO_FX --add-modules javafx.controls"
+  - export JAVAFX_OPTIONS="--module-path $PATH_TO_FX --add-modules javafx.controls,javafx.fxml,javafx.media"
   - export CP=src:/ass2/comp1110-ass2-tests.jar:/ass2/hamcrest-core-1.3.jar:/ass2/junit-4.12.jar
 
 
@@ -27,11 +27,11 @@ build:
     - comp1110
   stage: build
   script:
-    - javac -encoding ISO-8859-1 $JAVAFX_OPTIONS -cp $CP src/comp1110/ass2/*.java src/comp1110/ass2/gui/*.java
+    - javac -encoding ISO-8859-1 $JAVAFX_OPTIONS -cp $CP src/comp1110/ass2/*.java src/comp1110/ass2/*/*.java
   artifacts:
     paths:
       - src/comp1110/ass2/*.class
-      - src/comp1110/ass2/gui/*.class
+      - src/comp1110/ass2/*/*.class
 
 task2:
   tags:
