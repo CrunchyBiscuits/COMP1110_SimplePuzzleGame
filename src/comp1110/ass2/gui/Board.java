@@ -32,7 +32,7 @@ public class Board extends Application {
     private static final int MARGIN_Y = 30;
 
     private static final int BOARD_WIDTH = 542;
-    private static final int BOARD_HEIGHT = 400;
+    private static final int BOARD_HEIGHT = 355;
     private static final int BOARD_MARGIN = 70;
 
     private static final int OBJECTIVE_WIDTH = 162;
