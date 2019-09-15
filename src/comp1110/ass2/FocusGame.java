@@ -72,8 +72,7 @@ public class FocusGame {
         Location location = tile.getLocation();
         int locationCol = location.getCol();
         int locationRow = location.getRow();
-        System.out.println(locationCol);
-        System.out.println(locationRow);
+
         Orientation orientation = tile.getOrientation();
         return addTilesToTilesStateAndBoardState(tile, tileType, orientation, locationCol, locationRow, ifchallenge, testCol, testRow);
     }
@@ -115,8 +114,6 @@ public class FocusGame {
         int count = 0;
         for(int i = 0; i < col; ++i) {
             for(int j = 0; j < row; ++j) {
-                System.out.println(i);
-                System.out.println(j);
                 if(locationRow+j > 4 || locationCol+i > 8)
                     return false;
                 State tilePointState = tileType.getOnePointState(tileType, orientation, i, j);
@@ -125,6 +122,7 @@ public class FocusGame {
                     if(locationCol+i == testCol && locationRow+j == testRow && tilePointState == EMPTY) {
                         return false;
                     }
+
 
                     if(!(locationCol+i == testCol && locationRow+j == testRow))
                         count ++;
@@ -277,7 +275,7 @@ public class FocusGame {
      */
 
 
-    private void challengeBoardStates(FocusGame focusGame, String challenge) {
+    public void challengeBoardStates(FocusGame focusGame, String challenge) {
         int iter = 0;
         for(int i = 1; i < 4; ++ i) {
             for(int j = 3; j < 6; ++ j) {
@@ -288,7 +286,7 @@ public class FocusGame {
         }
     }
 
-    private State charToState(char ch) {
+    public State charToState(char ch) {
         String str = Character.toString(ch);
         switch (str) {
             case "R":
@@ -308,12 +306,11 @@ public class FocusGame {
 
         int testCol = col;
         int testRow = row;
-        System.out.println(testCol);
-        System.out.println(testRow);
+
 
         FocusGame focusGame = new FocusGame();
         focusGame.initializeBoardState(placement, false, 0, 0);
-        focusGame.printBoardStates();
+
 
         ArrayList<String> typeList = new ArrayList<>() {{
             add("a");
@@ -344,9 +341,7 @@ public class FocusGame {
             }
         }
 
-
         focusGame.challengeBoardStates(focusGame, challenge);
-
 
         for(int i = 0; i < placement.length()/4; i ++) {
             String piecePlacement = placement.substring(i * 4, (i + 1) * 4);
@@ -368,10 +363,8 @@ public class FocusGame {
         Set<String> solutionSet = new HashSet<>();
 
         for(String possibleSolution : possibleSolutions) {
-            System.out.println(possibleSolution);
             if (focusGame.initializeBoardState(possibleSolution, true, testCol, testRow)) {
                 solutionSet.add(possibleSolution);
-                focusGame.printBoardStates();
             }
 
         }
