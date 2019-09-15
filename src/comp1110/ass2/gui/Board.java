@@ -26,7 +26,7 @@ import javafx.stage.Stage;
 public class Board extends Application {
 
 
-    private static final int SQUARE_SIZE = 60;
+    private static final int SQUARE_SIZE = 50;
 
     private static final int MARGIN_X = 30;
     private static final int MARGIN_Y = 30;
@@ -45,7 +45,7 @@ public class Board extends Application {
 
     private static final int PLAY_AREA_Y = BOARD_Y + BOARD_MARGIN;
     private static final int PLAY_AREA_X = BOARD_X + BOARD_MARGIN;
-    private static final int GAME_WIDTH = BOARD_X + BOARD_WIDTH +10* MARGIN_X;
+    private static final int GAME_WIDTH = BOARD_X + BOARD_WIDTH +15* MARGIN_X;
     private static final int GAME_HEIGHT = 620;
     private static final long ROTATION_THRESHOLD = 50; // Allow rotation every 50 ms
 
@@ -117,44 +117,42 @@ public class Board extends Application {
                 throw new IllegalArgumentException("Bad tile: \"" + tile + "\"");
             }
             this.tileID = tile - 'a';
-            setFitWidth(4*SQUARE_SIZE);
-            setFitHeight(4*SQUARE_SIZE);
-//            if (orientation%2 == 0) {
-//                if (tileID==0||tileID==3||tileID==4||tileID==6){
-//                    setFitHeight(2*SQUARE_SIZE);
-//                    setFitWidth(3*SQUARE_SIZE);
-//                }else if (tileID==1||tileID==2||tileID==9){
-//                    setFitHeight(2*SQUARE_SIZE);
-//                    setFitWidth(4*SQUARE_SIZE);
-//                }else if (tileID==5){
-//                    setFitHeight(SQUARE_SIZE);
-//                    setFitWidth(3*SQUARE_SIZE);
-//                }else if (tileID==7){
-//                    setFitHeight(3*SQUARE_SIZE);
-//                    setFitWidth(3*SQUARE_SIZE);
-//                }else {
-//                    setFitHeight(2*SQUARE_SIZE);
-//                    setFitWidth(2*SQUARE_SIZE);
-//                }
-//            }
-//            else {
-//                if (tileID==0||tileID==3||tileID==4||tileID==6){
-//                    setFitHeight(3*SQUARE_SIZE);
-//                    setFitWidth(2*SQUARE_SIZE);
-//                }else if (tileID==1||tileID==2||tileID==9){
-//                    setFitHeight(4*SQUARE_SIZE);
-//                    setFitWidth(2*SQUARE_SIZE);
-//                }else if (tileID==5){
-//                    setFitHeight(3*SQUARE_SIZE);
-//                    setFitWidth(SQUARE_SIZE);
-//                }else if (tileID==7){
-//                    setFitHeight(3*SQUARE_SIZE);
-//                    setFitWidth(3*SQUARE_SIZE);
-//                }else {
-//                    setFitHeight(2*SQUARE_SIZE);
-//                    setFitWidth(2*SQUARE_SIZE);
-//                }
-//            }
+            if (orientation%2 == 0) {
+                if (tileID==0||tileID==3||tileID==4||tileID==6){
+                    setFitHeight(2*SQUARE_SIZE);
+                    setFitWidth(3*SQUARE_SIZE);
+                }else if (tileID==1||tileID==2||tileID==9){
+                    setFitHeight(2*SQUARE_SIZE);
+                    setFitWidth(4*SQUARE_SIZE);
+                }else if (tileID==5){
+                    setFitHeight(SQUARE_SIZE);
+                    setFitWidth(3*SQUARE_SIZE);
+                }else if (tileID==7){
+                    setFitHeight(3*SQUARE_SIZE);
+                    setFitWidth(3*SQUARE_SIZE);
+                }else {
+                    setFitHeight(2*SQUARE_SIZE);
+                    setFitWidth(2*SQUARE_SIZE);
+                }
+            }
+            else {
+                if (tileID==0||tileID==3||tileID==4||tileID==6){
+                    setFitHeight(3*SQUARE_SIZE);
+                    setFitWidth(2*SQUARE_SIZE);
+                }else if (tileID==1||tileID==2||tileID==9){
+                    setFitHeight(4*SQUARE_SIZE);
+                    setFitWidth(2*SQUARE_SIZE);
+                }else if (tileID==5){
+                    setFitHeight(3*SQUARE_SIZE);
+                    setFitWidth(SQUARE_SIZE);
+                }else if (tileID==7){
+                    setFitHeight(3*SQUARE_SIZE);
+                    setFitWidth(3*SQUARE_SIZE);
+                }else {
+                    setFitHeight(2*SQUARE_SIZE);
+                    setFitWidth(2*SQUARE_SIZE);
+                }
+            }
             setImage(new Image(Board.class.getResource(URI_BASE + tile + "-" + (char)(orientation+'0') + ".png").toString()));
         }
 
@@ -191,11 +189,12 @@ public class Board extends Application {
             setLayoutY(homeY);
 
             //handling events
+            //TODO rotate and completion
             setOnScroll(event ->{
                 if (System.currentTimeMillis()-lastRotationTime>ROTATION_THRESHOLD){
                     lastRotationTime = System.currentTimeMillis();
                     //hideCompletion();
-                    //rotate();
+                    rotate();
                     event.consume();
                     //checkCompletion();
                 }
@@ -205,18 +204,29 @@ public class Board extends Application {
 
             //start of the drag
             setOnMousePressed(event->{
-
+                mouseX = event.getSceneX();
+                mouseY = event.getSceneY();
             });
 
             //dragging
             setOnMouseDragged(event->{
-
+                //hideCompletion();
+                toFront();
+                double movementX = event.getSceneX() - mouseX;
+                double movementY = event.getSceneY() - mouseY;
+                setLayoutX(getLayoutX() + movementX);
+                setLayoutY(getLayoutY() + movementY);
+                mouseX = event.getSceneX();
+                mouseY = event.getSceneY();
+                event.consume();
             });
 
             //finish drag
             setOnMouseReleased(event->{
-
+                snapToGrid();
             });
+
+
         }
 
         private void snapToGrid(){
@@ -229,6 +239,76 @@ public class Board extends Application {
             return true;
         }
 
+        private void setPosition(){
+
+        }
+
+        private void rotate(){
+            orientation = (orientation + 1)%4;
+            setImage(images[orientation]);
+            if (orientation%2 == 0) {
+                if (tileID==0||tileID==3||tileID==4||tileID==6){
+                    setFitHeight(2*SQUARE_SIZE);
+                    setFitWidth(3*SQUARE_SIZE);
+                }else if (tileID==1||tileID==2||tileID==9){
+                    setFitHeight(2*SQUARE_SIZE);
+                    setFitWidth(4*SQUARE_SIZE);
+                }else if (tileID==5){
+                    setFitHeight(SQUARE_SIZE);
+                    setFitWidth(3*SQUARE_SIZE);
+                }else if (tileID==7){
+                    setFitHeight(3*SQUARE_SIZE);
+                    setFitWidth(3*SQUARE_SIZE);
+                }else {
+                    setFitHeight(2*SQUARE_SIZE);
+                    setFitWidth(2*SQUARE_SIZE);
+                }
+            }
+            else {
+                if (tileID==0||tileID==3||tileID==4||tileID==6){
+                    setFitHeight(3*SQUARE_SIZE);
+                    setFitWidth(2*SQUARE_SIZE);
+                }else if (tileID==1||tileID==2||tileID==9){
+                    setFitHeight(4*SQUARE_SIZE);
+                    setFitWidth(2*SQUARE_SIZE);
+                }else if (tileID==5){
+                    setFitHeight(3*SQUARE_SIZE);
+                    setFitWidth(SQUARE_SIZE);
+                }else if (tileID==7){
+                    setFitHeight(3*SQUARE_SIZE);
+                    setFitWidth(3*SQUARE_SIZE);
+                }else {
+                    setFitHeight(2*SQUARE_SIZE);
+                    setFitWidth(2*SQUARE_SIZE);
+                }
+            }
+            toFront();
+            setPosition();
+        }
+
+        private void snapToHome(){
+            setLayoutX(homeX);
+            setLayoutY(homeY);
+            if (tileID==0||tileID==3||tileID==4||tileID==6){
+                setFitHeight(2*SQUARE_SIZE);
+                setFitWidth(3*SQUARE_SIZE);
+            }else if (tileID==1||tileID==2||tileID==9){
+                setFitHeight(2*SQUARE_SIZE);
+                setFitWidth(4*SQUARE_SIZE);
+            }else if (tileID==5){
+                setFitHeight(SQUARE_SIZE);
+                setFitWidth(3*SQUARE_SIZE);
+            }else if (tileID==7){
+                setFitHeight(3*SQUARE_SIZE);
+                setFitWidth(3*SQUARE_SIZE);
+            }else {
+                setFitHeight(2*SQUARE_SIZE);
+                setFitWidth(2*SQUARE_SIZE);
+            }
+            setImage(images[0]);
+            orientation=0;
+            tileState[tileID]=NOT_PLACED;
+        }
     }
 
     // FIXME Task 8: Implement challenges (you may use challenges and assets provided for you in comp1110.ass2.gui.assets: sq-b.png, sq-g.png, sq-r.png & sq-w.png)
@@ -249,7 +329,7 @@ public class Board extends Application {
         baseboard.setImage(new Image(BASEBOARD_URI));
         baseboard.setFitWidth(BOARD_WIDTH);
         baseboard.setFitHeight(BOARD_HEIGHT);
-        baseboard.setLayoutX(BOARD_X+9*MARGIN_X);
+        baseboard.setLayoutX(BOARD_X+14*MARGIN_X);
         baseboard.setLayoutY(BOARD_Y);
         board.getChildren().add(baseboard);
 
