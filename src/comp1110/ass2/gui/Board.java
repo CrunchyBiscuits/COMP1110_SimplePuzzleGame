@@ -31,8 +31,8 @@ public class Board extends Application {
     private static final int MARGIN_X = 30;
     private static final int MARGIN_Y = 30;
 
-    private static final int BOARD_WIDTH = 933;
-    private static final int BOARD_HEIGHT = 700;
+    private static final int BOARD_WIDTH = 542;
+    private static final int BOARD_HEIGHT = 400;
     private static final int BOARD_MARGIN = 70;
 
     private static final int OBJECTIVE_WIDTH = 162;
@@ -45,7 +45,7 @@ public class Board extends Application {
 
     private static final int PLAY_AREA_Y = BOARD_Y + BOARD_MARGIN;
     private static final int PLAY_AREA_X = BOARD_X + BOARD_MARGIN;
-    private static final int GAME_WIDTH = BOARD_X + BOARD_WIDTH + MARGIN_X;
+    private static final int GAME_WIDTH = BOARD_X + BOARD_WIDTH +10* MARGIN_X;
     private static final int GAME_HEIGHT = 620;
     private static final long ROTATION_THRESHOLD = 50; // Allow rotation every 50 ms
 
@@ -67,6 +67,9 @@ public class Board extends Application {
     private final Group objective = new Group();
 
     private static String solutionString;
+
+    /* the state of the tiles */
+    char[] tileState = new char[10];   //  all off screen to begin with
 
     /* The underlying game */
     FocusGame focusgame;
@@ -152,6 +155,8 @@ public class Board extends Application {
             }
             setImage(new Image(Board.class.getResource(URI_BASE + tile + "-" + (char)(orientation+'0') + ".png").toString()));
         }
+
+        //TODO another constructor for objective tile
     }
 
     // FIXME Task 7: Implement a basic playable Focus Game in JavaFX that only allows pieces to be placed in valid places
@@ -161,18 +166,68 @@ public class Board extends Application {
         double mouseX, mouseY;
         Image[] images = new Image[4];
         int orientation; // 0=North ... 3=West
-        long lastRotationTime = System.currentTimeMillis();
+        long lastRotationTime = System.currentTimeMillis();// only allow rotation every ROTATION_THRESHOLD (ms)
+        // This caters for mice which send multiple scroll events per tick.
 
         /**
          * Construct a draggable tile
          *
-         * @param tile The tile identifier ('a' - 'f')
+         * @param tile The tile identifier ('a' - 'j')
          */
         DraggableTile(char tile){
             super(tile);
+            for(int i=0;i<4;i++){
+                char imgId = (char)(i+'0');
+                System.out.println(Board.class.getResource(URI_BASE+ tile + "-" + imgId + ".png").toString());
+                images[i] = new Image(Board.class.getResource(URI_BASE+ tile + "-" + imgId + ".png").toString());
+            }
+            setImage(images[0]);
+            orientation = 0;
+            tileState[tile-'a'] = NOT_PLACED;
+            homeX = MARGIN_X + ((tile-'a')%3)*SQUARE_SIZE;
+            setLayoutX(homeX);
+            homeY = OBJECTIVE_MARGIN_Y + OBJECTIVE_HEIGHT + MARGIN_Y+((tile-'a')/3)*2*SQUARE_SIZE;
+            setLayoutY(homeY);
+
+            //handling events
+            setOnScroll(event ->{
+                if (System.currentTimeMillis()-lastRotationTime>ROTATION_THRESHOLD){
+                    lastRotationTime = System.currentTimeMillis();
+                    //hideCompletion();
+                    //rotate();
+                    event.consume();
+                    //checkCompletion();
+                }
+            });
 
 
+
+            //start of the drag
+            setOnMousePressed(event->{
+
+            });
+
+            //dragging
+            setOnMouseDragged(event->{
+
+            });
+
+            //finish drag
+            setOnMouseReleased(event->{
+
+            });
         }
+
+        private void snapToGrid(){
+           // if (onBoard() && (!alreadyOccupied())){
+
+           // }
+        }
+
+        private boolean onBoard(){
+            return true;
+        }
+
     }
 
     // FIXME Task 8: Implement challenges (you may use challenges and assets provided for you in comp1110.ass2.gui.assets: sq-b.png, sq-g.png, sq-r.png & sq-w.png)
@@ -182,9 +237,42 @@ public class Board extends Application {
     // FIXME Task 11: Generate interesting challenges (each challenge may have just one solution)
 
 
+
+    /**
+     * Set the gaming board
+     */
+    private void showBoard(){
+        board.getChildren().clear();
+
+        ImageView baseboard = new ImageView();
+        baseboard.setImage(new Image(BASEBOARD_URI));
+        baseboard.setFitWidth(BOARD_WIDTH);
+        baseboard.setFitHeight(BOARD_HEIGHT);
+        baseboard.setLayoutX(BOARD_X+9*MARGIN_X);
+        baseboard.setLayoutY(BOARD_Y);
+        board.getChildren().add(baseboard);
+
+        board.toBack();
+    }
+
+    /**
+     * Set the ten tiles
+     */
+    private void showTiles(){
+        gtiles.getChildren().clear();
+        for (char m='a';m<='j';m++){
+            gtiles.getChildren().add(new DraggableTile(m));
+        }
+    }
+
+
     private void newGame(){
         try{
-
+            //hideCompletioni();
+            focusgame = new FocusGame();
+            String[] reSet={""};
+            showTiles();
+            // TODO check solution
         }catch (IllegalArgumentException e){
             System.err.println(e);
             e.printStackTrace();
@@ -197,5 +285,23 @@ public class Board extends Application {
     @Override
     public void start(Stage primaryStage) {
 
+        primaryStage.setTitle("FOCUSGAME - Fun with the Tiles");
+        Scene scene = new Scene(root,GAME_WIDTH, GAME_HEIGHT);
+
+        root.getChildren().add(gtiles);
+        root.getChildren().add(board);
+        root.getChildren().add(solution);
+        root.getChildren().add(controls);
+        root.getChildren().add(exposed);
+        root.getChildren().add(objective);
+
+        // TODO set handlers, sound, board, tiles
+        //setUpHandlers(scene);
+        showBoard();
+
+        newGame();
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 }
