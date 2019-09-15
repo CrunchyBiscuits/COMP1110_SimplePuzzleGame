@@ -113,46 +113,48 @@ public class Board extends Application {
          * @param orientation   The integer representation of the tile to be constructed
          */
         GameTile(char tile, int orientation) {
-            if (tile > 'f' || tile < 'a') {
+            if (tile > 'j' || tile < 'a') {
                 throw new IllegalArgumentException("Bad tile: \"" + tile + "\"");
             }
             this.tileID = tile - 'a';
-            if (orientation%2 == 0) {
-                if (tileID==0||tileID==3||tileID==4||tileID==6){
-                    setFitHeight(2*SQUARE_SIZE);
-                    setFitWidth(3*SQUARE_SIZE);
-                }else if (tileID==1||tileID==2||tileID==9){
-                    setFitHeight(2*SQUARE_SIZE);
-                    setFitWidth(4*SQUARE_SIZE);
-                }else if (tileID==5){
-                    setFitHeight(SQUARE_SIZE);
-                    setFitWidth(3*SQUARE_SIZE);
-                }else if (tileID==7){
-                    setFitHeight(3*SQUARE_SIZE);
-                    setFitWidth(3*SQUARE_SIZE);
-                }else {
-                    setFitHeight(2*SQUARE_SIZE);
-                    setFitWidth(2*SQUARE_SIZE);
-                }
-            }
-            else {
-                if (tileID==0||tileID==3||tileID==4||tileID==6){
-                    setFitHeight(3*SQUARE_SIZE);
-                    setFitWidth(2*SQUARE_SIZE);
-                }else if (tileID==1||tileID==2||tileID==9){
-                    setFitHeight(4*SQUARE_SIZE);
-                    setFitWidth(2*SQUARE_SIZE);
-                }else if (tileID==5){
-                    setFitHeight(3*SQUARE_SIZE);
-                    setFitWidth(SQUARE_SIZE);
-                }else if (tileID==7){
-                    setFitHeight(3*SQUARE_SIZE);
-                    setFitWidth(3*SQUARE_SIZE);
-                }else {
-                    setFitHeight(2*SQUARE_SIZE);
-                    setFitWidth(2*SQUARE_SIZE);
-                }
-            }
+            setFitWidth(4*SQUARE_SIZE);
+            setFitHeight(4*SQUARE_SIZE);
+//            if (orientation%2 == 0) {
+//                if (tileID==0||tileID==3||tileID==4||tileID==6){
+//                    setFitHeight(2*SQUARE_SIZE);
+//                    setFitWidth(3*SQUARE_SIZE);
+//                }else if (tileID==1||tileID==2||tileID==9){
+//                    setFitHeight(2*SQUARE_SIZE);
+//                    setFitWidth(4*SQUARE_SIZE);
+//                }else if (tileID==5){
+//                    setFitHeight(SQUARE_SIZE);
+//                    setFitWidth(3*SQUARE_SIZE);
+//                }else if (tileID==7){
+//                    setFitHeight(3*SQUARE_SIZE);
+//                    setFitWidth(3*SQUARE_SIZE);
+//                }else {
+//                    setFitHeight(2*SQUARE_SIZE);
+//                    setFitWidth(2*SQUARE_SIZE);
+//                }
+//            }
+//            else {
+//                if (tileID==0||tileID==3||tileID==4||tileID==6){
+//                    setFitHeight(3*SQUARE_SIZE);
+//                    setFitWidth(2*SQUARE_SIZE);
+//                }else if (tileID==1||tileID==2||tileID==9){
+//                    setFitHeight(4*SQUARE_SIZE);
+//                    setFitWidth(2*SQUARE_SIZE);
+//                }else if (tileID==5){
+//                    setFitHeight(3*SQUARE_SIZE);
+//                    setFitWidth(SQUARE_SIZE);
+//                }else if (tileID==7){
+//                    setFitHeight(3*SQUARE_SIZE);
+//                    setFitWidth(3*SQUARE_SIZE);
+//                }else {
+//                    setFitHeight(2*SQUARE_SIZE);
+//                    setFitWidth(2*SQUARE_SIZE);
+//                }
+//            }
             setImage(new Image(Board.class.getResource(URI_BASE + tile + "-" + (char)(orientation+'0') + ".png").toString()));
         }
 
@@ -178,13 +180,12 @@ public class Board extends Application {
             super(tile);
             for(int i=0;i<4;i++){
                 char imgId = (char)(i+'0');
-                System.out.println(Board.class.getResource(URI_BASE+ tile + "-" + imgId + ".png").toString());
                 images[i] = new Image(Board.class.getResource(URI_BASE+ tile + "-" + imgId + ".png").toString());
             }
             setImage(images[0]);
             orientation = 0;
             tileState[tile-'a'] = NOT_PLACED;
-            homeX = MARGIN_X + ((tile-'a')%3)*SQUARE_SIZE;
+            homeX = MARGIN_X + ((tile-'a')%3)*4*SQUARE_SIZE;
             setLayoutX(homeX);
             homeY = OBJECTIVE_MARGIN_Y + OBJECTIVE_HEIGHT + MARGIN_Y+((tile-'a')/3)*2*SQUARE_SIZE;
             setLayoutY(homeY);
