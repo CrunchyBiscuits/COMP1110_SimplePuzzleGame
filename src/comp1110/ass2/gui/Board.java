@@ -65,6 +65,7 @@ public class Board extends Application {
     private final Group controls = new Group();
     private final Group exposed = new Group();
     private final Group objective = new Group();
+    private final Group challenge = new Group();
 
     private static String solutionString;
 
@@ -313,6 +314,18 @@ public class Board extends Application {
 
     // FIXME Task 8: Implement challenges (you may use challenges and assets provided for you in comp1110.ass2.gui.assets: sq-b.png, sq-g.png, sq-r.png & sq-w.png)
 
+    Image r = new Image(getClass().getResource("assets/sq-r.png").toString());
+    Image b = new Image(getClass().getResource("assets/sq-b.png").toString());
+    Image w = new Image(getClass().getResource("assets/sq-w.png").toString());
+    Image g = new Image(getClass().getResource("assets/sq-g.png").toString());
+
+    String c = "RRBWGBWRR".toLowerCase();
+
+//    for (int i =0; i<10; i++){
+//        char id = c.charAt(i);
+//        Image a = new Image(getClass().getResource("assets/sq-"+id+".png").toString());
+//    }
+
     // FIXME Task 10: Implement hints
 
     // FIXME Task 11: Generate interesting challenges (each challenge may have just one solution)
@@ -375,12 +388,19 @@ public class Board extends Application {
         root.getChildren().add(controls);
         root.getChildren().add(exposed);
         root.getChildren().add(objective);
+        root.getChildren().add(challenge);
 
         // TODO set handlers, sound, board, tiles
         //setUpHandlers(scene);
         showBoard();
 
         newGame();
+
+
+        for (int i =0; i<10; i++){
+            char id = c.charAt(i);
+            Image a = new Image(getClass().getResource("assets/sq-"+id+".png").toString());
+        }
 
         primaryStage.setScene(scene);
         primaryStage.show();
