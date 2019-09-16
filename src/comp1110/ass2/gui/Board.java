@@ -31,9 +31,10 @@ public class Board extends Application {
     private static final int MARGIN_X = 30;
     private static final int MARGIN_Y = 30;
 
-    private static final int BOARD_WIDTH = 542;
+    private static final int BOARD_WIDTH = 530;
     private static final int BOARD_HEIGHT = 355;
-    private static final int BOARD_MARGIN = 70;
+    private static final int BOARD_MARGIN_X = 30;
+    private static final int BOARD_MARGIN_Y = 80;
 
     private static final int OBJECTIVE_WIDTH = 162;
     private static final int OBJECTIVE_HEIGHT = 150;
@@ -43,8 +44,8 @@ public class Board extends Application {
     private static final int BOARD_Y = MARGIN_Y;
     private static final int BOARD_X = MARGIN_X + (3 * SQUARE_SIZE) + SQUARE_SIZE + MARGIN_X;
 
-    private static final int PLAY_AREA_Y = BOARD_Y + BOARD_MARGIN;
-    private static final int PLAY_AREA_X = BOARD_X + BOARD_MARGIN;
+    private static final int PLAY_AREA_Y = BOARD_Y + BOARD_MARGIN_Y;
+    private static final int PLAY_AREA_X = BOARD_X +15*MARGIN_X+ BOARD_MARGIN_X;
     private static final int GAME_WIDTH = BOARD_X + BOARD_WIDTH +15* MARGIN_X;
     private static final int GAME_HEIGHT = 620;
     private static final long ROTATION_THRESHOLD = 50; // Allow rotation every 50 ms
@@ -230,12 +231,27 @@ public class Board extends Application {
         }
 
         private void snapToGrid(){
-           // if (onBoard() && (!alreadyOccupied())){
+//           if (onBoard() && (!alreadyOccupied())){
+            if (onBoard()){
 
-           // }
+            }else {
+                snapToHome();
+            }
         }
 
         private boolean onBoard(){
+            System.out.println(getLayoutX());
+            System.out.println(PLAY_AREA_X - (SQUARE_SIZE / 2));
+            System.out.println(PLAY_AREA_X + 8.5 * SQUARE_SIZE);
+            System.out.println("-------------");
+            System.out.println(getLayoutY());
+            System.out.println(PLAY_AREA_Y);
+            System.out.println(PLAY_AREA_Y + 6 * SQUARE_SIZE);
+            return getLayoutX() > (PLAY_AREA_X - (SQUARE_SIZE / 2)) && (getLayoutX() < (PLAY_AREA_X + 5 * SQUARE_SIZE))
+                    && getLayoutY() > (PLAY_AREA_Y - (SQUARE_SIZE / 2)) && (getLayoutY() < (PLAY_AREA_Y + 3.5 * SQUARE_SIZE));
+        }
+
+        private boolean alreadyOccupied(){
             return true;
         }
 
