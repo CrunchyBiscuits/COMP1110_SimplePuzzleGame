@@ -239,16 +239,19 @@ public class Board extends Application {
             }
         }
 
+        /**
+         * check whether the tile is on the board
+         * */
         private boolean onBoard(){
-            System.out.println(getLayoutX());
-            System.out.println(PLAY_AREA_X - (SQUARE_SIZE / 2));
-            System.out.println(PLAY_AREA_X + 8.5 * SQUARE_SIZE);
-            System.out.println("-------------");
-            System.out.println(getLayoutY());
-            System.out.println(PLAY_AREA_Y);
-            System.out.println(PLAY_AREA_Y + 6 * SQUARE_SIZE);
+//            System.out.println(getLayoutX());
+//            System.out.println(PLAY_AREA_X - (SQUARE_SIZE / 2));
+//            System.out.println(PLAY_AREA_X + 8.5 * SQUARE_SIZE);
+//            System.out.println("-------------");
+//            System.out.println(getLayoutY());
+//            System.out.println(PLAY_AREA_Y);
+//            System.out.println(PLAY_AREA_Y + 6 * SQUARE_SIZE);
             return getLayoutX() > (PLAY_AREA_X - (SQUARE_SIZE / 2)) && (getLayoutX() < (PLAY_AREA_X + 5 * SQUARE_SIZE))
-                    && getLayoutY() > (PLAY_AREA_Y - (SQUARE_SIZE / 2)) && (getLayoutY() < (PLAY_AREA_Y + 3.5 * SQUARE_SIZE));
+                    && getLayoutY() > (PLAY_AREA_Y - (SQUARE_SIZE / 2)) && (getLayoutY() < (PLAY_AREA_Y + 4.5 * SQUARE_SIZE));
         }
 
         private boolean alreadyOccupied(){
@@ -256,9 +259,18 @@ public class Board extends Application {
         }
 
         private void setPosition(){
+            int x = (int) (getLayoutX() - PLAY_AREA_X) / SQUARE_SIZE;
+            int y = (int) (getLayoutY() - PLAY_AREA_Y) / SQUARE_SIZE;
+            if (x < 0)
+                tileState[tileID] = NOT_PLACED;
+            else {
 
+            }
         }
 
+        /**
+         * rotate the tile
+         * */
         private void rotate(){
             orientation = (orientation + 1)%4;
             setImage(images[orientation]);
@@ -302,6 +314,10 @@ public class Board extends Application {
             setPosition();
         }
 
+
+        /**
+         * set the tile to original position
+         * */
         private void snapToHome(){
             setLayoutX(homeX);
             setLayoutY(homeY);
