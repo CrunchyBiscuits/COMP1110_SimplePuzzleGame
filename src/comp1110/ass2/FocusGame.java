@@ -85,6 +85,7 @@ public class FocusGame {
      * @return True if the placement sequence is valid
      */
     public static boolean isPlacementStringValid(String placement) {
+        if(placement.)
         // FIXME Task 5: determine whether a placement string is valid
         return false;
     }
