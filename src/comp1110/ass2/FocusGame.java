@@ -1,6 +1,13 @@
 package comp1110.ass2;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
+
+import static comp1110.ass2.TileType.*;
+import static comp1110.ass2.Orientation.*;
+import static comp1110.ass2.State.*;
+
 
 /**
  * This class provides the text interface for the IQ Focus Game
@@ -9,6 +16,155 @@ import java.util.Set;
  * (https://www.smartgames.eu/uk/one-player-games/iq-focus)
  */
 public class FocusGame {
+
+    private boolean ifchallenge = false;
+    private int testCol = 0;
+    private int testRow = 0;
+
+    // pre-initial state of the board
+    private State[][] boardStates = {
+            {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+            {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+            {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+            {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+            {BLOCK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, BLOCK}
+    };
+
+    private Tile[][] tilesState = new Tile[5][9]; // same type with the game : col/row
+
+    public void printBoardStates() {
+        for(int i = 0; i < 5; ++ i) {
+            for(int j = 0; j < 9; ++ j) {
+                System.out.print(boardStates[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    public void printTilesStates() {
+        for(int i = 0; i < 4; ++ i) {
+            for(int j = 0; j < 8; ++ j) {
+                System.out.print(tilesState[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    // initialize the state of the board
+    public boolean initializeBoardState(String boardState, boolean ifchallenge, int testCol, int testRow) {
+        for(int i = 0; i < boardState.length()/4; i ++) {
+            String placement = boardState.substring(i*4, (i+1)*4);
+            if(!addTileToBoard(placement, ifchallenge, testCol, testRow))
+                return false;
+        }
+        return true;
+
+    }
+
+    // method: add a tile into the board
+    public boolean addTileToBoard(String placement, boolean ifchallenge, int testCol, int testRow) {
+        Tile tile = new Tile(placement);
+        return updateBoardStateAndTilesState(tile, ifchallenge, testCol, testRow);
+    }
+
+    public boolean updateBoardStateAndTilesState(Tile tile, boolean ifchallenge, int testCol, int testRow) {
+        TileType tileType = tile.getTileType();
+        Location location = tile.getLocation();
+        int locationCol = location.getCol();
+        int locationRow = location.getRow();
+
+        Orientation orientation = tile.getOrientation();
+        return addTilesToTilesStateAndBoardState(tile, tileType, orientation, locationCol, locationRow, ifchallenge, testCol, testRow);
+    }
+
+    public boolean addTilesToTilesStateAndBoardState(Tile tile, TileType tileType, Orientation orientation, int locationCol, int locationRow, boolean ifchallenge, int testCol, int testRow) {
+        int row = 0;
+        int col = 0;
+        if(tileType == A || tileType == D || tileType == E || tileType ==G) {
+            row = 2;
+            col = 3;
+        }
+        if(tileType == B || tileType == C || tileType == J) {
+            row = 2;
+            col = 4;
+        }
+        if(tileType == H) {
+            row = 3;
+            col = 3;
+        }
+        if(tileType == I) {
+            row = 2;
+            col = 2;
+        }
+        if(tileType == F) {
+            row = 1;
+            col = 3;
+        }
+        return checkAndChangeStatesTiles(tile, tileType, row, col, orientation, locationCol, locationRow, ifchallenge, testCol, testRow);
+    }
+
+    public boolean checkAndChangeStatesTiles(Tile tile, TileType tileType, int row, int col, Orientation orientation, int locationCol, int locationRow, boolean ifchallenge, int testCol, int testRow) {
+
+        if(orientation == EAST || orientation == WEST) {
+            int temp = row;
+            row = col;
+            col = temp;
+        }
+        
+        int count = 0;
+        for(int i = 0; i < col; ++i) {
+            for(int j = 0; j < row; ++j) {
+                if(locationRow+j > 4 || locationCol+i > 8)
+                    return false;
+                State tilePointState = tileType.getOnePointState(tileType, orientation, i, j);
+                if(ifchallenge) {
+
+                    if(locationCol+i == testCol && locationRow+j == testRow && tilePointState == EMPTY) {
+                        return false;
+                    }
+
+
+                    if(!(locationCol+i == testCol && locationRow+j == testRow))
+                        count ++;
+
+                    if(tilePointState != EMPTY && tilesState[locationRow+j][locationCol+i] != null)
+                        return false;
+
+                    if(locationRow+j >= 1 && locationRow+j <= 3 && locationCol+i >= 3 && locationCol+i <= 5) {
+                        if(tilePointState != EMPTY && tilePointState != boardStates[locationRow+j][locationCol+i]) {
+                            return false;
+                        }
+                    } else {
+                        if(tilePointState != EMPTY && boardStates[locationRow+j][locationCol+i] != BLOCK) {
+                            if(boardStates[locationRow+j][locationCol+i] != EMPTY) {
+                                return false;
+                            }
+                        } else if(tilePointState != EMPTY && boardStates[locationRow+j][locationCol+i] == BLOCK) {
+                            return false;
+                        }
+                    }
+
+                } else {
+                    if(tilePointState != EMPTY && boardStates[locationRow+j][locationCol+i] != BLOCK) {
+                        if(tilesState[locationRow+j][locationCol+i] == null)
+                            tilesState[locationRow+j][locationCol+i] = tile;
+                        else
+                            return false;
+
+                        boardStates[locationRow+j][locationCol+i] = tilePointState;
+                    } else if(tilePointState != EMPTY && boardStates[locationRow+j][locationCol+i] == BLOCK) {
+                        return false;
+                    }
+                }
+
+            }
+        }
+
+        if(ifchallenge  && count == col*row) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * Determine whether a piece placement is well-formed according to the
@@ -87,6 +243,9 @@ public class FocusGame {
     public static boolean isPlacementStringValid(String placement) {
         if(placement.)
         // FIXME Task 5: determine whether a placement string is valid
+        FocusGame focusGame = new FocusGame();
+        if(isPlacementStringWellFormed(placement))
+            return focusGame.initializeBoardState(placement, false, 0, 0);
         return false;
     }
 
@@ -99,7 +258,7 @@ public class FocusGame {
      * - it must be valid
      * - it must be consistent with the challenge
      *
-     * @param placement A viable placement string
+     * @param //placement A viable placement string
      * @param challenge The game's challenge is represented as a 9-character string
      *                  which represents the color of the 3*3 central board area
      *                  squares indexed as follows:
@@ -111,13 +270,107 @@ public class FocusGame {
      *                  - 'B' = Blue square
      *                  - 'G' = Green square
      *                  - 'W' = White square
-     * @param col      The cell's column.
-     * @param row      The cell's row.
+     * @param //col      The cell's column.
+     * @param //row      The cell's row.
      * @return A set of viable piece placements, or null if there are none.
      */
+
+
+    public void challengeBoardStates(FocusGame focusGame, String challenge) {
+        int iter = 0;
+        for(int i = 1; i < 4; ++ i) {
+            for(int j = 3; j < 6; ++ j) {
+                focusGame.boardStates[i][j] = charToState(challenge.charAt(iter));
+                //focusGame.tilesState[i][j] = new Tile("a000");
+                iter ++;
+            }
+        }
+    }
+
+    public State charToState(char ch) {
+        String str = Character.toString(ch);
+        switch (str) {
+            case "R":
+                return RED;
+            case "B":
+                return BLUE;
+            case "W":
+                return WHITE;
+            case "G":
+                return GREEN;
+        }
+        return RED;
+    }
+
     static Set<String> getViablePiecePlacements(String placement, String challenge, int col, int row) {
         // FIXME Task 6: determine the set of all viable piece placements given existing placements and a challenge
-        return null;
+
+        int testCol = col;
+        int testRow = row;
+
+
+        FocusGame focusGame = new FocusGame();
+        focusGame.initializeBoardState(placement, false, 0, 0);
+
+
+        ArrayList<String> typeList = new ArrayList<>() {{
+            add("a");
+            add("b");
+            add("c");
+            add("d");
+            add("e");
+            add("f");
+            add("g");
+            add("h");
+            add("i");
+            add("j");
+        }};
+        ArrayList<Integer> orientationList = new ArrayList<>() {{
+            add(0);
+            add(1);
+            add(2);
+            add(3);
+        }};
+
+        ArrayList<String> possiblePoints = new ArrayList<>();
+        // add possible points
+        for(int i = 0; i < 4 && testCol - i >= 0; ++ i) {
+            for(int j = 0; j < 4 && testRow - j >= 0; ++ j) {
+                StringBuilder res = new StringBuilder();
+                res.append(testCol-i).append(testRow-j);
+                possiblePoints.add(res.toString());
+            }
+        }
+
+        focusGame.challengeBoardStates(focusGame, challenge);
+
+        for(int i = 0; i < placement.length()/4; i ++) {
+            String piecePlacement = placement.substring(i * 4, (i + 1) * 4);
+            String usedtype = Character.toString(piecePlacement.charAt(0));
+            if (typeList.contains(usedtype))
+                typeList.remove(usedtype);
+        }
+        ArrayList<String> possibleSolutions = new ArrayList<>();
+        for(String type : typeList) {
+            for(Integer orien : orientationList) {
+                for(String possiblePoint : possiblePoints) {
+                    StringBuilder res = new StringBuilder();
+                    res.append(type).append(possiblePoint).append(orien);
+                    possibleSolutions.add(res.toString());
+                }
+            }
+        }
+
+        Set<String> solutionSet = new HashSet<>();
+
+        for(String possibleSolution : possibleSolutions) {
+            if (focusGame.initializeBoardState(possibleSolution, true, testCol, testRow)) {
+                solutionSet.add(possibleSolution);
+            }
+
+        }
+
+        return (solutionSet.size() != 0) ? solutionSet : null;
     }
 
     /**
