@@ -21,6 +21,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 public class Board extends Application {
@@ -353,6 +354,38 @@ public class Board extends Application {
 
     String c = "RRBWGBWRR".toLowerCase();
 
+    Image[] cs = new Image[9];
+    ImageView challenges = new ImageView();
+    Translate t = new Translate();
+
+// add a method 
+//
+//    for(int i = 0; i<10; i++){
+//        char id = c.charAt(i);
+//        t.setX(120.0 * i);
+//        cs[i] = new Image(getClass().getResource("assets/sq-" + id + ".png").toString());
+//
+//
+//        if (i > 3 && i < 7) {
+//            t.setY(90);
+//            t.setX(120.0 * i);
+//            cs[i] = new Image(getClass().getResource("assets/sq-" + id + ".png").toString());
+//
+//
+//        }
+//        if (i > 6 && i < 10) {
+//            t.setY(90);
+//            t.setX(120.0 * i);
+//            cs[i] = new Image(getClass().getResource("assets/sq-" + id + ".png").toString());
+//        }
+//
+//
+//        challenges.setImage(cs[i]);
+//        challenge.getChildren().add(challenges);
+//    }
+
+
+
 //    for (int i =0; i<10; i++){
 //        char id = c.charAt(i);
 //        Image a = new Image(getClass().getResource("assets/sq-"+id+".png").toString());
@@ -428,14 +461,39 @@ public class Board extends Application {
 
         newGame();
 
-
-        for (int i =0; i<10; i++){
-            char id = c.charAt(i);
-            Image a = new Image(getClass().getResource("assets/sq-"+id+".png").toString());
-        }
+//        Image[] cs = new Image[9];
+//        ImageView challenges = new ImageView();
+//        Translate t = new Translate();
+//
+//
+//
+//        for (int i =0; i<10; i++) {
+//            char id = c.charAt(i);
+//            t.setX(120.0 * i);
+//            cs[i] = new Image(getClass().getResource("assets/sq-" + id + ".png").toString());
+//        }
+//
+//         if(i>3 && i<7) {
+//             t.setY(90);
+//             t.setX(120.0 * i);
+//             cs[i] = new Image(getClass().getResource("assets/sq-" + id + ".png").toString());
+//
+//
+//         }
+//         if(i>6 && i<10) {
+//             t.setY(90);
+//             t.setX(120.0 * i);
+//             cs[i] = new Image(getClass().getResource("assets/sq-" + id + ".png").toString());
+//         }
+//
+//
+//            challenges.setImage(cs [i]);
+//            challenge.getChildren().add(challenges);
+//        }
+//    }
 
         primaryStage.setScene(scene);
         primaryStage.show();
-        
+
     }
 }
