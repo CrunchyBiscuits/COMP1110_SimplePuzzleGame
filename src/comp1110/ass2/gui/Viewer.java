@@ -88,7 +88,7 @@ public class Viewer extends Application {
 
             imageView.setX(x*SQUARE_SIZE);
             imageView.setY(y*SQUARE_SIZE);
-            String imgPath = (URI_BASE + tile + ".png");
+            String imgPath = (URI_BASE + tile + "-0.png");
             Image img = new Image(Viewer.class.getResourceAsStream(imgPath));
             imageView.setImage(img);
             image.getChildren().add(imageView);
