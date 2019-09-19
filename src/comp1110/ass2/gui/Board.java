@@ -347,49 +347,20 @@ public class Board extends Application {
 
     // FIXME Task 8: Implement challenges (you may use challenges and assets provided for you in comp1110.ass2.gui.assets: sq-b.png, sq-g.png, sq-r.png & sq-w.png)
 
-    Image r = new Image(getClass().getResource("assets/sq-r.png").toString());
-    Image b = new Image(getClass().getResource("assets/sq-b.png").toString());
-    Image w = new Image(getClass().getResource("assets/sq-w.png").toString());
-    Image g = new Image(getClass().getResource("assets/sq-g.png").toString());
-
     String c = "RRBWGBWRR".toLowerCase();
-
-    Image[] cs = new Image[9];
-    ImageView challenges = new ImageView();
-    Translate t = new Translate();
-
-// add a method 
-//
-//    for(int i = 0; i<10; i++){
-//        char id = c.charAt(i);
-//        t.setX(120.0 * i);
-//        cs[i] = new Image(getClass().getResource("assets/sq-" + id + ".png").toString());
-//
-//
-//        if (i > 3 && i < 7) {
-//            t.setY(90);
-//            t.setX(120.0 * i);
-//            cs[i] = new Image(getClass().getResource("assets/sq-" + id + ".png").toString());
-//
-//
-//        }
-//        if (i > 6 && i < 10) {
-//            t.setY(90);
-//            t.setX(120.0 * i);
-//            cs[i] = new Image(getClass().getResource("assets/sq-" + id + ".png").toString());
-//        }
-//
-//
-//        challenges.setImage(cs[i]);
-//        challenge.getChildren().add(challenges);
-//    }
-
-
-
-//    for (int i =0; i<10; i++){
-//        char id = c.charAt(i);
-//        Image a = new Image(getClass().getResource("assets/sq-"+id+".png").toString());
-//    }
+    private void getChallenge(){
+        for (int i =0;i<c.length();i++){
+            String pic = getClass().getResource("assets/sq-" + c.charAt(i) + ".png").toString();
+            ImageView image = new ImageView(pic);
+            int col = i%3;
+            int row = i/3;
+            image.setY(35+row*50);
+            image.setX(200+col*50);
+            image.setFitHeight(SQUARE_SIZE);
+            image.setFitWidth(SQUARE_SIZE);
+            challenge.getChildren().add(image);
+        }
+    }
 
     // FIXME Task 10: Implement hints
 
@@ -446,7 +417,7 @@ public class Board extends Application {
 
         primaryStage.setTitle("FOCUSGAME - Fun with the Tiles");
         Scene scene = new Scene(root,GAME_WIDTH, GAME_HEIGHT);
-
+        getChallenge();
         root.getChildren().add(gtiles);
         root.getChildren().add(board);
         root.getChildren().add(solution);
