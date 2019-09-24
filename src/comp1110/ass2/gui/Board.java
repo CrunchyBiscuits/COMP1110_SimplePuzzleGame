@@ -3,24 +3,12 @@ package comp1110.ass2.gui;
 import comp1110.ass2.FocusGame;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.AudioClip;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 public class Board extends Application {
@@ -31,9 +19,10 @@ public class Board extends Application {
     private static final int MARGIN_X = 30;
     private static final int MARGIN_Y = 30;
 
-    private static final int BOARD_WIDTH = 542;
-    private static final int BOARD_HEIGHT = 400;
-    private static final int BOARD_MARGIN = 70;
+    private static final int BOARD_WIDTH = 933;
+    private static final int BOARD_HEIGHT = 700;
+    private static final int BOARD_MARGIN_X = 30;
+    private static final int BOARD_MARGIN_Y = 80;
 
     private static final int OBJECTIVE_WIDTH = 162;
     private static final int OBJECTIVE_HEIGHT = 150;
@@ -43,10 +32,10 @@ public class Board extends Application {
     private static final int BOARD_Y = MARGIN_Y;
     private static final int BOARD_X = MARGIN_X + (3 * SQUARE_SIZE) + SQUARE_SIZE + MARGIN_X;
 
-    private static final int PLAY_AREA_Y = BOARD_Y + BOARD_MARGIN;
-    private static final int PLAY_AREA_X = BOARD_X + BOARD_MARGIN;
+    private static final int PLAY_AREA_Y = BOARD_Y + BOARD_MARGIN_Y;
+    private static final int PLAY_AREA_X = BOARD_X +15*MARGIN_X+ BOARD_MARGIN_X;
     private static final int GAME_WIDTH = BOARD_X + BOARD_WIDTH +15* MARGIN_X;
-    private static final int GAME_HEIGHT = 620;
+    private static final int GAME_HEIGHT = BOARD_HEIGHT+100;
     private static final long ROTATION_THRESHOLD = 50; // Allow rotation every 50 ms
 
     /* marker for unplaced tiles */
@@ -65,6 +54,7 @@ public class Board extends Application {
     private final Group controls = new Group();
     private final Group exposed = new Group();
     private final Group objective = new Group();
+    private final Group challenge = new Group();
 
     private static String solutionString;
 
@@ -230,19 +220,47 @@ public class Board extends Application {
         }
 
         private void snapToGrid(){
-           // if (onBoard() && (!alreadyOccupied())){
+//           if (onBoard() && (!alreadyOccupied())){
+            if (onBoard()){
 
-           // }
+            }else {
+                snapToHome();
+            }
         }
 
+        /**
+         * check whether the tile is on the board
+         * */
         private boolean onBoard(){
+//Testing line
+//            System.out.println(getLayoutX());
+//            System.out.println(PLAY_AREA_X - (SQUARE_SIZE / 2));
+//            System.out.println(PLAY_AREA_X + 8.5 * SQUARE_SIZE);
+//            System.out.println("-------------");
+//            System.out.println(getLayoutY());
+//            System.out.println(PLAY_AREA_Y);
+//            System.out.println(PLAY_AREA_Y + 6 * SQUARE_SIZE);
+            return getLayoutX() > (PLAY_AREA_X - (SQUARE_SIZE / 2)) && (getLayoutX() < (PLAY_AREA_X + 5 * SQUARE_SIZE))
+                    && getLayoutY() > (PLAY_AREA_Y - (SQUARE_SIZE / 2)) && (getLayoutY() < (PLAY_AREA_Y + 4.5 * SQUARE_SIZE));
+        }
+
+        private boolean alreadyOccupied(){
             return true;
         }
 
         private void setPosition(){
+            int x = (int) (getLayoutX() - PLAY_AREA_X) / SQUARE_SIZE;
+            int y = (int) (getLayoutY() - PLAY_AREA_Y) / SQUARE_SIZE;
+            if (x < 0)
+                tileState[tileID] = NOT_PLACED;
+            else {
 
+            }
         }
 
+        /**
+         * rotate the tile
+         * */
         private void rotate(){
             orientation = (orientation + 1)%4;
             setImage(images[orientation]);
@@ -286,6 +304,10 @@ public class Board extends Application {
             setPosition();
         }
 
+
+        /**
+         * set the tile to original position
+         * */
         private void snapToHome(){
             setLayoutX(homeX);
             setLayoutY(homeY);
@@ -311,7 +333,48 @@ public class Board extends Application {
         }
     }
 
+
+
+    // add sound
+    private boolean startLoop = false;
+
+    private String music = getClass().getResource( "assets/484103__greenfiresound__click-08.wav").toString();
+    private AudioClip loop;
+
+    private void setUpSoundLoop() {
+            loop = new AudioClip(music);
+            loop.setCycleCount(AudioClip.INDEFINITE);
+    }
+
+    private void setUpHandlers(Scene scene) {
+        /* create handlers for key press and release events */
+        scene.setOnMouseClicked(event -> {
+            if (startLoop)
+                loop.stop();
+            else
+                loop.play();
+            startLoop = !startLoop;
+        });
+}
+
+
+
     // FIXME Task 8: Implement challenges (you may use challenges and assets provided for you in comp1110.ass2.gui.assets: sq-b.png, sq-g.png, sq-r.png & sq-w.png)
+
+    String c = "RRBWGBWRR".toLowerCase();
+    private void getChallenge(){
+        for (int i =0;i<c.length();i++){
+            String pic = getClass().getResource("assets/sq-" + c.charAt(i) + ".png").toString();
+            ImageView image = new ImageView(pic);
+            int col = i%3;
+            int row = i/3;
+            image.setY(35+row*50);
+            image.setX(200+col*50);
+            image.setFitHeight(SQUARE_SIZE);
+            image.setFitWidth(SQUARE_SIZE);
+            challenge.getChildren().add(image);
+        }
+    }
 
     // FIXME Task 10: Implement hints
 
@@ -368,21 +431,57 @@ public class Board extends Application {
 
         primaryStage.setTitle("FOCUSGAME - Fun with the Tiles");
         Scene scene = new Scene(root,GAME_WIDTH, GAME_HEIGHT);
-
+        getChallenge();
         root.getChildren().add(gtiles);
         root.getChildren().add(board);
         root.getChildren().add(solution);
         root.getChildren().add(controls);
         root.getChildren().add(exposed);
         root.getChildren().add(objective);
+        root.getChildren().add(challenge);
 
         // TODO set handlers, sound, board, tiles
+
         //setUpHandlers(scene);
         showBoard();
+        setUpSoundLoop();
+        setUpHandlers(scene);
 
         newGame();
 
+//        Image[] cs = new Image[9];
+//        ImageView challenges = new ImageView();
+//        Translate t = new Translate();
+//
+//
+//
+//        for (int i =0; i<10; i++) {
+//            char id = c.charAt(i);
+//            t.setX(120.0 * i);
+//            cs[i] = new Image(getClass().getResource("assets/sq-" + id + ".png").toString());
+//        }
+//
+//         if(i>3 && i<7) {
+//             t.setY(90);
+//             t.setX(120.0 * i);
+//             cs[i] = new Image(getClass().getResource("assets/sq-" + id + ".png").toString());
+//
+//
+//         }
+//         if(i>6 && i<10) {
+//             t.setY(90);
+//             t.setX(120.0 * i);
+//             cs[i] = new Image(getClass().getResource("assets/sq-" + id + ".png").toString());
+//         }
+//
+//
+//            challenges.setImage(cs [i]);
+//            challenge.getChildren().add(challenges);
+//        }
+//    }
+
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 }
