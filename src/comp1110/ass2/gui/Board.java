@@ -21,6 +21,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 public class Board extends Application {
@@ -66,6 +67,7 @@ public class Board extends Application {
     private final Group controls = new Group();
     private final Group exposed = new Group();
     private final Group objective = new Group();
+    private final Group challenge = new Group();
 
     private static String solutionString;
 
@@ -346,6 +348,21 @@ public class Board extends Application {
 
     // FIXME Task 8: Implement challenges (you may use challenges and assets provided for you in comp1110.ass2.gui.assets: sq-b.png, sq-g.png, sq-r.png & sq-w.png)
 
+    String c = "RRBWGBWRR".toLowerCase();
+    private void getChallenge(){
+        for (int i =0;i<c.length();i++){
+            String pic = getClass().getResource("assets/sq-" + c.charAt(i) + ".png").toString();
+            ImageView image = new ImageView(pic);
+            int col = i%3;
+            int row = i/3;
+            image.setY(35+row*50);
+            image.setX(200+col*50);
+            image.setFitHeight(SQUARE_SIZE);
+            image.setFitWidth(SQUARE_SIZE);
+            challenge.getChildren().add(image);
+        }
+    }
+
     // FIXME Task 10: Implement hints
 
     // FIXME Task 11: Generate interesting challenges (each challenge may have just one solution)
@@ -401,13 +418,14 @@ public class Board extends Application {
 
         primaryStage.setTitle("FOCUSGAME - Fun with the Tiles");
         Scene scene = new Scene(root,GAME_WIDTH, GAME_HEIGHT);
-
+        getChallenge();
         root.getChildren().add(gtiles);
         root.getChildren().add(board);
         root.getChildren().add(solution);
         root.getChildren().add(controls);
         root.getChildren().add(exposed);
         root.getChildren().add(objective);
+        root.getChildren().add(challenge);
 
         // TODO set handlers, sound, board, tiles
         //setUpHandlers(scene);
@@ -415,7 +433,39 @@ public class Board extends Application {
 
         newGame();
 
+//        Image[] cs = new Image[9];
+//        ImageView challenges = new ImageView();
+//        Translate t = new Translate();
+//
+//
+//
+//        for (int i =0; i<10; i++) {
+//            char id = c.charAt(i);
+//            t.setX(120.0 * i);
+//            cs[i] = new Image(getClass().getResource("assets/sq-" + id + ".png").toString());
+//        }
+//
+//         if(i>3 && i<7) {
+//             t.setY(90);
+//             t.setX(120.0 * i);
+//             cs[i] = new Image(getClass().getResource("assets/sq-" + id + ".png").toString());
+//
+//
+//         }
+//         if(i>6 && i<10) {
+//             t.setY(90);
+//             t.setX(120.0 * i);
+//             cs[i] = new Image(getClass().getResource("assets/sq-" + id + ".png").toString());
+//         }
+//
+//
+//            challenges.setImage(cs [i]);
+//            challenge.getChildren().add(challenges);
+//        }
+//    }
+
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 }
