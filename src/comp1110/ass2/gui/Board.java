@@ -31,8 +31,8 @@ public class Board extends Application {
     private static final int MARGIN_X = 30;
     private static final int MARGIN_Y = 30;
 
-    private static final int BOARD_WIDTH = 530;
-    private static final int BOARD_HEIGHT = 355;
+    private static final int BOARD_WIDTH = 933;
+    private static final int BOARD_HEIGHT = 700;
     private static final int BOARD_MARGIN_X = 30;
     private static final int BOARD_MARGIN_Y = 80;
 
@@ -47,7 +47,7 @@ public class Board extends Application {
     private static final int PLAY_AREA_Y = BOARD_Y + BOARD_MARGIN_Y;
     private static final int PLAY_AREA_X = BOARD_X +15*MARGIN_X+ BOARD_MARGIN_X;
     private static final int GAME_WIDTH = BOARD_X + BOARD_WIDTH +15* MARGIN_X;
-    private static final int GAME_HEIGHT = 620;
+    private static final int GAME_HEIGHT = BOARD_HEIGHT+100;
     private static final long ROTATION_THRESHOLD = 50; // Allow rotation every 50 ms
 
     /* marker for unplaced tiles */
@@ -243,6 +243,7 @@ public class Board extends Application {
          * check whether the tile is on the board
          * */
         private boolean onBoard(){
+//Testing line
 //            System.out.println(getLayoutX());
 //            System.out.println(PLAY_AREA_X - (SQUARE_SIZE / 2));
 //            System.out.println(PLAY_AREA_X + 8.5 * SQUARE_SIZE);
