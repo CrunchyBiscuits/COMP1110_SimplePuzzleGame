@@ -3,25 +3,12 @@ package comp1110.ass2.gui;
 import comp1110.ass2.FocusGame;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.AudioClip;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
 public class Board extends Application {
@@ -345,6 +332,32 @@ public class Board extends Application {
         }
     }
 
+
+
+    // add sound
+    private boolean startLoop = false;
+
+    private String music = getClass().getResource( "assets/484103__greenfiresound__click-08.wav").toString();
+    private AudioClip loop;
+
+    private void setUpSoundLoop() {
+            loop = new AudioClip(music);
+            loop.setCycleCount(AudioClip.INDEFINITE);
+    }
+
+    private void setUpHandlers(Scene scene) {
+        /* create handlers for key press and release events */
+        scene.setOnMouseClicked(event -> {
+            if (startLoop)
+                loop.stop();
+            else
+                loop.play();
+            startLoop = !startLoop;
+        });
+}
+
+
+
     // FIXME Task 8: Implement challenges (you may use challenges and assets provided for you in comp1110.ass2.gui.assets: sq-b.png, sq-g.png, sq-r.png & sq-w.png)
 
     String c = "RRBWGBWRR".toLowerCase();
@@ -427,8 +440,11 @@ public class Board extends Application {
         root.getChildren().add(challenge);
 
         // TODO set handlers, sound, board, tiles
+
         //setUpHandlers(scene);
         showBoard();
+        setUpSoundLoop();
+        setUpHandlers(scene);
 
         newGame();
 
