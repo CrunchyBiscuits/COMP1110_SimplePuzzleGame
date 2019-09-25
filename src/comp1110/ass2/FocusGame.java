@@ -1,6 +1,8 @@
 package comp1110.ass2;
 
+
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,6 +33,10 @@ public class FocusGame {
     };
 
     private Tile[][] tilesState = new Tile[5][9]; // same type with the game : col/row
+
+    public State printPointState(int col, int row) {
+        return boardStates[row][col];
+    }
 
     public void printBoardStates() {
         for(int i = 0; i < 5; ++ i) {
@@ -385,12 +391,148 @@ public class FocusGame {
      * - If a piece exhibits rotational symmetry, only return the lowest
      *   orientation value (0 or 1)
      *
-     * @param challenge A challenge string.
+     * @param //challenge A challenge string.
      * @return A placement string describing a canonical encoding of the solution to
      * the challenge.
      */
+    public String stringListToString(ArrayList<String> stringList) {
+        if(stringList.size() == 0)
+            return null;
+        StringBuilder sb = new StringBuilder();
+        for(String str: stringList) {
+            sb.append(str);
+        }
+        return sb.toString();
+    }
+
+    public boolean checkValidAround(String placement, int col, int row) {
+        ArrayList<Boolean> checkBooleanList = new ArrayList<>();
+        //|| row - 1 < 0 || col + 1 > 9 || row + 1 > 4
+        State left = boardStates[row][col-1];
+        State right = boardStates[row][col+1];
+        State up = boardStates[row-1][col];
+        State down = boardStates[row+1][col];
+
+        if(col - 1 < 0 && row - 1 < 0) {
+            if(right != EMPTY)
+                checkBooleanList.add(false);
+            if(down != EMPTY)
+                checkBooleanList.add(false);
+        }
+        else if(col + 1 > 9 && row - 1 < 0) {
+            if(left != EMPTY)
+                checkBooleanList.add(false);
+            if(down != EMPTY)
+                checkBooleanList.add(false);
+        }
+        else if(col - 1 < 0) {
+            checkBooleanList.add(false);
+            if(up != EMPTY)
+                checkBooleanList.add(false);
+            if(right != EMPTY)
+                checkBooleanList.add(false);
+            if(down != EMPTY)
+                checkBooleanList.add(false);
+        }
+        else if(row - 1 < 0) {
+            checkBooleanList.add(false);
+            if(left != EMPTY)
+                checkBooleanList.add(false);
+            if(right != EMPTY)
+                checkBooleanList.add(false);
+            if(down != EMPTY)
+                checkBooleanList.add(false);
+        }
+        else if(col + 1 > 9) {
+            checkBooleanList.add(false);
+            if(up != EMPTY)
+                checkBooleanList.add(false);
+            if(right != EMPTY)
+                checkBooleanList.add(false);
+            if(down != EMPTY)
+                checkBooleanList.add(false);
+        }
+        else if(row + 1 > 4) {
+            checkBooleanList.add(false);
+            if(left != EMPTY)
+                checkBooleanList.add(false);
+            if(right != EMPTY)
+                checkBooleanList.add(false);
+            if(down != EMPTY)
+                checkBooleanList.add(false);
+        }
+        else {
+            if(left != EMPTY )
+                checkBooleanList.add(false);
+            if(right != EMPTY )
+                checkBooleanList.add(false);
+            if(up != EMPTY )
+                checkBooleanList.add(false);
+            if(down != EMPTY )
+                checkBooleanList.add(false);
+        }
+
+        if(checkBooleanList.size() == 4)
+            return false;
+        return true;
+    }
+
+    public boolean checkValidBoardState(String placement) {
+        FocusGame focusGame = new FocusGame();
+        focusGame.initializeBoardState(placement, false, 0, 0);
+        for(int i = 0; i < 5; ++ i) {
+            for(int j = 0; j < 9; ++ j) {
+                if(checkValidAround(placement, j, i) == false)
+                    return false;
+                continue;
+            }
+        }
+        return true;
+    }
+
+    public ArrayList<String> getSingleSeriesSolution(FocusGame focusGame,String challenge) {
+        Set<String> triggerStrings = new HashSet<>();
+        triggerStrings = getViablePiecePlacements("", challenge, 3, 1);
+        ArrayList<ArrayList<String>> allNineSolutions = new ArrayList<>();
+        for(String triggerString: triggerStrings) {
+            ArrayList<String> middleArrayList = new ArrayList<>();
+            middleArrayList.add(triggerString);
+            allNineSolutions.add(middleArrayList);
+        }
+
+        for(int i = 3; i < 6; ++ i) {
+            for (int j = 1; j < 4; ++j) {
+                if(i == 3 && j == 1)
+                    continue;
+
+
+                getViablePiecePlacements("", challenge, i, j);
+            }
+        }
+        return null;
+    }
+
+
     public static String getSolution(String challenge) {
         // FIXME Task 9: determine the solution to the game, given a particular challenge
+        FocusGame focusGame = new FocusGame();
+        focusGame.initializeBoardState("", false, 0, 0);
+        focusGame.challengeBoardStates(focusGame, challenge);
+        Set<Set<String>> possibleSolutions = new HashSet<>();
+
+//        for(int i = 3; i < 6; ++ i) {
+//            for(int j = 1; j < 4; ++ j) {
+//                Set<String> tmpSet = new HashSet<>();
+//                tmpSet = getViablePiecePlacements("", challenge, i, j);
+//                if(tmpSet.size() != 0){
+//                    for(String str: tmpSet) {
+//                        Set<String> midSet = new HashSet<>();
+//                        midSet.add(str);
+//                        possibleSolutions.add(midSet);
+//                    }
+//                }
+//            }
+//        }
         return null;
     }
 }
