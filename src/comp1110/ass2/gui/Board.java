@@ -380,6 +380,7 @@ public class Board extends Application {
 
         board.toBack();
     }
+    
 
     /**
      * Set the ten tiles
@@ -428,10 +429,13 @@ public class Board extends Application {
 
         newGame();
 
+        ImageView challenges = new ImageView();
 
         for (int i =0; i<10; i++){
             char id = c.charAt(i);
             Image a = new Image(getClass().getResource("assets/sq-"+id+".png").toString());
+            challenges.setImage(a);
+            challenge.getChildren().add(challenges);
         }
 
         primaryStage.setScene(scene);
