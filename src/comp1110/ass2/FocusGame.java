@@ -113,7 +113,7 @@ public class FocusGame {
             row = col;
             col = temp;
         }
-        
+
         int count = 0;
         for(int i = 0; i < col; ++i) {
             for(int j = 0; j < row; ++j) {
@@ -254,13 +254,13 @@ public class FocusGame {
     /**
      * Given a string describing a placement of pieces and a string describing
      * a challenge, return a set of all possible next viable piece placements
-     * which cover a specific board cell.
+     * which cover a specific board location.
      *
      * For a piece placement to be viable
      * - it must be valid
      * - it must be consistent with the challenge
      *
-     * @param //placement A viable placement string
+     * @param placement A viable placement string
      * @param challenge The game's challenge is represented as a 9-character string
      *                  which represents the color of the 3*3 central board area
      *                  squares indexed as follows:
@@ -272,8 +272,8 @@ public class FocusGame {
      *                  - 'B' = Blue square
      *                  - 'G' = Green square
      *                  - 'W' = White square
-     * @param //col      The cell's column.
-     * @param //row      The cell's row.
+     * @param col      The location's column.
+     * @param row      The location's row.
      * @return A set of viable piece placements, or null if there are none.
      */
 
@@ -767,5 +767,3 @@ public class FocusGame {
         return null;
     }
 }
-
-//[[e232a120d302c410, j522]]

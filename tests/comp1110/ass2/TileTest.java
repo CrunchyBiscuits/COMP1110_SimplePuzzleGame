@@ -1,7 +1,7 @@
 package comp1110.ass2;
 
 import org.junit.Rule;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.rules.Timeout;
 
 import java.util.Random;
