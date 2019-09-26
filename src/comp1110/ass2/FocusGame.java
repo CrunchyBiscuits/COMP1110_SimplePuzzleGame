@@ -244,10 +244,11 @@ public class FocusGame {
      * @return True if the placement sequence is valid
      */
     public static boolean isPlacementStringValid(String placement) {
-        // FIXME Task 5: determine whether a placement string is valid
-        FocusGame focusGame = new FocusGame();
-        if(isPlacementStringWellFormed(placement))
-            return focusGame.initializeBoardState(placement, false, 0, 0);
+//        if(placement.)
+//        // FIXME Task 5: determine whether a placement string is valid
+//        FocusGame focusGame = new FocusGame();
+//        if(isPlacementStringWellFormed(placement))
+//            return focusGame.initializeBoardState(placement, false, 0, 0);
         return false;
     }
 

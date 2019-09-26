@@ -2,6 +2,7 @@ package comp1110.ass2;
 
 import org.junit.Test;
 
+import static junit.framework.Assert.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
 public class ChallengeBoardStatesTest {
