@@ -1,10 +1,7 @@
 package comp1110.ass2;
 
 
-import java.util.ArrayList;
-import java.util.EmptyStackException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static comp1110.ass2.TileType.*;
 import static comp1110.ass2.Orientation.*;
@@ -116,7 +113,7 @@ public class FocusGame {
             row = col;
             col = temp;
         }
-        
+
         int count = 0;
         for(int i = 0; i < col; ++i) {
             for(int j = 0; j < row; ++j) {
@@ -247,7 +244,8 @@ public class FocusGame {
      * @return True if the placement sequence is valid
      */
     public static boolean isPlacementStringValid(String placement) {
-        // FIXME Task 5: determine whether a placement string is valid
+
+//        // FIXME Task 5: determine whether a placement string is valid
         FocusGame focusGame = new FocusGame();
         if(isPlacementStringWellFormed(placement))
             return focusGame.initializeBoardState(placement, false, 0, 0);
@@ -257,13 +255,13 @@ public class FocusGame {
     /**
      * Given a string describing a placement of pieces and a string describing
      * a challenge, return a set of all possible next viable piece placements
-     * which cover a specific board cell.
+     * which cover a specific board location.
      *
      * For a piece placement to be viable
      * - it must be valid
      * - it must be consistent with the challenge
      *
-     * @param //placement A viable placement string
+     * @param placement A viable placement string
      * @param challenge The game's challenge is represented as a 9-character string
      *                  which represents the color of the 3*3 central board area
      *                  squares indexed as follows:
@@ -275,8 +273,8 @@ public class FocusGame {
      *                  - 'B' = Blue square
      *                  - 'G' = Green square
      *                  - 'W' = White square
-     * @param //col      The cell's column.
-     * @param //row      The cell's row.
+     * @param col      The location's column.
+     * @param row      The location's row.
      * @return A set of viable piece placements, or null if there are none.
      */
 
@@ -394,23 +392,58 @@ public class FocusGame {
      * @return A placement string describing a canonical encoding of the solution to
      * the challenge.
      */
-    public String stringListToString(ArrayList<String> stringList) {
-        if(stringList.size() == 0)
+    static String stringSetToString(Set<String> stringSet) {
+        if(stringSet.size() == 0)
             return null;
         StringBuilder sb = new StringBuilder();
-        for(String str: stringList) {
+        for(String str: stringSet) {
             sb.append(str);
         }
         return sb.toString();
     }
 
-    public boolean checkValidAround(String placement, int col, int row) {
+    public boolean checkValidAround(int col, int row) {
         ArrayList<Boolean> checkBooleanList = new ArrayList<>();
         //|| row - 1 < 0 || col + 1 > 9 || row + 1 > 4
-        State left = boardStates[row][col-1];
-        State right = boardStates[row][col+1];
-        State up = boardStates[row-1][col];
-        State down = boardStates[row+1][col];
+//        State left = boardStates[row][col-1];
+//        State right = boardStates[row][col+1];
+//        State up = boardStates[row-1][col];
+//        State down = boardStates[row+1][col];
+
+        State left = RED;
+        State right = RED;
+        State up = RED;
+        State down = RED;
+
+        if(col - 1 < 0 && row - 1 < 0) {
+            right = boardStates[row][col+1];
+            down = boardStates[row+1][col];
+        } else if(col + 1 > 8 && row - 1 < 0) {
+            left = boardStates[row][col-1];
+            down = boardStates[row+1][col];
+        } else if(col - 1 < 0) {
+            up = boardStates[row-1][col];
+            right = boardStates[row][col+1];
+            down = boardStates[row+1][col];
+        } else if(row - 1 < 0) {
+            left = boardStates[row][col-1];
+            right = boardStates[row][col+1];
+            down = boardStates[row+1][col];
+        } else if(col + 1 > 8) {
+            up = boardStates[row-1][col];
+            left = boardStates[row][col-1];
+            down = boardStates[row+1][col];
+        } else if(row + 1 > 4) {
+            left = boardStates[row][col-1];
+            right = boardStates[row][col+1];
+            up = boardStates[row-1][col];
+        } else {
+            left = boardStates[row][col-1];
+            right = boardStates[row][col+1];
+            up = boardStates[row-1][col];
+            down = boardStates[row+1][col];
+        }
+
 
         if(col - 1 < 0 && row - 1 < 0) {
             if(right != EMPTY)
@@ -457,7 +490,7 @@ public class FocusGame {
                 checkBooleanList.add(false);
             if(right != EMPTY)
                 checkBooleanList.add(false);
-            if(down != EMPTY)
+            if(up != EMPTY)
                 checkBooleanList.add(false);
         }
         else {
@@ -481,43 +514,242 @@ public class FocusGame {
         focusGame.initializeBoardState(placement, false, 0, 0);
         for(int i = 0; i < 5; ++ i) {
             for(int j = 0; j < 9; ++ j) {
-                if(checkValidAround(placement, j, i) == false)
+                if(i == 4 && j == 0 || i == 4 && j == 8)
+                    continue;
+                if(focusGame.printPointState(j, i) != EMPTY)
+                    continue;
+//                if(i == 1 && j == 1)
+//                    System.out.println(checkValidAround(1,1));
+                //System.out.println("points "+ i + " , " + j);
+                if(!checkValidAround(j, i)) {
+                    //System.out.println("point:" + i + " " + j);
                     return false;
+                }
                 continue;
             }
         }
         return true;
     }
 
-    public ArrayList<String> getSingleSeriesSolution(FocusGame focusGame,String challenge) {
+    static Set<String> getAllNineCentralPointsSolution(String challenge) {
         Set<String> triggerStrings = new HashSet<>();
         triggerStrings = getViablePiecePlacements("", challenge, 3, 1);
-        ArrayList<ArrayList<String>> allNineSolutions = new ArrayList<>();
+        Set<Set<String>> allNineSolutions = new HashSet<>();
         for(String triggerString: triggerStrings) {
-            ArrayList<String> middleArrayList = new ArrayList<>();
+            Set<String> middleArrayList = new HashSet<>();
             middleArrayList.add(triggerString);
             allNineSolutions.add(middleArrayList);
         }
+
+        //System.out.println(allNineSolutions);
+
+        Set<Set<String>> garbageSet = new HashSet<>();
 
         for(int i = 3; i < 6; ++ i) {
             for (int j = 1; j < 4; ++j) {
                 if(i == 3 && j == 1)
                     continue;
 
+                Set<Set<String>> oldAllNineSolutuons = new HashSet<>();
+                oldAllNineSolutuons.addAll(allNineSolutions);
 
-                getViablePiecePlacements("", challenge, i, j);
+                //System.out.println("points"+ i + "," + j);
+
+                for(Set setString: oldAllNineSolutuons) {
+
+                    //System.out.println(setString);
+
+                    String placement = stringSetToString(setString);
+                    //System.out.println("place " + placement);
+                    //System.out.println(placement);
+
+                    FocusGame focusGame = new FocusGame();
+                    focusGame.initializeBoardState(placement, false, 0, 0);
+                    //System.out.println("point: " + i + ", " + j);
+
+                    //System.out.println(focusGame.printPointState(3, 3));
+                    //focusGame.printBoardStates();
+
+                    //place e323d302
+                    if(focusGame.printPointState(i, j) != EMPTY) {
+                        //System.out.println("this step");
+                        continue;
+                    }
+
+
+                    Set<String> tmpSet = new HashSet<>();
+                    tmpSet = getViablePiecePlacements(placement, challenge, i, j);
+
+                    //System.out.println("run there 0");
+
+                    garbageSet.add(setString);
+                    //System.out.println("garbage "+garbageSet);
+
+                    if(tmpSet == null) {
+                        continue;
+                    }
+
+                    //System.out.println(tmpSet);
+
+                    //System.out.println("run there 1");
+
+                    for(String str: tmpSet) {
+                        //System.out.println("run there 2");
+
+                        Set<String> laterSet = new HashSet<>();
+                        laterSet.add(placement);
+                        laterSet.add(str);
+                        //System.out.println("run there 3");
+
+                        allNineSolutions.add(laterSet);
+                    }
+                    //System.out.println(allNineSolutions);
+                    allNineSolutions.removeAll(garbageSet);
+                    //System.out.println("points"+ i + "," + j);
+                    //System.out.println(allNineSolutions);
+                }
+
             }
         }
-        return null;
-    }
 
+        Set<String> allNineSolutionStringStyle = new HashSet<>();
+        for(Set item: allNineSolutions) {
+            allNineSolutionStringStyle.add(stringSetToString(item));
+        }
+        //System.out.println(allNineSolutions);
+        return allNineSolutionStringStyle;
+    }
 
     public static String getSolution(String challenge) {
         // FIXME Task 9: determine the solution to the game, given a particular challenge
-        FocusGame focusGame = new FocusGame();
-        focusGame.initializeBoardState("", false, 0, 0);
-        focusGame.challengeBoardStates(focusGame, challenge);
-        Set<Set<String>> possibleSolutions = new HashSet<>();
+        //System.out.println(challenge);
+        //System.out.println("挑战开始");
+        Set<String> possibleSolutionsForCentralNine = getAllNineCentralPointsSolution(challenge);
+        //System.out.println(possibleSolutionsForCentralNine);
+
+
+        for(String strFromNineSolutions: possibleSolutionsForCentralNine) {
+
+            //System.out.println("进来了");
+            //System.out.println("测试的九个格子的solution "+ strFromNineSolutions);
+
+            FocusGame focusGame = new FocusGame();
+            focusGame.initializeBoardState(strFromNineSolutions, false, 0, 0);
+            //System.out.println("执行到这里");
+            if(!focusGame.checkValidBoardState(strFromNineSolutions))
+                continue;
+
+            Set<String> outsideString = new HashSet<>();
+
+            if(outsideString.size() == 0) {
+
+                outsideString = getViablePiecePlacements(strFromNineSolutions, challenge, 0, 0);
+                Set<String> outsideStringUpdate = new HashSet<>();
+                if(outsideString == null)
+                    continue;
+
+                for (String stringFirst : outsideString) {
+                    if(!focusGame.checkValidBoardState(strFromNineSolutions+stringFirst))
+                        continue;
+                    outsideStringUpdate.add(strFromNineSolutions + stringFirst);
+                }
+
+                outsideString.clear();
+                outsideString.addAll(outsideStringUpdate);
+                //System.out.println("初始化: " + outsideString);
+            }
+
+            for(int i = 0; i < 5; ++i) {
+                for(int j = 0; j < 9; ++j) {
+                    if (i == 4 && j == 0 || i == 4 && j == 8)
+                        continue;
+                    if (focusGame.printPointState(j, i) != EMPTY)
+                        continue;
+
+                    //System.out.println("else point: " + i + " , " + j);
+
+                    Set<String> garbageSet = new HashSet<>();
+                    Set<String> outsideStringUpdate = new HashSet<>();
+
+                    for (String outsidestring : outsideString) {
+                        //System.out.println("依次： " + outsidestring);
+                        Set<String> resultStringSet = getViablePiecePlacements(outsidestring, challenge, j, i);
+                        if (resultStringSet == null)
+                            continue;
+                        garbageSet.add(outsidestring);
+                        //System.out.println("result string : " + outsidestring);
+                        for (String resultString : resultStringSet) {
+                            if (!focusGame.checkValidBoardState(outsidestring + resultString))
+                                continue;
+                            //System.out.println("下面是字符串测试");
+                            //System.out.println(outsidestring + resultString);
+                            outsideStringUpdate.add(outsidestring + resultString);
+                        }
+                    }
+                    outsideString.removeAll(garbageSet);
+                    outsideString.addAll(outsideStringUpdate);
+
+                    }
+
+//                    if(!focusGame.checkValidBoardState(strFromNineSolutions))
+//                        continue;
+
+
+                }
+                ArrayList<String> solutionList = new ArrayList<>();
+                if(outsideString.size() == 0)
+                    continue;
+                else {
+                    for(String outsidestring : outsideString) {
+                        if(outsidestring.length() != 40)
+                            continue;
+                        else {
+                            solutionList.add(outsidestring);
+                        }
+                    }
+                    if(solutionList.size() != 0) {
+
+                        Collections.sort(solutionList);
+                        //System.out.println(solutionList);
+                        String stringProcessed = solutionList.get(0);
+                        int indexOfF = stringProcessed.indexOf('f');
+                        int indexOfG = stringProcessed.indexOf('g');
+
+                        StringBuilder res = new StringBuilder(stringProcessed);
+                        if(stringProcessed.charAt(indexOfF+3) == '3')
+                            res.setCharAt(indexOfF+3, '1');
+                        if(stringProcessed.charAt(indexOfF+3) == '2')
+                            res.setCharAt(indexOfF+3, '0');
+                        if(stringProcessed.charAt(indexOfG+3) == '2')
+                            res.setCharAt(indexOfG+3,'0');
+                        if(stringProcessed.charAt(indexOfG+3) == '3')
+                            res.setCharAt(indexOfG+3,'1');
+                        return res.toString();
+                    }
+
+                    continue;
+
+                }
+            }
+
+//            if(outsideString.size() == 0)
+//                continue;
+//            else {
+//                for(String possibleString: outsideString) {
+//                    FocusGame focusGameForCheck = new FocusGame();
+//                    focusGameForCheck.initializeBoardState(possibleString, true, 0,0);
+//                    for(int i = 0; i < 5; ++i) {
+//                        for(int j = 0; j < 9; ++j) {
+//                            if(focusGameForCheck.printPointState(j, i) != EMPTY)
+//                                continue;
+//                        }
+//                    }
+//                }
+//            }
+
+
+
+
 
 //        for(int i = 3; i < 6; ++ i) {
 //            for(int j = 1; j < 4; ++ j) {
@@ -532,6 +764,7 @@ public class FocusGame {
 //                }
 //            }
 //        }
+        System.out.println("null");
         return null;
     }
 }
