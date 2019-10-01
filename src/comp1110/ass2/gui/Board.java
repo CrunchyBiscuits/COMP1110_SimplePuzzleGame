@@ -5,11 +5,14 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.AudioClip;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Board extends Application {
@@ -56,6 +59,7 @@ public class Board extends Application {
     private final Group exposed = new Group();
     private final Group objective = new Group();
     private final Group challenge = new Group();
+    private final Group shadow = new Group();
 
     private static String solutionString;
 
@@ -338,6 +342,16 @@ public class Board extends Application {
     }
 
 
+    //drop shadow
+    private void setDropShadow(){
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setOffsetX(4);
+        dropShadow.setOffsetY(5);
+        dropShadow.setColor(Color.GREY);
+        root.setEffect(dropShadow);
+
+    }
+
 
     // add sound
     private boolean startLoop = false;
@@ -385,6 +399,12 @@ public class Board extends Application {
     private void glowHints(){
         Glow glow = new Glow();
         glow.setLevel(0.9);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("I have a great message for you!");
+
+        alert.showAndWait();
 
     }
 
@@ -448,6 +468,8 @@ public class Board extends Application {
         primaryStage.setTitle("FOCUSGAME - Fun with the Tiles");
         Scene scene = new Scene(root,GAME_WIDTH, GAME_HEIGHT);
         getChallenge();
+        setDropShadow();
+
         root.getChildren().add(gtiles);
         root.getChildren().add(board);
         root.getChildren().add(solution);
@@ -455,6 +477,8 @@ public class Board extends Application {
         root.getChildren().add(exposed);
         root.getChildren().add(objective);
         root.getChildren().add(challenge);
+        root.getChildren().add(shadow);
+
 
         // TODO set handlers, sound, board, tiles
 
