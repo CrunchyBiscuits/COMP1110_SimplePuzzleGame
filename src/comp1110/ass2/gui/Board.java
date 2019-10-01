@@ -5,10 +5,14 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.AudioClip;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Board extends Application {
@@ -55,6 +59,7 @@ public class Board extends Application {
     private final Group exposed = new Group();
     private final Group objective = new Group();
     private final Group challenge = new Group();
+    private final Group shadow = new Group();
 
     private static String solutionString;
 
@@ -214,6 +219,7 @@ public class Board extends Application {
             //finish drag
             setOnMouseReleased(event->{
                 snapToGrid();
+
             });
 
 
@@ -245,6 +251,8 @@ public class Board extends Application {
         }
 
         private boolean alreadyOccupied(){
+
+
             return true;
         }
 
@@ -334,6 +342,16 @@ public class Board extends Application {
     }
 
 
+    //drop shadow
+    private void setDropShadow(){
+        DropShadow dropShadow = new DropShadow();
+        dropShadow.setOffsetX(4);
+        dropShadow.setOffsetY(5);
+        dropShadow.setColor(Color.GREY);
+        root.setEffect(dropShadow);
+
+    }
+
 
     // add sound
     private boolean startLoop = false;
@@ -344,6 +362,7 @@ public class Board extends Application {
     private void setUpSoundLoop() {
             loop = new AudioClip(music);
             loop.setCycleCount(AudioClip.INDEFINITE);
+
     }
 
     private void setUpHandlers(Scene scene) {
@@ -361,7 +380,7 @@ public class Board extends Application {
 
     // FIXME Task 8: Implement challenges (you may use challenges and assets provided for you in comp1110.ass2.gui.assets: sq-b.png, sq-g.png, sq-r.png & sq-w.png)
 
-    String c = "RRBWGBWRR".toLowerCase();
+    String c = "RRGWBWRWW";
     private void getChallenge(){
         for (int i =0;i<c.length();i++){
             String pic = getClass().getResource("assets/sq-" + c.charAt(i) + ".png").toString();
@@ -377,6 +396,23 @@ public class Board extends Application {
     }
 
     // FIXME Task 10: Implement hints
+    private void glowHints(){
+        Glow glow = new Glow();
+        glow.setLevel(0.9);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("I have a great message for you!");
+
+        alert.showAndWait();
+
+    }
+
+
+
+
+
+
 
     // FIXME Task 11: Generate interesting challenges (each challenge may have just one solution)
 
@@ -432,6 +468,8 @@ public class Board extends Application {
         primaryStage.setTitle("FOCUSGAME - Fun with the Tiles");
         Scene scene = new Scene(root,GAME_WIDTH, GAME_HEIGHT);
         getChallenge();
+        setDropShadow();
+
         root.getChildren().add(gtiles);
         root.getChildren().add(board);
         root.getChildren().add(solution);
@@ -439,6 +477,8 @@ public class Board extends Application {
         root.getChildren().add(exposed);
         root.getChildren().add(objective);
         root.getChildren().add(challenge);
+        root.getChildren().add(shadow);
+
 
         // TODO set handlers, sound, board, tiles
 
