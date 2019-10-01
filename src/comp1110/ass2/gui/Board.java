@@ -214,7 +214,7 @@ public class Board extends Application {
             //finish drag
             setOnMouseReleased(event->{
                 snapToGrid();
-               
+
             });
 
 
@@ -379,6 +379,8 @@ public class Board extends Application {
     }
 
     // FIXME Task 10: Implement hints
+
+
 
 
 
