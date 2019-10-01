@@ -649,7 +649,7 @@ public class Board extends Application {
         // TODO set handlers, sound, board, tiles
 
         setUpHandlers(scene);
-        setUpSoundLoop();
+//        setUpSoundLoop();
         showBoard();
         makeControls();
         makeCompletion();
