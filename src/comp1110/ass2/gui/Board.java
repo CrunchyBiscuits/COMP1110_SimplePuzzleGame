@@ -3,16 +3,21 @@ package comp1110.ass2.gui;
 import comp1110.ass2.FocusGame;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Board extends Application {
@@ -60,6 +65,7 @@ public class Board extends Application {
     private final Group objective = new Group();
     private final Group challenge = new Group();
     private final Group shadow = new Group();
+    private final Group window = new Group();
 
     private static String solutionString;
 
@@ -399,12 +405,27 @@ public class Board extends Application {
     private void glowHints(){
         Glow glow = new Glow();
         glow.setLevel(0.9);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText(null);
-        alert.setContentText("I have a great message for you!");
+    }
 
-        alert.showAndWait();
+
+    private void popUpWindow(){
+        Stage window = new Stage();
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle("Hints");
+        window.setMinWidth(250);
+
+        Label label = new Label();
+        label.setText("Continuing to build Hint for solving the challenge");
+        Button closeButton = new Button("Close the window");
+        closeButton.setOnAction(e -> window.close());
+
+        VBox layout = new VBox(10);
+        layout.getChildren().addAll(label,closeButton);
+        layout.setAlignment(Pos.CENTER);
+
+        Scene s1 = new Scene(layout);
+        window.setScene(s1);
+        window.showAndWait();
 
     }
 
@@ -478,8 +499,9 @@ public class Board extends Application {
         root.getChildren().add(objective);
         root.getChildren().add(challenge);
         root.getChildren().add(shadow);
+        root.getChildren().add(window);
 
-
+        popUpWindow();
         // TODO set handlers, sound, board, tiles
 
         //setUpHandlers(scene);
