@@ -214,6 +214,7 @@ public class Board extends Application {
             //finish drag
             setOnMouseReleased(event->{
                 snapToGrid();
+               
             });
 
 
@@ -344,6 +345,7 @@ public class Board extends Application {
     private void setUpSoundLoop() {
             loop = new AudioClip(music);
             loop.setCycleCount(AudioClip.INDEFINITE);
+
     }
 
     private void setUpHandlers(Scene scene) {
@@ -377,6 +379,8 @@ public class Board extends Application {
     }
 
     // FIXME Task 10: Implement hints
+
+
 
     // FIXME Task 11: Generate interesting challenges (each challenge may have just one solution)
 
