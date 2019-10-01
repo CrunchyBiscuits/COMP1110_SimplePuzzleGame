@@ -1,0 +1,28 @@
+# Write your name and UID here.
+#
+reviewer:
+    name: jianwu yao
+    uid: u6987162
+
+# Write the name of the author of the code here.
+#
+author:
+    name: zheyuan zhang
+    uid: u6870923
+
+# Write the class or method being reviewed here.
+#
+component: GameTile class
+
+# Write a list of review comments here.
+#
+comments:
+    - It is easy to understand and it shows that tha author has clear idea about what he wants to do and the code is readable.
+    - I think those code is well-documented. From the document, I can know what the code wants to do.
+    - I think the program decomposition is well. For example, the authour wrote the GameTail(char) and GameTail(char, Orientation) to generalize those two situation.
+    - I think it follw java code conventions through the class.
+    - I do not find an error, but I think we can improve the code to reduce duplication. For example, about ine varience in the setHight and setWeight, we can control the coeffient sited in the left side of SQUARE_SIZE to reguralize the code.
+
+
+
+
