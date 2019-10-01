@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -246,6 +247,8 @@ public class Board extends Application {
         }
 
         private boolean alreadyOccupied(){
+
+
             return true;
         }
 
@@ -363,7 +366,7 @@ public class Board extends Application {
 
     // FIXME Task 8: Implement challenges (you may use challenges and assets provided for you in comp1110.ass2.gui.assets: sq-b.png, sq-g.png, sq-r.png & sq-w.png)
 
-    String c = "RRBWGBWRR".toLowerCase();
+    String c = "RRGWBWRWW";
     private void getChallenge(){
         for (int i =0;i<c.length();i++){
             String pic = getClass().getResource("assets/sq-" + c.charAt(i) + ".png").toString();
@@ -379,6 +382,13 @@ public class Board extends Application {
     }
 
     // FIXME Task 10: Implement hints
+    private void glowHints(){
+        Glow glow = new Glow();
+        glow.setLevel(0.9);
+
+    }
+
+
 
 
 
