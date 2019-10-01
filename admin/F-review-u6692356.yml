@@ -1,0 +1,29 @@
+# Write your name and UID here.
+#
+reviewer:
+    name: Siyu Zhou
+    uid: u6692356
+
+# Write the name of the author of the code here.
+#
+author:
+  name: Jianwu Yao
+  uid: u6987162
+
+# Write the class or method being reviewed here.
+#
+component: initializeBoardState method, addTileToBoard method, updateBoardStateAndTilesState method
+  , addTilesToTilesStateAndBoardState method and checkAndChangeStatesTiles method.
+
+# Write a list of review comments here.
+#
+comments:
+  - Those customised methods help us to understand how the problem be solved step by step
+  - and improve our working efficiency.
+  - In the following task 5, those customised methods already consider and check every case,
+  - thus it solves the task efficiently and clearly.
+  - Those names of methods help us to understand the function of the specific method,
+  - however, some of those names are too long to easy to type incorrectly.
+  - Therefore, those names need to set more properly.
+
+

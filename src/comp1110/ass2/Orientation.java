@@ -19,4 +19,5 @@ public enum Orientation {
     public String toString() {
         return "The direction now is:" + getValue();
     }
+
 }
