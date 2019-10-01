@@ -440,11 +440,15 @@ public class Board extends Application {
 
     // FIXME Task 8: Implement challenges (you may use challenges and assets provided for you in comp1110.ass2.gui.assets: sq-b.png, sq-g.png, sq-r.png & sq-w.png)
 
+    /**
+     * show the images of challenge align with challenge string
+    * */
     String c = "RRBWGBWRR".toLowerCase();
     private void getChallenge(){
         for (int i =0;i<c.length();i++){
+            //loop to get each challenge and get the resource of pictures
             String pic = getClass().getResource("assets/sq-" + c.charAt(i) + ".png").toString();
-            ImageView image = new ImageView(pic);
+            ImageView image = new ImageView(pic); // basic
             int col = i%3;
             int row = i/3;
             image.setY(35+row*50);
