@@ -18,12 +18,14 @@ component: initializeBoardState method, addTileToBoard method, updateBoardStateA
 # Write a list of review comments here.
 #
 comments:
-  - Those customised methods help us to understand how the problem be solved step by step
-  - and improve our working efficiency.
+  - Those customised methods solve partial problems gradually in a series and
+  - help us to understand how the problem be solved step by step and improve our working efficiency.
   - In the following task 5, those customised methods already consider and check every case,
-  - thus it solves the task efficiently and clearly.
+  - thus it solves the task efficiently and clearly. On the other hand, why not
   - Those names of methods help us to understand the function of the specific method,
   - however, some of those names are too long to easy to type incorrectly.
   - Therefore, those names need to set more properly.
+  - Follow by the naming rule, ifchallenge should change as ifChallenge.
+  -
 
 
