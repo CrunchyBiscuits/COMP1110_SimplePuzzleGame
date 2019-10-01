@@ -600,8 +600,8 @@ public class FocusGame {
             FocusGame focusGame = new FocusGame();
             focusGame.initializeBoardState(strFromNineSolutions, false, 0, 0);
 
-            if(!focusGame.checkValidBoardState(strFromNineSolutions))
-                continue;
+//            if(!focusGame.checkValidBoardState(strFromNineSolutions))
+//                continue;
 
             Set<String> outsideString = new HashSet<>();
 
@@ -613,8 +613,8 @@ public class FocusGame {
                     continue;
 
                 for (String stringFirst : outsideString) {
-                    if(!focusGame.checkValidBoardState(strFromNineSolutions+stringFirst))
-                        continue;
+//                    if(!focusGame.checkValidBoardState(strFromNineSolutions+stringFirst))
+//                        continue;
                     outsideStringUpdate.add(strFromNineSolutions + stringFirst);
                 }
 
