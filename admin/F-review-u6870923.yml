@@ -18,11 +18,11 @@ component: task 8 getChallenge（） and setUpSoundLoop() method
 #
 comments:
   - These two methods achieve the functions to show the challenge on gaming board and set up the sound of placing the tiles
-  - Good features: Well designed, it is clear to understand how to transfer the challenge string to the images.
-  - Well documented: Yes. She wrote the explaination and tell me the details about those two methods.
-  - Decomposition appropriate: Yes. Those two methods are align with the structure in assignment1, well decomposition.
-  - Code conventions: Yes. If make the challenge as a parameter, will it be better?
-  - Error: No, the function works pretty well, but the implementations have some bugs, the sound loop won't stop if the tile is released,
+  - Good features  Well designed, it is clear to understand how to transfer the challenge string to the images.
+  - Well documented  Yes. She wrote the explaination and tell me the details about those two methods.
+  - Decomposition appropriate  Yes. Those two methods are align with the structure in assignment1, well decomposition.
+  - Code conventions  Yes. If make the challenge as a parameter, will it be better?
+  - Error  No, the function works pretty well, but the implementations have some bugs, the sound loop won't stop if the tile is released,
     I suggested the implementation of the setUpSoundLoop() function should add in the event handler, but not the start() method.
 
 
