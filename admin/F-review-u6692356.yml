@@ -13,7 +13,7 @@ author:
 # Write the class or method being reviewed here.
 #
 component: initializeBoardState method, addTileToBoard method, updateBoardStateAndTilesState method
-  , addTilesToTilesStateAndBoardState method and checkAndChangeStatesTiles method.
+  , addTilesToTilesStateAndBoardState method and checkAndChangeStatesTiles method. 
 
 # Write a list of review comments here.
 #
