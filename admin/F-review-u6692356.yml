@@ -13,20 +13,17 @@ author:
 # Write the class or method being reviewed here.
 #
 component: initializeBoardState method, addTileToBoard method, updateBoardStateAndTilesState method
-  , addTilesToTilesStateAndBoardState method and checkAndChangeStatesTiles method, task 6.
+  , addTilesToTilesStateAndBoardState method and checkAndChangeStatesTiles method.
 
 # Write a list of review comments here.
 #
 comments:
-  - Those customised methods solve partial problems gradually in a series and
-  - help us to understand how the problem be solved step by step and improve our working efficiency.
-  - In the following task 5, those customised methods already consider and check every case,
-  - thus it solves the task efficiently and clearly.
-  - Those names of methods help us to understand the function of the specific method,
-  - however, some of those names are too long to easy to type incorrectly.
-  - Therefore, those names need to set more properly.
-  - Follow by the naming rule, ifchallenge should change as ifChallenge.
-  - In task 6, some variable named simpl
-  -
+  - I think those code in methods is well-documented. Those customised methods solve partial problems gradually and help us to understand easily how the problem be solved step by step.
+  - In the following task 5, based on those customised methods, it solves the task efficiently and clearly.
+  - I think the program decomposition is great, each method structure is appropriate.
+  - I think those names of methods help us to understand the function of the specific method, however, some of those names are too long and complicated.
+  - Therefore, those names need to set more properly. For example, followed by the naming rule, ifchallenge should change as ifChallenge.
+  - I did not find any error, the code is very clear and the code writer just needs to notice tiny details.
+
 
 
