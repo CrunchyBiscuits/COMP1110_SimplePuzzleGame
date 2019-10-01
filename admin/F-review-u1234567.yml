@@ -12,11 +12,14 @@ author:
 
 # Write the class or method being reviewed here.
 #
-component: task 7
+component: task 7 rotate method
 
 # Write a list of review comments here.
 #
 comments:
+  - In task 7, he had created the basic game construct such as gameboard, tilesa and construct those tile pieces
+all together and form them gradually due to the tile requirement.
+  - He created a method to rotate those tiles in four directions seperately.
   -
 
 
