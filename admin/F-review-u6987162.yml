@@ -22,8 +22,7 @@ comments:
     - Well-documented: I think those code is well-documented. From the document, I can know what the code wants to do.
     - Program-decomposition: I think the program decomposition is well. For example, the authour wrote the GameTail(char) and GameTail(char, Orientation) to generalize those two situation.
     - Code-convention: I think it follows java code conventions through the class with clear name and 
-    - Error: It works well but when we put tiles like I140, the program does not set this situation as a fail. 
-    I think we can improve the code to reduce duplication. For example, about ine varience in the setHight and setWeight, we can control the coeffient sited in the left side of SQUARE_SIZE to reguralize the code.
+    - Error: It works well but when we put tiles like I140, the program does not set this situation as a fail. I think we can improve the code to reduce duplication. For example, about ine varience in the setHight and setWeight, we can control the coeffient sited in the left side of SQUARE_SIZE to reguralize the code.
     
 
 
