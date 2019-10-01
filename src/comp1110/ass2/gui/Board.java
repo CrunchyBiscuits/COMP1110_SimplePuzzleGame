@@ -7,22 +7,29 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Board extends Application {
@@ -69,6 +76,8 @@ public class Board extends Application {
     private final Group exposed = new Group();
     private final Group objective = new Group();
     private final Group challenge = new Group();
+    private final Group shadow = new Group();
+//    private final Group window = new Group();
 
     private static String solutionString;
 
@@ -481,6 +490,38 @@ public class Board extends Application {
     }
 
     // FIXME Task 10: Implement hints
+    private void glowHints(){
+        Glow glow = new Glow();
+        glow.setLevel(0.9);
+    }
+
+     // add a pop up window but have a bug
+//    private void popUpWindow(){
+//        Stage window = new Stage();
+//        window.initModality(Modality.APPLICATION_MODAL);
+//        window.setTitle("Hints");
+//        window.setMinWidth(250);
+//
+//        Label label = new Label();
+//        label.setText("Continuing to build Hint for solving the challenge");
+//        Button closeButton = new Button("Close the window");
+//        closeButton.setOnAction(e -> window.close());
+//
+//        VBox layout = new VBox(10);
+//        layout.getChildren().addAll(label,closeButton);
+//        layout.setAlignment(Pos.CENTER);
+//
+//        Scene s1 = new Scene(layout);
+//        window.setScene(s1);
+//        window.showAndWait();
+//
+//    }
+
+
+
+
+
+
 
     // FIXME Task 11: Generate interesting challenges (each challenge may have just one solution)
 
@@ -642,6 +683,7 @@ public class Board extends Application {
         primaryStage.setTitle("FOCUSGAME - Fun with the Tiles");
         Scene scene = new Scene(root,GAME_WIDTH, GAME_HEIGHT);
         getChallenge();
+        setUpSoundLoop();
         root.getChildren().add(gtiles);
         root.getChildren().add(board);
         root.getChildren().add(solution);
@@ -650,9 +692,14 @@ public class Board extends Application {
         root.getChildren().add(objective);
         root.getChildren().add(challenge);
 
+        root.getChildren().add(shadow);
+//        root.getChildren().add(window);
+
+
         // TODO set handlers, sound, board, tiles
 
         setUpHandlers(scene);
+//        popUpWindow();
 //        setUpSoundLoop();
         showBoard();
         makeControls();
