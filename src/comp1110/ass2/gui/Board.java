@@ -77,7 +77,7 @@ public class Board extends Application {
     private final Group objective = new Group();
     private final Group challenge = new Group();
     private final Group shadow = new Group();
-    private final Group window = new Group();
+//    private final Group window = new Group();
 
     private static String solutionString;
 
@@ -491,27 +491,27 @@ public class Board extends Application {
         glow.setLevel(0.9);
     }
 
-
-    private void popUpWindow(){
-        Stage window = new Stage();
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Hints");
-        window.setMinWidth(250);
-
-        Label label = new Label();
-        label.setText("Continuing to build Hint for solving the challenge");
-        Button closeButton = new Button("Close the window");
-        closeButton.setOnAction(e -> window.close());
-
-        VBox layout = new VBox(10);
-        layout.getChildren().addAll(label,closeButton);
-        layout.setAlignment(Pos.CENTER);
-
-        Scene s1 = new Scene(layout);
-        window.setScene(s1);
-        window.showAndWait();
-
-    }
+     // add a pop up window but have a bug
+//    private void popUpWindow(){
+//        Stage window = new Stage();
+//        window.initModality(Modality.APPLICATION_MODAL);
+//        window.setTitle("Hints");
+//        window.setMinWidth(250);
+//
+//        Label label = new Label();
+//        label.setText("Continuing to build Hint for solving the challenge");
+//        Button closeButton = new Button("Close the window");
+//        closeButton.setOnAction(e -> window.close());
+//
+//        VBox layout = new VBox(10);
+//        layout.getChildren().addAll(label,closeButton);
+//        layout.setAlignment(Pos.CENTER);
+//
+//        Scene s1 = new Scene(layout);
+//        window.setScene(s1);
+//        window.showAndWait();
+//
+//    }
 
 
 
@@ -679,6 +679,7 @@ public class Board extends Application {
         primaryStage.setTitle("FOCUSGAME - Fun with the Tiles");
         Scene scene = new Scene(root,GAME_WIDTH, GAME_HEIGHT);
         getChallenge();
+        setUpSoundLoop();
         root.getChildren().add(gtiles);
         root.getChildren().add(board);
         root.getChildren().add(solution);
@@ -688,12 +689,13 @@ public class Board extends Application {
         root.getChildren().add(challenge);
 
         root.getChildren().add(shadow);
-        root.getChildren().add(window);
+//        root.getChildren().add(window);
 
-        popUpWindow();
+
         // TODO set handlers, sound, board, tiles
 
         setUpHandlers(scene);
+//        popUpWindow();
 //        setUpSoundLoop();
         showBoard();
         makeControls();
