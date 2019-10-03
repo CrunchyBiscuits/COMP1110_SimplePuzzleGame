@@ -35,15 +35,15 @@ import javafx.stage.Stage;
 public class Board extends Application {
 
 
-    private static final int SQUARE_SIZE = 50;
+    private static final int SQUARE_SIZE = 40;
 
-    private static final int MARGIN_X = 30;
-    private static final int MARGIN_Y = 30;
+    private static final int MARGIN_X = 15;
+    private static final int MARGIN_Y = 15;
 
-    private static final int BOARD_WIDTH = 520;
-    private static final int BOARD_HEIGHT = 360;
+    private static final int BOARD_WIDTH = 420;
+    private static final int BOARD_HEIGHT = 290;
     private static final int BOARD_MARGIN_X = 30;
-    private static final int BOARD_MARGIN_Y = 80;
+    private static final int BOARD_MARGIN_Y = 60;
 
     private static final int OBJECTIVE_WIDTH = 162;
     private static final int OBJECTIVE_HEIGHT = 150;
@@ -51,11 +51,11 @@ public class Board extends Application {
     private static final int OBJECTIVE_MARGIN_Y = 20;
 
     private static final int BOARD_Y = MARGIN_Y;
-    private static final int BOARD_X = MARGIN_X + (3 * SQUARE_SIZE) + SQUARE_SIZE + MARGIN_X;
+    private static final int BOARD_X = 500;
 
     private static final int PLAY_AREA_Y = BOARD_Y + BOARD_MARGIN_Y;
-    private static final int PLAY_AREA_X = BOARD_X +15*MARGIN_X+ BOARD_MARGIN_X;
-    private static final int GAME_WIDTH = BOARD_X + BOARD_WIDTH +15* MARGIN_X;
+    private static final int PLAY_AREA_X = BOARD_X + BOARD_MARGIN_X;
+    private static final int GAME_WIDTH = 933;
     private static final int GAME_HEIGHT = 700;
     private static final long ROTATION_THRESHOLD = 50; // Allow rotation every 50 ms
 
@@ -254,14 +254,40 @@ public class Board extends Application {
             //finish drag
             setOnMouseReleased(event->{
                 snapToGrid();
+                System.out.println(getLayoutY());
+                System.out.println(getLayoutX());
             });
-
-
         }
+
 
         private void snapToGrid(){
 //           if (onBoard() && (!alreadyOccupied())){
             if (onBoard()) {
+                if (orientation%2 == 0) {
+                    if (tileID==0||tileID==3||tileID==4||tileID==6){
+
+                    }else if (tileID==1||tileID==2||tileID==9){
+
+                    }else if (tileID==5){
+
+                    }else if (tileID==7){
+
+                    }else {
+
+                    }
+                }else {
+                    if (tileID==0||tileID==3||tileID==4||tileID==6){
+
+                    }else if (tileID==1||tileID==2||tileID==9){
+
+                    }else if (tileID==5){
+
+                    }else if (tileID==7){
+
+                    }else {
+
+                    }
+                }
                 if ((getLayoutX() >= (PLAY_AREA_X - (SQUARE_SIZE / 2))) && (getLayoutX() < (PLAY_AREA_X + (SQUARE_SIZE / 2)))) {
                     setLayoutX(PLAY_AREA_X);
                 } else if ((getLayoutX() >= PLAY_AREA_X + (SQUARE_SIZE / 2)) && (getLayoutX() < PLAY_AREA_X + 1.5 * SQUARE_SIZE)) {
@@ -270,14 +296,23 @@ public class Board extends Application {
                     setLayoutX(PLAY_AREA_X + 2 * SQUARE_SIZE);
                 } else if ((getLayoutX() >= PLAY_AREA_X + 2.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 3.5 * SQUARE_SIZE)) {
                     setLayoutX(PLAY_AREA_X + 3 * SQUARE_SIZE);
+                } else if ((getLayoutX() >= PLAY_AREA_X + 3.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 4.5 * SQUARE_SIZE)) {
+                    setLayoutX(PLAY_AREA_X + 4 * SQUARE_SIZE);
+                } else if ((getLayoutX() >= PLAY_AREA_X + 4.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 5.5 * SQUARE_SIZE)) {
+                    setLayoutX(PLAY_AREA_X + 5 * SQUARE_SIZE);
+                } else if ((getLayoutX() >= PLAY_AREA_X + 5.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 6.5 * SQUARE_SIZE)) {
+                    setLayoutX(PLAY_AREA_X + 6 * SQUARE_SIZE);
                 }
+
 
                 if ((getLayoutY() >= (PLAY_AREA_Y - (SQUARE_SIZE / 2))) && (getLayoutY() < (PLAY_AREA_Y + (SQUARE_SIZE / 2)))) {
                     setLayoutY(PLAY_AREA_Y);
                 } else if ((getLayoutY() >= PLAY_AREA_Y + (SQUARE_SIZE / 2)) && (getLayoutY() < PLAY_AREA_Y + 1.5 * SQUARE_SIZE)) {
-                    setLayoutY(PLAY_AREA_Y + SQUARE_SIZE);
+                    setLayoutY(PLAY_AREA_Y + SQUARE_SIZE+5);
                 } else if ((getLayoutY() >= PLAY_AREA_Y + 1.5 * SQUARE_SIZE) && (getLayoutY() < PLAY_AREA_Y + 2.5 * SQUARE_SIZE)) {
-                    setLayoutY(PLAY_AREA_Y + 2 * SQUARE_SIZE);
+                    setLayoutY(PLAY_AREA_Y + 2 * SQUARE_SIZE+ 5);
+                } else if ((getLayoutY() >= PLAY_AREA_Y + 2.5 * SQUARE_SIZE) && (getLayoutY() < PLAY_AREA_Y + 3.5 * SQUARE_SIZE)) {
+                    setLayoutY(PLAY_AREA_Y + 3 * SQUARE_SIZE+ 5);
                 }
                 setPosition();
             } else {
@@ -427,13 +462,13 @@ public class Board extends Application {
 
     private void setUpHandlers(Scene scene) {
         /* create handlers for key press and release events */
-        scene.setOnMouseClicked(event -> {
+       /* scene.setOnMouseClicked(event -> {
             if (startLoop)
                 loop.stop();
             else
                 loop.play();
             startLoop = !startLoop;
-        });
+        });*/
 }
 
 
@@ -573,7 +608,7 @@ public class Board extends Application {
         baseboard.setImage(new Image(BASEBOARD_URI));
         baseboard.setFitWidth(BOARD_WIDTH);
         baseboard.setFitHeight(BOARD_HEIGHT);
-        baseboard.setLayoutX(BOARD_X+15*MARGIN_X);
+        baseboard.setLayoutX(BOARD_X);
         baseboard.setLayoutY(BOARD_Y);
         board.getChildren().add(baseboard);
 
