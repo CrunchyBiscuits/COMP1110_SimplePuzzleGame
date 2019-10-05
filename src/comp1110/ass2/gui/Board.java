@@ -38,7 +38,7 @@ import static comp1110.ass2.State.EMPTY;
 
 public class Board extends Application {
 
-
+    //variable setting author Zheyuan Zhang u6870923
     private static final int SQUARE_SIZE = 40;
 
     private static final int MARGIN_X = 15;
@@ -117,6 +117,7 @@ public class Board extends Application {
     };
 
 
+    //GameTile class author Zheyuan Zhang u6870923
     class GameTile extends ImageView{
         int tileID;
 
@@ -236,6 +237,7 @@ public class Board extends Application {
     }
 
     // FIXME Task 7: Implement a basic playable Focus Game in JavaFX that only allows pieces to be placed in valid places
+    // DraggableTile class author Zheyuan Zhang u6870923
     class DraggableTile extends GameTile{
         int homeX, homeY;
 
