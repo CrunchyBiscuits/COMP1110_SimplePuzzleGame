@@ -64,7 +64,7 @@ public class Board extends Application {
     private static final long ROTATION_THRESHOLD = 50; // Allow rotation every 50 ms
 
     /* marker for unplaced tiles */
-    public static final char NOT_PLACED = 255;
+    public static final int NOT_PLACED = 255;
 
     /* where to find media assets */
     private static final String URI_BASE = "assets/";
@@ -86,7 +86,7 @@ public class Board extends Application {
     private static String solutionString;
 
     /* the state of the tiles */
-    char[] tileState = new char[10];   //  all off screen to begin with
+    int[] tileState = new int[10];   //  all off screen to begin with
 
     /* The underlying game */
     FocusGame focusgame;
@@ -151,8 +151,8 @@ public class Board extends Application {
                 throw new IllegalArgumentException("Bad tile: \"" + tile + "\"");
             }
             this.tileID = tile - 'a';
-            char row = getRowAndCol(tileID, orientation).charAt(0);
-            char col = getRowAndCol(tileID, orientation).charAt(1);
+            char col = getRowAndCol(tileID, orientation).charAt(0);
+            char row = getRowAndCol(tileID, orientation).charAt(1);
             setFitHeight(row*SQUARE_SIZE);
             setFitWidth(col*SQUARE_SIZE);
             /*if (orientation%2 == 0) {
@@ -301,73 +301,6 @@ public class Board extends Application {
 
 
         private void snapToGrid(){
-//           if (onBoard() && (!alreadyOccupied())){
-
-               /* switch (row){
-                    case '1':
-                        if ((getLayoutX() >= (PLAY_AREA_X - (SQUARE_SIZE / 2))) && (getLayoutX() < (PLAY_AREA_X + (SQUARE_SIZE / 2)))) {
-                            setLayoutX(PLAY_AREA_X);
-                        } else if ((getLayoutX() >= PLAY_AREA_X + (SQUARE_SIZE / 2)) && (getLayoutX() < PLAY_AREA_X + 1.5 * SQUARE_SIZE)) {
-                            setLayoutX(PLAY_AREA_X + SQUARE_SIZE);
-                        } else if ((getLayoutX() >= PLAY_AREA_X + 1.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 2.5 * SQUARE_SIZE)) {
-                            setLayoutX(PLAY_AREA_X + 2 * SQUARE_SIZE);
-                        } else if ((getLayoutX() >= PLAY_AREA_X + 2.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 3.5 * SQUARE_SIZE)) {
-                            setLayoutX(PLAY_AREA_X + 3 * SQUARE_SIZE);
-                        } else if ((getLayoutX() >= PLAY_AREA_X + 3.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 4.5 * SQUARE_SIZE)) {
-                            setLayoutX(PLAY_AREA_X + 4 * SQUARE_SIZE);
-                        } else if ((getLayoutX() >= PLAY_AREA_X + 4.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 5.5 * SQUARE_SIZE)) {
-                            setLayoutX(PLAY_AREA_X + 5 * SQUARE_SIZE);
-                        } else if ((getLayoutX() >= PLAY_AREA_X + 5.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 6.5 * SQUARE_SIZE)) {
-                            setLayoutX(PLAY_AREA_X + 6 * SQUARE_SIZE);
-                        }
-
-
-                        if ((getLayoutY() >= (PLAY_AREA_Y - (SQUARE_SIZE / 2))) && (getLayoutY() < (PLAY_AREA_Y + (SQUARE_SIZE / 2)))) {
-                            setLayoutY(PLAY_AREA_Y);
-                        } else if ((getLayoutY() >= PLAY_AREA_Y + (SQUARE_SIZE / 2)) && (getLayoutY() < PLAY_AREA_Y + 1.5 * SQUARE_SIZE)) {
-                            setLayoutY(PLAY_AREA_Y + SQUARE_SIZE+5);
-                        } else if ((getLayoutY() >= PLAY_AREA_Y + 1.5 * SQUARE_SIZE) && (getLayoutY() < PLAY_AREA_Y + 2.5 * SQUARE_SIZE)) {
-                            setLayoutY(PLAY_AREA_Y + 2 * SQUARE_SIZE+ 5);
-                        } else if ((getLayoutY() >= PLAY_AREA_Y + 2.5 * SQUARE_SIZE) && (getLayoutY() < PLAY_AREA_Y + 3.5 * SQUARE_SIZE)) {
-                            setLayoutY(PLAY_AREA_Y + 3 * SQUARE_SIZE+ 5);
-                        } else if ((getLayoutY() >= PLAY_AREA_Y + 3.5 * SQUARE_SIZE) && (getLayoutY() < PLAY_AREA_Y + 4.5 * SQUARE_SIZE)) {
-                            setLayoutY(PLAY_AREA_Y + 4 * SQUARE_SIZE+ 5);
-                        }
-                    case '2':
-                        if (col=='2'){
-                            if ((getLayoutX() >= (PLAY_AREA_X - (SQUARE_SIZE / 2))) && (getLayoutX() < (PLAY_AREA_X + (SQUARE_SIZE / 2)))) {
-                                setLayoutX(PLAY_AREA_X);
-                            } else if ((getLayoutX() >= PLAY_AREA_X + (SQUARE_SIZE / 2)) && (getLayoutX() < PLAY_AREA_X + 1.5 * SQUARE_SIZE)) {
-                                setLayoutX(PLAY_AREA_X + SQUARE_SIZE);
-                            } else if ((getLayoutX() >= PLAY_AREA_X + 1.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 2.5 * SQUARE_SIZE)) {
-                                setLayoutX(PLAY_AREA_X + 2 * SQUARE_SIZE);
-                            } else if ((getLayoutX() >= PLAY_AREA_X + 2.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 3.5 * SQUARE_SIZE)) {
-                                setLayoutX(PLAY_AREA_X + 3 * SQUARE_SIZE);
-                            } else if ((getLayoutX() >= PLAY_AREA_X + 3.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 4.5 * SQUARE_SIZE)) {
-                                setLayoutX(PLAY_AREA_X + 4 * SQUARE_SIZE);
-                            } else if ((getLayoutX() >= PLAY_AREA_X + 4.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 5.5 * SQUARE_SIZE)) {
-                                setLayoutX(PLAY_AREA_X + 5 * SQUARE_SIZE);
-                            } else if ((getLayoutX() >= PLAY_AREA_X + 5.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 6.5 * SQUARE_SIZE)) {
-                                setLayoutX(PLAY_AREA_X + 6 * SQUARE_SIZE);
-                            } else if ((getLayoutX() >= PLAY_AREA_X + 6.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 7.5 * SQUARE_SIZE)) {
-                                setLayoutX(PLAY_AREA_X + 7 * SQUARE_SIZE);
-                            }
-
-
-                            if ((getLayoutY() >= (PLAY_AREA_Y - (SQUARE_SIZE / 2))) && (getLayoutY() < (PLAY_AREA_Y + (SQUARE_SIZE / 2)))) {
-                                setLayoutY(PLAY_AREA_Y);
-                            } else if ((getLayoutY() >= PLAY_AREA_Y + (SQUARE_SIZE / 2)) && (getLayoutY() < PLAY_AREA_Y + 1.5 * SQUARE_SIZE)) {
-                                setLayoutY(PLAY_AREA_Y + SQUARE_SIZE+5);
-                            } else if ((getLayoutY() >= PLAY_AREA_Y + 1.5 * SQUARE_SIZE) && (getLayoutY() < PLAY_AREA_Y + 2.5 * SQUARE_SIZE)) {
-                                setLayoutY(PLAY_AREA_Y + 2 * SQUARE_SIZE+ 5);
-                            } else if ((getLayoutY() >= PLAY_AREA_Y + 2.5 * SQUARE_SIZE) && (getLayoutY() < PLAY_AREA_Y + 3.5 * SQUARE_SIZE)) {
-                                setLayoutY(PLAY_AREA_Y + 3 * SQUARE_SIZE+ 5);
-                            }
-                        }
-                    case '3':
-                    case '4':
-
-                }*/
                 if ((getLayoutX() >= (PLAY_AREA_X - (SQUARE_SIZE / 2))) && (getLayoutX() < (PLAY_AREA_X + (SQUARE_SIZE / 2)))) {
                     setLayoutX(PLAY_AREA_X);
                 } else if ((getLayoutX() >= PLAY_AREA_X + (SQUARE_SIZE / 2)) && (getLayoutX() < PLAY_AREA_X + 1.5 * SQUARE_SIZE)) {
@@ -824,9 +757,25 @@ public class Board extends Application {
             return "";
         }
 
-        private boolean checkOccupied(){
+        private boolean checkOccupied(String existedPlacement, String currentPlacement){
+            String existedString[]=new String[existedPlacement.length()/2];
+            String currentString[]=new String[currentPlacement.length()/2];
+            for (int i=0;i<existedString.length;i++){
+                existedString[i]=existedPlacement.substring(i*2,i*2+2);
+            }
+            for (int i=0;i<currentString.length;i++){
+                currentString[i]=currentPlacement.substring(i*2,i*2+2);
+            }
+
+            for (int i=0;i<existedString.length;i++){
+                for (int j=0;j<currentString.length;j++){
+                    if (existedString[i].equals(currentString[j]))
+                        return true;
+                }
+            }
             return false;
         }
+
         private boolean alreadyOccupied(){
             int x = (int) (getLayoutX() - PLAY_AREA_X) / SQUARE_SIZE;
             int y = (int) (getLayoutY() - PLAY_AREA_Y) / SQUARE_SIZE;
@@ -838,50 +787,29 @@ public class Board extends Application {
             placement +=x;
             placement +=y;
             placement +=orientation;
-            System.out.println(placement);
+//            System.out.println(placement);
 
             // place for two block area
             String block1="04";
             String block2="84";
 
-            String occupiedPostion=getOccupiedPostion(tileID,x,y,orientation);
-            System.out.println(occupiedPostion);
-            if (occupiedPostion.contains(block1)||occupiedPostion.contains(block2)){
+            String occupiedPlacement=getOccupiedPostion(tileID,x,y,orientation);
+            if (occupiedPlacement.contains(block1)||occupiedPlacement.contains(block2)){
                 return true;
             }
-
+            System.out.println(occupiedPlacement);
             for (int i=0;i<10;i++){
                 if (tileState[i]==NOT_PLACED)
                     continue;
 
-
-            }
-
-            // it occupies two cells
-            /*int idx1 = y * 4 + x;
-            int idx2;
-
-            if (orientation%2 == 0)
-                idx2 = (y+1) * 4 + x;
-            else
-                idx2 = y * 4 + x + 1;
-
-            for (int i = 0; i < 6; i++) {
-                if (tileState[i] == NOT_PLACED)
-                    continue;
-
-                int tIdx1 = tileState[i] / 4;
-                int tIdx2;
-                int tOrn = tileState[i] % 4;
-
-                if (tOrn%2 == 0)
-                    tIdx2 = tIdx1 + 4;
-                else
-                    tIdx2 = tIdx1 + 1;
-
-                if (tIdx1 == idx1 || tIdx2 == idx1 || tIdx1 == idx2 || tIdx2 == idx2)
+                int tx = tileState[i]/100%10;
+                int ty = tileState[i]/10%10;
+                int tOri = tileState[i]%10;
+                String existedPlacement = getOccupiedPostion(i, tx, ty, tOri);
+                if (checkOccupied(existedPlacement, occupiedPlacement)){
                     return true;
-            }*/
+                }
+            }
             return false;
         }
 
@@ -891,9 +819,8 @@ public class Board extends Application {
             if (x < 0)
                 tileState[tileID] = NOT_PLACED;
             else {
-                char val = (char) ((y * 4 + x) * 4 + orientation);
-                tileState[tileID] = val;
-                System.out.println(val);
+                tileState[tileID] =tileID*1000+x*100+y*10+orientation;
+                System.out.println(tileState[tileID]);
             }
         }
 
@@ -1167,6 +1094,8 @@ public class Board extends Application {
         for (int i = 0; i < 10; i++) {
             if (tileState[i] == NOT_PLACED)
                 return;
+            //TODO change the encode tpye
+
             state = state +
                     (char)(i + 'a') +
                     (char)(((tileState[i]/4)%4)+'0') +
