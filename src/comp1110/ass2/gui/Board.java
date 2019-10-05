@@ -107,16 +107,6 @@ public class Board extends Application {
         dropShadow.setColor(Color.color(0, 0, 0, .4));
     }
 
-    // pre-initial state of the board
-    private State[][] boardStates = {
-            {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-            {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-            {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-            {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
-            {BLOCK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, BLOCK}
-    };
-
-
     //GameTile class author Zheyuan Zhang u6870923
     class GameTile extends ImageView{
         int tileID;
@@ -311,10 +301,8 @@ public class Board extends Application {
 
 
         private void snapToGrid(){
-            char row = getRowAndCol(tileID, orientation).charAt(0);
-            char col = getRowAndCol(tileID, orientation).charAt(1);
 //           if (onBoard() && (!alreadyOccupied())){
-            if (onBoard()) {
+
                /* switch (row){
                     case '1':
                         if ((getLayoutX() >= (PLAY_AREA_X - (SQUARE_SIZE / 2))) && (getLayoutX() < (PLAY_AREA_X + (SQUARE_SIZE / 2)))) {
@@ -396,6 +384,8 @@ public class Board extends Application {
                     setLayoutX(PLAY_AREA_X + 6 * SQUARE_SIZE);
                 } else if ((getLayoutX() >= PLAY_AREA_X + 6.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 7.5 * SQUARE_SIZE)) {
                     setLayoutX(PLAY_AREA_X + 7 * SQUARE_SIZE);
+                } else if ((getLayoutX() >= PLAY_AREA_X + 7.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 8.5 * SQUARE_SIZE)) {
+                    setLayoutX(PLAY_AREA_X + 8 * SQUARE_SIZE);
                 }
 
 
@@ -410,6 +400,8 @@ public class Board extends Application {
                 } else if ((getLayoutY() >= PLAY_AREA_Y + 3.5 * SQUARE_SIZE) && (getLayoutY() < PLAY_AREA_Y + 4.5 * SQUARE_SIZE)) {
                     setLayoutY(PLAY_AREA_Y + 4 * SQUARE_SIZE+ 5);
                 }
+
+            if (onBoard()&&!alreadyOccupied()) {
                 setPosition();
             } else {
                 snapToHome();
@@ -458,12 +450,415 @@ public class Board extends Application {
             return false;
         }
 
+        /**
+         * Get the occupied place align with different tiles
+         * */
+        private String getOccupiedPostion(int tileID, int col, int row, int orientation){
+            String result="";
+            System.out.println(col);
+            System.out.println(row);
+            switch (tileID){
+                case 0:
+                    if (orientation==0){
+                        for (int i=0;i<3;i++){
+                            result += col+i;
+                            result += row;
+                        }
+                        result += col+1;
+                        result += row+1;
+                        return result;
+                    }else if (orientation==1){
+                        result += col;
+                        result += row+1;
+                        for (int i=0;i<3;i++){
+                            result += col+1;
+                            result += row+i;
+                        }
+                        return result;
+                    }else if (orientation==2){
+                        result += col+1;
+                        result += row;
+                        for (int i=0;i<3;i++){
+                            result += col+i;
+                            result += row+1;
+                        }
+                        return result;
+                    }else {
+                        for (int i=0;i<3;i++){
+                            result += col;
+                            result += row+i;
+                        }
+                        result += col+1;
+                        result += row+1;
+                        return result;
+                    }
+                case 1:
+                    if (orientation==0){
+                        for (int i=0;i<3;i++){
+                            result += col+1+i;
+                            result += row;
+                        }
+
+                        for (int i=0;i<2;i++){
+                            result += col+i;
+                            result += row+1;
+                        }
+                        return  result;
+                    }else if (orientation==1){
+                        for (int i=0;i<2;i++){
+                            result += col;
+                            result += row+i;
+                        }
+
+                        for (int i=0;i<3;i++){
+                            result += col+1;
+                            result += row+i;
+                        }
+                        return result;
+                    }else if (orientation==2){
+                        for (int i=0;i<2;i++){
+                            result += col+2+i;
+                            result += row;
+                        }
+                        for (int i=0;i<3;i++){
+                            result += col+i;
+                            result += row+1;
+                        }
+                        return result;
+                    }else {
+                        for (int i=0;i<2;i++){
+                            result += col+1;
+                            result += row+i;
+                        }
+                        for (int i=0;i<3;i++){
+                            result += col;
+                            result += row+i;
+                        }
+                        return result;
+                    }
+                case 2:
+                    if (orientation==0){
+                        result+=col+2;
+                        result+=row;
+                        for (int i=0;i<4;i++){
+                            result+=col+i;
+                            result+=row+1;
+                        }
+                        return result;
+                    }else if (orientation==1){
+                        result+=col+1;
+                        result+=row+2;
+                        for (int i=0;i<4;i++){
+                            result+=col;
+                            result+=row+i;
+                        }
+                        return result;
+                    }else if (orientation==2){
+                        result+=col+1;
+                        result+=row+1;
+                        for (int i=0;i<4;i++){
+                            result+=col+i;
+                            result+=row;
+                        }
+                        return result;
+                    }else {
+                        result+=col;
+                        result+=row+1;
+                        for (int i=0;i<4;i++){
+                            result+=col+1;
+                            result+=row+i;
+                        }
+                        return result;
+                    }
+                case 3:
+                    if (orientation==0){
+                        result += col+2;
+                        result += row+1;
+                        for (int i=0;i<3;i++){
+                            result += col+i;
+                            result += row;
+                        }
+                        return result;
+                    }else if (orientation==1){
+                        result += col;
+                        result += row+2;
+                        for (int i=0;i<3;i++){
+                            result += col+1;
+                            result += row+i;
+                        }
+                        return result;
+                    }else if (orientation==2){
+                        result += col;
+                        result += row;
+                        for (int i=0;i<3;i++){
+                            result += col+i;
+                            result += row+1;
+                        }
+                        return result;
+                    }else {
+                        result += col+1;
+                        result += row;
+                        for (int i=0;i<3;i++){
+                            result += col;
+                            result += row+i;
+                        }
+                        return result;
+                    }
+                case 4:
+                    if (orientation==0){
+                        for (int i=0;i<3;i++){
+                            for (int j=0;j<2;j++){
+                                if (j==1&&i==2)
+                                    continue;
+                                else {
+                                    result +=col+i;
+                                    result +=row+j;
+                                }
+                            }
+                        }
+                        return result;
+                    }else if (orientation==1){
+                        for (int i=0;i<3;i++){
+                            for (int j=0;j<2;j++){
+                                if (j==0&&i==2)
+                                    continue;
+                                else {
+                                    result +=col+j;
+                                    result +=row+i;
+                                }
+                            }
+                        }
+                        return result;
+                    }else if (orientation==2){
+                        for (int i=0;i<3;i++){
+                            for (int j=0;j<2;j++){
+                                if (j==0&&i==0)
+                                    continue;
+                                else {
+                                    result +=col+i;
+                                    result +=row+j;
+                                }
+                            }
+                        }
+                        return result;
+                    }else {
+                        for (int i=0;i<3;i++){
+                            for (int j=0;j<2;j++){
+                                if (j==1&&i==0)
+                                    continue;
+                                else {
+                                    result +=col+j;
+                                    result +=row+i;
+                                }
+                            }
+                        }
+                        return result;
+                    }
+                case 5:
+                    if (orientation%2==0){
+                        for (int i=0;i<3;i++){
+                            result+=col+i;
+                            result+=row;
+                        }
+                        return result;
+                    }else {
+                        for (int i=0;i<3;i++){
+                            result+=col;
+                            result+=row+i;
+                        }
+                        return result;
+                    }
+                case 6:
+                    if (orientation%2==0){
+                        for (int i=0;i<3;i++){
+                            for (int j=0;j<2;j++){
+                                if ((i==2&&j==0)||(i==0&&j==1)){
+                                    continue;
+                                }else {
+                                    result += col+i;
+                                    result += row+j;
+                                }
+                            }
+                        }
+                        return result;
+                    }else {
+                        for (int i=0;i<3;i++){
+                            for (int j=0;j<2;j++){
+                                if ((i==0&&j==0)||(i==2&&j==1)){
+                                    continue;
+                                }else {
+                                    result += col+j;
+                                    result += row+i;
+                                }
+                            }
+                        }
+                        return result;
+                    }
+                case 7:
+                    if (orientation==0){
+                        for (int i=0;i<3;i++){
+                            result += col+i;
+                            result += row;
+                        }
+                        for (int i=0;i<2;i++){
+                            result += col;
+                            result += row+1+i;
+                        }
+                        return result;
+                    }else if (orientation==1){
+                        for (int i=0;i<3;i++){
+                            result += col+i;
+                            result += row;
+                        }
+                        for (int i=0;i<2;i++){
+                            result += col+2;
+                            result += row+1+i;
+                        }
+                        return result;
+                    }else if (orientation==2){
+                        for (int i=0;i<3;i++){
+                            result += col+i;
+                            result += row+2;
+                        }
+                        for (int i=0;i<2;i++){
+                            result += col+2;
+                            result += row+i;
+                        }
+                        return result;
+                    }else {
+                        for (int i=0;i<3;i++){
+                            result += col;
+                            result += row+i;
+                        }
+                        for (int i=0;i<2;i++){
+                            result += col+1+i;
+                            result += row+2;
+                        }
+                        return result;
+                    }
+                case 8:
+                    if (orientation==0){
+                       for (int i=0;i<2;i++){
+                           for (int j=0;j<2;j++){
+                                if (i==0&&j==1)
+                                    continue;
+                                else {
+                                    result+=col+i;
+                                    result+=row+j;
+                                }
+                           }
+                       }
+                       return result;
+                    }else if (orientation==1){
+                        for (int i=0;i<2;i++){
+                            for (int j=0;j<2;j++){
+                                if (i==0&&j==0)
+                                    continue;
+                                else {
+                                    result+=col+i;
+                                    result+=row+j;
+                                }
+                            }
+                        }
+                        return result;
+                    }else if (orientation==2){
+                        for (int i=0;i<2;i++){
+                            for (int j=0;j<2;j++){
+                                if (i==1&&j==0)
+                                    continue;
+                                else {
+                                    result+=col+i;
+                                    result+=row+j;
+                                }
+                            }
+                        }
+                        return result;
+                    }else {
+                        for (int i=0;i<2;i++){
+                            for (int j=0;j<2;j++){
+                                if (i==1&&j==1)
+                                    continue;
+                                else {
+                                    result+=col+i;
+                                    result+=row+j;
+                                }
+                            }
+                        }
+                        return result;
+                    }
+                case 9:
+                    if (orientation==0){
+                        result += col;
+                        result += row+1;
+                        for (int i=0;i<4;i++){
+                            result += col+i;
+                            result += row;
+                        }
+                        return result;
+                    }else if (orientation==1){
+                        result += col;
+                        result += row;
+                        for (int i=0;i<4;i++){
+                            result += col+1;
+                            result += row+i;
+                        }
+                        return result;
+                    }else if (orientation==2){
+                        result += col+3;
+                        result += row;
+                        for (int i=0;i<4;i++){
+                            result += col+i;
+                            result += row+1;
+                        }
+                        return result;
+                    }else {
+                        result += col+1;
+                        result += row+3;
+                        for (int i=0;i<4;i++){
+                            result += col;
+                            result += row+i;
+                        }
+                        return result;
+                    }
+            }
+            return "";
+        }
+
+        private boolean checkOccupied(){
+            return false;
+        }
         private boolean alreadyOccupied(){
-            int x = (int) (getLayoutX() + (SQUARE_SIZE / 2) - PLAY_AREA_X) / SQUARE_SIZE;
-            int y = (int) (getLayoutY() + (SQUARE_SIZE / 2) - PLAY_AREA_Y) / SQUARE_SIZE;
+            int x = (int) (getLayoutX() - PLAY_AREA_X) / SQUARE_SIZE;
+            int y = (int) (getLayoutY() - PLAY_AREA_Y) / SQUARE_SIZE;
+            System.out.println(x);
+            System.out.println(y);
+
+            String placement="";
+            placement +=(char)(tileID+'a');
+            placement +=x;
+            placement +=y;
+            placement +=orientation;
+            System.out.println(placement);
+
+            // place for two block area
+            String block1="04";
+            String block2="84";
+
+            String occupiedPostion=getOccupiedPostion(tileID,x,y,orientation);
+            System.out.println(occupiedPostion);
+            if (occupiedPostion.contains(block1)||occupiedPostion.contains(block2)){
+                return true;
+            }
+
+            for (int i=0;i<10;i++){
+                if (tileState[i]==NOT_PLACED)
+                    continue;
+
+
+            }
 
             // it occupies two cells
-            int idx1 = y * 4 + x;
+            /*int idx1 = y * 4 + x;
             int idx2;
 
             if (orientation%2 == 0)
@@ -486,7 +881,7 @@ public class Board extends Application {
 
                 if (tIdx1 == idx1 || tIdx2 == idx1 || tIdx1 == idx2 || tIdx2 == idx2)
                     return true;
-            }
+            }*/
             return false;
         }
 
@@ -498,6 +893,7 @@ public class Board extends Application {
             else {
                 char val = (char) ((y * 4 + x) * 4 + orientation);
                 tileState[tileID] = val;
+                System.out.println(val);
             }
         }
 
