@@ -2,6 +2,7 @@ package comp1110.ass2.gui;
 
 import comp1110.ass2.FocusGame;
 import comp1110.ass2.Orientation;
+import comp1110.ass2.State;
 import comp1110.ass2.Tile;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -31,6 +32,9 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import static comp1110.ass2.State.BLOCK;
+import static comp1110.ass2.State.EMPTY;
 
 public class Board extends Application {
 
@@ -103,6 +107,15 @@ public class Board extends Application {
         dropShadow.setColor(Color.color(0, 0, 0, .4));
     }
 
+    // pre-initial state of the board
+    private State[][] boardStates = {
+            {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+            {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+            {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+            {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY},
+            {BLOCK, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, BLOCK}
+    };
+
 
     class GameTile extends ImageView{
         int tileID;
@@ -112,7 +125,7 @@ public class Board extends Application {
          *
          * @param tile The letter representing the tile to be created
          */
-        public GameTile(char tile) {
+         GameTile(char tile) {
             if (tile>'j'||tile<'a'){
                 throw new IllegalArgumentException("Bad tile: \""+tile+"\"");
             }
@@ -147,7 +160,11 @@ public class Board extends Application {
                 throw new IllegalArgumentException("Bad tile: \"" + tile + "\"");
             }
             this.tileID = tile - 'a';
-            if (orientation%2 == 0) {
+            char row = getRowAndCol(tileID, orientation).charAt(0);
+            char col = getRowAndCol(tileID, orientation).charAt(1);
+            setFitHeight(row*SQUARE_SIZE);
+            setFitWidth(col*SQUARE_SIZE);
+            /*if (orientation%2 == 0) {
                 if (tileID==0||tileID==3||tileID==4||tileID==6){
                     setFitHeight(2*SQUARE_SIZE);
                     setFitWidth(3*SQUARE_SIZE);
@@ -182,10 +199,39 @@ public class Board extends Application {
                     setFitHeight(2*SQUARE_SIZE);
                     setFitWidth(2*SQUARE_SIZE);
                 }
-            }
+            }*/
             setImage(new Image(Board.class.getResource(URI_BASE + tile + "-" + (char)(orientation+'0') + ".png").toString()));
         }
 
+
+        public String getRowAndCol(int tileID, int orientation){
+            if (orientation%2 == 0) {
+                if (tileID==0||tileID==3||tileID==4||tileID==6){
+                    return "23";
+                }else if (tileID==1||tileID==2||tileID==9){
+                    return "24";
+                }else if (tileID==5){
+                    return "13";
+                }else if (tileID==7){
+                    return "33";
+                }else {
+                    return "22";
+                }
+            }
+            else {
+                if (tileID==0||tileID==3||tileID==4||tileID==6){
+                    return "32";
+                }else if (tileID==1||tileID==2||tileID==9){
+                    return "42";
+                }else if (tileID==5){
+                    return "31";
+                }else if (tileID==7){
+                    return "33";
+                }else {
+                    return "22";
+                }
+            }
+        }
         //TODO another constructor for objective tile
     }
 
@@ -260,34 +306,78 @@ public class Board extends Application {
         }
 
 
+
+
         private void snapToGrid(){
+            char row = getRowAndCol(tileID, orientation).charAt(0);
+            char col = getRowAndCol(tileID, orientation).charAt(1);
 //           if (onBoard() && (!alreadyOccupied())){
             if (onBoard()) {
-                if (orientation%2 == 0) {
-                    if (tileID==0||tileID==3||tileID==4||tileID==6){
+               /* switch (row){
+                    case '1':
+                        if ((getLayoutX() >= (PLAY_AREA_X - (SQUARE_SIZE / 2))) && (getLayoutX() < (PLAY_AREA_X + (SQUARE_SIZE / 2)))) {
+                            setLayoutX(PLAY_AREA_X);
+                        } else if ((getLayoutX() >= PLAY_AREA_X + (SQUARE_SIZE / 2)) && (getLayoutX() < PLAY_AREA_X + 1.5 * SQUARE_SIZE)) {
+                            setLayoutX(PLAY_AREA_X + SQUARE_SIZE);
+                        } else if ((getLayoutX() >= PLAY_AREA_X + 1.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 2.5 * SQUARE_SIZE)) {
+                            setLayoutX(PLAY_AREA_X + 2 * SQUARE_SIZE);
+                        } else if ((getLayoutX() >= PLAY_AREA_X + 2.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 3.5 * SQUARE_SIZE)) {
+                            setLayoutX(PLAY_AREA_X + 3 * SQUARE_SIZE);
+                        } else if ((getLayoutX() >= PLAY_AREA_X + 3.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 4.5 * SQUARE_SIZE)) {
+                            setLayoutX(PLAY_AREA_X + 4 * SQUARE_SIZE);
+                        } else if ((getLayoutX() >= PLAY_AREA_X + 4.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 5.5 * SQUARE_SIZE)) {
+                            setLayoutX(PLAY_AREA_X + 5 * SQUARE_SIZE);
+                        } else if ((getLayoutX() >= PLAY_AREA_X + 5.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 6.5 * SQUARE_SIZE)) {
+                            setLayoutX(PLAY_AREA_X + 6 * SQUARE_SIZE);
+                        }
 
-                    }else if (tileID==1||tileID==2||tileID==9){
 
-                    }else if (tileID==5){
+                        if ((getLayoutY() >= (PLAY_AREA_Y - (SQUARE_SIZE / 2))) && (getLayoutY() < (PLAY_AREA_Y + (SQUARE_SIZE / 2)))) {
+                            setLayoutY(PLAY_AREA_Y);
+                        } else if ((getLayoutY() >= PLAY_AREA_Y + (SQUARE_SIZE / 2)) && (getLayoutY() < PLAY_AREA_Y + 1.5 * SQUARE_SIZE)) {
+                            setLayoutY(PLAY_AREA_Y + SQUARE_SIZE+5);
+                        } else if ((getLayoutY() >= PLAY_AREA_Y + 1.5 * SQUARE_SIZE) && (getLayoutY() < PLAY_AREA_Y + 2.5 * SQUARE_SIZE)) {
+                            setLayoutY(PLAY_AREA_Y + 2 * SQUARE_SIZE+ 5);
+                        } else if ((getLayoutY() >= PLAY_AREA_Y + 2.5 * SQUARE_SIZE) && (getLayoutY() < PLAY_AREA_Y + 3.5 * SQUARE_SIZE)) {
+                            setLayoutY(PLAY_AREA_Y + 3 * SQUARE_SIZE+ 5);
+                        } else if ((getLayoutY() >= PLAY_AREA_Y + 3.5 * SQUARE_SIZE) && (getLayoutY() < PLAY_AREA_Y + 4.5 * SQUARE_SIZE)) {
+                            setLayoutY(PLAY_AREA_Y + 4 * SQUARE_SIZE+ 5);
+                        }
+                    case '2':
+                        if (col=='2'){
+                            if ((getLayoutX() >= (PLAY_AREA_X - (SQUARE_SIZE / 2))) && (getLayoutX() < (PLAY_AREA_X + (SQUARE_SIZE / 2)))) {
+                                setLayoutX(PLAY_AREA_X);
+                            } else if ((getLayoutX() >= PLAY_AREA_X + (SQUARE_SIZE / 2)) && (getLayoutX() < PLAY_AREA_X + 1.5 * SQUARE_SIZE)) {
+                                setLayoutX(PLAY_AREA_X + SQUARE_SIZE);
+                            } else if ((getLayoutX() >= PLAY_AREA_X + 1.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 2.5 * SQUARE_SIZE)) {
+                                setLayoutX(PLAY_AREA_X + 2 * SQUARE_SIZE);
+                            } else if ((getLayoutX() >= PLAY_AREA_X + 2.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 3.5 * SQUARE_SIZE)) {
+                                setLayoutX(PLAY_AREA_X + 3 * SQUARE_SIZE);
+                            } else if ((getLayoutX() >= PLAY_AREA_X + 3.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 4.5 * SQUARE_SIZE)) {
+                                setLayoutX(PLAY_AREA_X + 4 * SQUARE_SIZE);
+                            } else if ((getLayoutX() >= PLAY_AREA_X + 4.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 5.5 * SQUARE_SIZE)) {
+                                setLayoutX(PLAY_AREA_X + 5 * SQUARE_SIZE);
+                            } else if ((getLayoutX() >= PLAY_AREA_X + 5.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 6.5 * SQUARE_SIZE)) {
+                                setLayoutX(PLAY_AREA_X + 6 * SQUARE_SIZE);
+                            } else if ((getLayoutX() >= PLAY_AREA_X + 6.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 7.5 * SQUARE_SIZE)) {
+                                setLayoutX(PLAY_AREA_X + 7 * SQUARE_SIZE);
+                            }
 
-                    }else if (tileID==7){
 
-                    }else {
+                            if ((getLayoutY() >= (PLAY_AREA_Y - (SQUARE_SIZE / 2))) && (getLayoutY() < (PLAY_AREA_Y + (SQUARE_SIZE / 2)))) {
+                                setLayoutY(PLAY_AREA_Y);
+                            } else if ((getLayoutY() >= PLAY_AREA_Y + (SQUARE_SIZE / 2)) && (getLayoutY() < PLAY_AREA_Y + 1.5 * SQUARE_SIZE)) {
+                                setLayoutY(PLAY_AREA_Y + SQUARE_SIZE+5);
+                            } else if ((getLayoutY() >= PLAY_AREA_Y + 1.5 * SQUARE_SIZE) && (getLayoutY() < PLAY_AREA_Y + 2.5 * SQUARE_SIZE)) {
+                                setLayoutY(PLAY_AREA_Y + 2 * SQUARE_SIZE+ 5);
+                            } else if ((getLayoutY() >= PLAY_AREA_Y + 2.5 * SQUARE_SIZE) && (getLayoutY() < PLAY_AREA_Y + 3.5 * SQUARE_SIZE)) {
+                                setLayoutY(PLAY_AREA_Y + 3 * SQUARE_SIZE+ 5);
+                            }
+                        }
+                    case '3':
+                    case '4':
 
-                    }
-                }else {
-                    if (tileID==0||tileID==3||tileID==4||tileID==6){
-
-                    }else if (tileID==1||tileID==2||tileID==9){
-
-                    }else if (tileID==5){
-
-                    }else if (tileID==7){
-
-                    }else {
-
-                    }
-                }
+                }*/
                 if ((getLayoutX() >= (PLAY_AREA_X - (SQUARE_SIZE / 2))) && (getLayoutX() < (PLAY_AREA_X + (SQUARE_SIZE / 2)))) {
                     setLayoutX(PLAY_AREA_X);
                 } else if ((getLayoutX() >= PLAY_AREA_X + (SQUARE_SIZE / 2)) && (getLayoutX() < PLAY_AREA_X + 1.5 * SQUARE_SIZE)) {
@@ -302,6 +392,8 @@ public class Board extends Application {
                     setLayoutX(PLAY_AREA_X + 5 * SQUARE_SIZE);
                 } else if ((getLayoutX() >= PLAY_AREA_X + 5.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 6.5 * SQUARE_SIZE)) {
                     setLayoutX(PLAY_AREA_X + 6 * SQUARE_SIZE);
+                } else if ((getLayoutX() >= PLAY_AREA_X + 6.5 * SQUARE_SIZE) && (getLayoutX() < PLAY_AREA_X + 7.5 * SQUARE_SIZE)) {
+                    setLayoutX(PLAY_AREA_X + 7 * SQUARE_SIZE);
                 }
 
 
@@ -313,6 +405,8 @@ public class Board extends Application {
                     setLayoutY(PLAY_AREA_Y + 2 * SQUARE_SIZE+ 5);
                 } else if ((getLayoutY() >= PLAY_AREA_Y + 2.5 * SQUARE_SIZE) && (getLayoutY() < PLAY_AREA_Y + 3.5 * SQUARE_SIZE)) {
                     setLayoutY(PLAY_AREA_Y + 3 * SQUARE_SIZE+ 5);
+                } else if ((getLayoutY() >= PLAY_AREA_Y + 3.5 * SQUARE_SIZE) && (getLayoutY() < PLAY_AREA_Y + 4.5 * SQUARE_SIZE)) {
+                    setLayoutY(PLAY_AREA_Y + 4 * SQUARE_SIZE+ 5);
                 }
                 setPosition();
             } else {
@@ -325,8 +419,41 @@ public class Board extends Application {
          * check whether the tile is on the board
          * */
         private boolean onBoard(){
-            return getLayoutX() > (PLAY_AREA_X - (SQUARE_SIZE / 2)) && (getLayoutX() < (PLAY_AREA_X + 5 * SQUARE_SIZE))
-                    && getLayoutY() > (PLAY_AREA_Y - (SQUARE_SIZE / 2)) && (getLayoutY() < (PLAY_AREA_Y + 4.5 * SQUARE_SIZE));
+            char row = getRowAndCol(tileID, orientation).charAt(0);
+            char col = getRowAndCol(tileID, orientation).charAt(1);
+            switch (row){
+                case '1':
+                    return getLayoutX() > (PLAY_AREA_X - (SQUARE_SIZE / 2)) && (getLayoutX() < (PLAY_AREA_X + 6.5 * SQUARE_SIZE))
+                            && getLayoutY() > (PLAY_AREA_Y - (SQUARE_SIZE / 2)) && (getLayoutY() < (PLAY_AREA_Y + 4.5 * SQUARE_SIZE));
+                case '2':
+                    if (col=='2'){
+                        return getLayoutX() > (PLAY_AREA_X - (SQUARE_SIZE / 2)) && (getLayoutX() < (PLAY_AREA_X + 7.5 * SQUARE_SIZE))
+                                && getLayoutY() > (PLAY_AREA_Y - (SQUARE_SIZE / 2)) && (getLayoutY() < (PLAY_AREA_Y + 3.5 * SQUARE_SIZE));
+                    }else if (col=='3'){
+                        return getLayoutX() > (PLAY_AREA_X - (SQUARE_SIZE / 2)) && (getLayoutX() < (PLAY_AREA_X + 6.5 * SQUARE_SIZE))
+                                && getLayoutY() > (PLAY_AREA_Y - (SQUARE_SIZE / 2)) && (getLayoutY() < (PLAY_AREA_Y + 3.5 * SQUARE_SIZE));
+                    }else if (col=='4'){
+                        return getLayoutX() > (PLAY_AREA_X - (SQUARE_SIZE / 2)) && (getLayoutX() < (PLAY_AREA_X + 5.5 * SQUARE_SIZE))
+                                && getLayoutY() > (PLAY_AREA_Y - (SQUARE_SIZE / 2)) && (getLayoutY() < (PLAY_AREA_Y + 3.5 * SQUARE_SIZE));
+                    }
+                case '3':
+                    if (col=='1'){
+                        return getLayoutX() > (PLAY_AREA_X - (SQUARE_SIZE / 2)) && (getLayoutX() < (PLAY_AREA_X + 8.5 * SQUARE_SIZE))
+                                && getLayoutY() > (PLAY_AREA_Y - (SQUARE_SIZE / 2)) && (getLayoutY() < (PLAY_AREA_Y + 2.5 * SQUARE_SIZE));
+                    }else if (col=='2'){
+                        return getLayoutX() > (PLAY_AREA_X - (SQUARE_SIZE / 2)) && (getLayoutX() < (PLAY_AREA_X + 7.5 * SQUARE_SIZE))
+                                && getLayoutY() > (PLAY_AREA_Y - (SQUARE_SIZE / 2)) && (getLayoutY() < (PLAY_AREA_Y + 2.5 * SQUARE_SIZE));
+                    }else if (col=='3'){
+                        return getLayoutX() > (PLAY_AREA_X - (SQUARE_SIZE / 2)) && (getLayoutX() < (PLAY_AREA_X + 6.5 * SQUARE_SIZE))
+                                && getLayoutY() > (PLAY_AREA_Y - (SQUARE_SIZE / 2)) && (getLayoutY() < (PLAY_AREA_Y + 2.5 * SQUARE_SIZE));
+                    }
+                case '4':
+                    if (col=='2'){
+                        return getLayoutX() > (PLAY_AREA_X - (SQUARE_SIZE / 2)) && (getLayoutX() < (PLAY_AREA_X + 7.5 * SQUARE_SIZE))
+                                && getLayoutY() > (PLAY_AREA_Y - (SQUARE_SIZE / 2)) && (getLayoutY() < (PLAY_AREA_Y + 1.5 * SQUARE_SIZE));
+                    }
+            }
+            return false;
         }
 
         private boolean alreadyOccupied(){
