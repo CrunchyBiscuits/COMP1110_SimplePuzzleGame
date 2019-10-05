@@ -292,8 +292,8 @@ public class Board extends Application {
             //finish drag
             setOnMouseReleased(event->{
                 snapToGrid();
-                System.out.println(getLayoutY());
-                System.out.println(getLayoutX());
+//                System.out.println(getLayoutY());
+//                System.out.println(getLayoutX());
             });
         }
 
@@ -388,8 +388,8 @@ public class Board extends Application {
          * */
         private String getOccupiedPostion(int tileID, int col, int row, int orientation){
             String result="";
-            System.out.println(col);
-            System.out.println(row);
+//            System.out.println(col);
+//            System.out.println(row);
             switch (tileID){
                 case 0:
                     if (orientation==0){
@@ -779,25 +779,17 @@ public class Board extends Application {
         private boolean alreadyOccupied(){
             int x = (int) (getLayoutX() - PLAY_AREA_X) / SQUARE_SIZE;
             int y = (int) (getLayoutY() - PLAY_AREA_Y) / SQUARE_SIZE;
-            System.out.println(x);
-            System.out.println(y);
 
-            String placement="";
-            placement +=(char)(tileID+'a');
-            placement +=x;
-            placement +=y;
-            placement +=orientation;
-//            System.out.println(placement);
-
+//            System.out.println(x);
+//            System.out.println(y);
             // place for two block area
             String block1="04";
             String block2="84";
 
             String occupiedPlacement=getOccupiedPostion(tileID,x,y,orientation);
-            if (occupiedPlacement.contains(block1)||occupiedPlacement.contains(block2)){
+            if (checkOccupied(block1,occupiedPlacement)||checkOccupied(block2,occupiedPlacement)){
                 return true;
             }
-            System.out.println(occupiedPlacement);
             for (int i=0;i<10;i++){
                 if (tileState[i]==NOT_PLACED)
                     continue;
@@ -820,7 +812,6 @@ public class Board extends Application {
                 tileState[tileID] = NOT_PLACED;
             else {
                 tileState[tileID] =tileID*1000+x*100+y*10+orientation;
-                System.out.println(tileState[tileID]);
             }
         }
 
