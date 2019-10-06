@@ -33,9 +33,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import static comp1110.ass2.State.BLOCK;
-import static comp1110.ass2.State.EMPTY;
-
 public class Board extends Application {
 
     //variable setting author Zheyuan Zhang u6870923
@@ -253,7 +250,7 @@ public class Board extends Application {
             tileState[tile-'a'] = NOT_PLACED;
             homeX = MARGIN_X + ((tile-'a')%3)*4*SQUARE_SIZE;
             setLayoutX(homeX);
-            homeY = OBJECTIVE_MARGIN_Y + OBJECTIVE_HEIGHT + MARGIN_Y+((tile-'a')/3)*2*SQUARE_SIZE;
+            homeY = OBJECTIVE_MARGIN_Y + OBJECTIVE_HEIGHT + MARGIN_Y+((tile-'a')/3)*3*SQUARE_SIZE;
             setLayoutY(homeY);
 
             //handling events
@@ -921,7 +918,7 @@ public class Board extends Application {
     /**
      * show the images of challenge align with challenge string
     * */
-    String c = "RRBWGBWRR".toLowerCase();
+    String c = "RRRGBWWBG".toLowerCase();
     private void getChallenge(){
         for (int i =0;i<c.length();i++){
             //loop to get each challenge and get the resource of pictures
@@ -1146,6 +1143,9 @@ public class Board extends Application {
             hideCompletion();
             focusgame = new FocusGame();
             String[] reSet={""};
+//            String sol = FocusGame.getSolution("");
+//            if (sol!=null)
+//                makeSolution(sol);
             showTiles();
             // TODO check solution
         }catch (IllegalArgumentException e){
