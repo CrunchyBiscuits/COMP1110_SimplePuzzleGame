@@ -1,6 +1,9 @@
 package comp1110.ass2.gui;
 
-import comp1110.ass2.*;
+import comp1110.ass2.FocusGame;
+import comp1110.ass2.Orientation;
+import comp1110.ass2.State;
+import comp1110.ass2.Tile;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -29,9 +32,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
-import static comp1110.ass2.State.BLOCK;
-import static comp1110.ass2.State.EMPTY;
 
 public class Board extends Application {
 
@@ -250,7 +250,7 @@ public class Board extends Application {
             tileState[tile-'a'] = NOT_PLACED;
             homeX = MARGIN_X + ((tile-'a')%3)*4*SQUARE_SIZE;
             setLayoutX(homeX);
-            homeY = OBJECTIVE_MARGIN_Y + OBJECTIVE_HEIGHT + MARGIN_Y+((tile-'a')/3)*2*SQUARE_SIZE;
+            homeY = OBJECTIVE_MARGIN_Y + OBJECTIVE_HEIGHT + MARGIN_Y+((tile-'a')/3)*3*SQUARE_SIZE;
             setLayoutY(homeY);
 
             //handling events
@@ -1001,9 +1001,6 @@ public class Board extends Application {
 
     // FIXME Task 11: Generate interesting challenges (each challenge may have just one solution)
 
-    
-
-
 
     /**
      * Create the controls that allow the game to be restarted and the difficulty
@@ -1147,6 +1144,9 @@ public class Board extends Application {
             hideCompletion();
             focusgame = new FocusGame();
             String[] reSet={""};
+//            String sol = FocusGame.getSolution("");
+//            if (sol!=null)
+//                makeSolution(sol);
             showTiles();
             // TODO check solution
         }catch (IllegalArgumentException e){
