@@ -1,9 +1,6 @@
 package comp1110.ass2.gui;
 
-import comp1110.ass2.FocusGame;
-import comp1110.ass2.Orientation;
-import comp1110.ass2.State;
-import comp1110.ass2.Tile;
+import comp1110.ass2.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
