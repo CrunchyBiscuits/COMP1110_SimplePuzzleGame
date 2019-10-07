@@ -271,6 +271,7 @@ public class Board extends Application {
             setOnMousePressed(event->{
                 mouseX = event.getSceneX();
                 mouseY = event.getSceneY();
+                tileState[tileID]=NOT_PLACED;
             });
 
             //dragging
