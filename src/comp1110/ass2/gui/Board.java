@@ -925,20 +925,19 @@ public class Board extends Application {
         for (int i =0;i<c.length();i++){
             //loop to get each challenge and get the resource of pictures
             String pic = getClass().getResource("assets/sq-" + c.charAt(i) + ".png").toString();
-
-
-
             ImageView image = new ImageView(pic); // basic
             image.setOpacity(0.5);
             int col = i%3;
             int row = i/3;
-            image.setY(120+row*40);
-            image.setX(650+col*40);
+            image.setY(50+row*40);
+            image.setX(200+col*40);
             image.setFitHeight(SQUARE_SIZE);
             image.setFitWidth(SQUARE_SIZE);
             challenge.getChildren().add(image);
         }
     }
+
+
 
     /**
      * Set up the group that represents the solution (and make it transparent)
@@ -992,7 +991,7 @@ public class Board extends Application {
 
 
     // FIXME Task 11: Generate interesting challenges (each challenge may have just one solution)
-    
+
 
 
 
