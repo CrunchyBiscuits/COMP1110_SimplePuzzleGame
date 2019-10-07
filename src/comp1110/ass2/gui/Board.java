@@ -30,6 +30,9 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.List;
+import java.util.Random;
+
 public class Board extends Application {
 
     //variable setting author Zheyuan Zhang u6870923
@@ -915,11 +918,15 @@ public class Board extends Application {
     /**
      * show the images of challenge align with challenge string
     * */
-    String c = Challenge.randomChallenge();
+
     private void getChallenge(){
+         String c = Challenge.randomChallenge();
         for (int i =0;i<c.length();i++){
             //loop to get each challenge and get the resource of pictures
             String pic = getClass().getResource("assets/sq-" + c.charAt(i) + ".png").toString();
+
+
+
             ImageView image = new ImageView(pic); // basic
             image.setOpacity(0.5);
             int col = i%3;
@@ -1011,9 +1018,13 @@ public class Board extends Application {
             @Override
             public void handle(ActionEvent e) {
                 newGame();
+                challenge.getChildren().clear();
+                getChallenge();
+
             }
         });
         controls.getChildren().add(button);
+
 
 //        difficulty.setMin(1);
 //        difficulty.setMax(4);
@@ -1111,6 +1122,13 @@ public class Board extends Application {
         completionText.setOpacity(0);
     }
 
+    private void hideChallenge(){
+        completionText.toBack();
+        completionText.setOpacity(0);
+    }
+
+
+
     /**
      * Create the message to be displayed when the player completes the puzzle.
      */
@@ -1139,12 +1157,17 @@ public class Board extends Application {
     private void newGame(){
         try{
             hideCompletion();
+
+
             focusgame = new FocusGame();
+
             String[] reSet={""};
 //            String sol = FocusGame.getSolution("");
 //            if (sol!=null)
 //                makeSolution(sol);
             showTiles();
+
+
             // TODO check solution
         }catch (IllegalArgumentException e){
             System.err.println(e);
