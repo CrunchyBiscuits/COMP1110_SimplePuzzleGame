@@ -1,6 +1,12 @@
 package comp1110.ass2;
 
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
+import static comp1110.ass2.State.*;
+
 /**
  * define the states of the central nine pieces like 'RRRRRRRRR'
  * based on the game requirement such as when the player achieve the consistant three pieces present the same color,
@@ -10,8 +16,25 @@ package comp1110.ass2;
  * which means the player wins
  */
 public class Challenge {
-  
 
+    public static String randomChallenge() {
+        String solution = "";
+        Random random = new Random();
+        List<String> strings = Arrays.asList("R", "G", "B", "W");
+        for (int i=0; i<9; i++) {
+            int rand = random.nextInt(4);
+            solution += strings.get(rand);
+        }
+        return solution;
+    }
+
+    public static String getInterestingChallege() {
+        String challenge = "";
+        do {
+            challenge = randomChallenge();
+        } while (FocusGame.getSolution(challenge) != null);
+        return challenge;
+    }
 }
 
 

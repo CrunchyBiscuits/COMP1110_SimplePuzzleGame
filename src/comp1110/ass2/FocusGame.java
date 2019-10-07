@@ -593,6 +593,9 @@ public class FocusGame {
         return allNineSolutionStringStyle;
     }
 
+
+
+
     public static String getSolution(String challenge) {
         // FIXME Task 9: determine the solution to the game, given a particular challenge
         Set<String> possibleSolutionsForCentralNine = getAllNineCentralPointsSolution(challenge);
