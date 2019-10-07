@@ -971,33 +971,20 @@ public class Board extends Application {
     }
 
     // FIXME Task 10: Implement hints
-    private void glowHints(){
-        Glow glow = new Glow();
-        glow.setLevel(0.9);
+    private void getHints(){
+        Button button = new Button("Hints");
+        button.setLayoutX(BOARD_X + 300);
+        button.setLayoutY(GAME_HEIGHT - 55);
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent e) {
+
+
+
+            }
+        });
+        controls.getChildren().add(button);
     }
-
-     // add a pop up window but have a bug
-//    private void popUpWindow(){
-//        Stage window = new Stage();
-//        window.initModality(Modality.APPLICATION_MODAL);
-//        window.setTitle("Hints");
-//        window.setMinWidth(250);
-//
-//        Label label = new Label();
-//        label.setText("Continuing to build Hint for solving the challenge");
-//        Button closeButton = new Button("Close the window");
-//        closeButton.setOnAction(e -> window.close());
-//
-//        VBox layout = new VBox(10);
-//        layout.getChildren().addAll(label,closeButton);
-//        layout.setAlignment(Pos.CENTER);
-//
-//        Scene s1 = new Scene(layout);
-//        window.setScene(s1);
-//        window.showAndWait();
-//
-//    }
-
 
 
 
@@ -1005,6 +992,9 @@ public class Board extends Application {
 
 
     // FIXME Task 11: Generate interesting challenges (each challenge may have just one solution)
+    
+
+
 
 
     /**
@@ -1123,10 +1113,6 @@ public class Board extends Application {
         completionText.setOpacity(0);
     }
 
-    private void hideChallenge(){
-        completionText.toBack();
-        completionText.setOpacity(0);
-    }
 
 
 
@@ -1206,6 +1192,7 @@ public class Board extends Application {
         showBoard();
         makeControls();
         makeCompletion();
+        getHints();
 
         newGame();
 
