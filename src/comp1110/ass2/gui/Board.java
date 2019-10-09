@@ -927,7 +927,7 @@ public class Board extends Application {
             //loop to get each challenge and get the resource of pictures
             String pic = getClass().getResource("assets/sq-" + c.charAt(i) + ".png").toString();
             ImageView image = new ImageView(pic); // basic
-            image.setOpacity(0.5);
+//            image.setOpacity(0.5);
             int col = i%3;
             int row = i/3;
             image.setY(50+row*40);
