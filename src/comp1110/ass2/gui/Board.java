@@ -272,6 +272,7 @@ public class Board extends Application {
                 mouseX = event.getSceneX();
                 mouseY = event.getSceneY();
                 tileState[tileID]=NOT_PLACED;
+
             });
 
             //dragging
