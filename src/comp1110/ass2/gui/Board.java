@@ -1,6 +1,9 @@
 package comp1110.ass2.gui;
 
 import comp1110.ass2.*;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -20,10 +23,12 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import static comp1110.ass2.FocusGame.*;
 
@@ -1000,7 +1005,7 @@ public class Board extends Application {
     }
 
 
-    private void placeHintPiece(String nextMove) {
+    private void placeHintPiece(String nextMove){
         String pieceName = nextMove.substring(0, 1);
         Integer pieceX = Integer.parseInt(nextMove.substring(1, 2));
         Integer pieceY = Integer.parseInt(nextMove.substring(2, 3));
@@ -1016,13 +1021,63 @@ public class Board extends Application {
         pieceView.setX(PLAY_AREA_X + pieceX * SQUARE_SIZE);
         pieceView.setY(PLAY_AREA_Y + pieceY * SQUARE_SIZE);
 
-        hint.getChildren().add(pieceView);
+
+
+        try {
+            hint.getChildren().add(pieceView);
+            Thread.sleep(2000);
+
+        } catch (InterruptedException e) {
+        }
+        hint.getChildren().clear();
+
+
+
+//    hint.getChildren().add(pieceView);
+//                 Thread.sleep(2000);
+//
+//        hint.getChildren().clear();
+//        hint.getChildren().clear();
+//        FadeTransition fade = new FadeTransition(Duration.seconds(2));
+//        fade.getDelay();
+//
+
+//        Timeline time = new Timeline(new KeyFrame(Duration.seconds(2.0)));
+//        time.play();
+//        hint.getChildren().add(pieceView);
+//        time.stop();
+//
 
         // Sleep 1 - 2 seconds
 
-        hint.getChildren().clear();
+//        Timeline t = new Timeline();
+
+//        Thread t = new Thread();
+//
+//
+//
+//            hint.getChildren().add(pieceView);
+//            Thread.sleep(1500);
+//            hint.getChildren().clear();
+
+
+//
+
 
     }
+
+
+
+
+
+//    private void timer(){
+//        try {
+//            Thread.sleep(1500);
+//        } catch (Exception e) {
+//        }
+//
+//    }
+
 
     // FIXME Task 10: Implement hints
     private void getHints(){
@@ -1049,6 +1104,7 @@ public class Board extends Application {
             System.out.println(nextMove);
 
             placeHintPiece(nextMove);
+
 
         });
 
