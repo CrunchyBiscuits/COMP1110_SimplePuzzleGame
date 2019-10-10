@@ -971,6 +971,14 @@ public class Board extends Application {
 
     // FIXME Task 10: Implement hints
     private void getHints(){
+
+        String solution = FocusGame.getSolution(challenge.toString());
+        
+
+
+
+
+
         Button button = new Button("Hints");
         button.setLayoutX(BOARD_X + 300);
         button.setLayoutY(GAME_HEIGHT - 55);
@@ -991,10 +999,14 @@ public class Board extends Application {
 
 
     // FIXME Task 11: Generate interesting challenges (each challenge may have just one solution)
+    private void setSolution() {
+        String c = Challenge.randomChallenge();
+        String s = FocusGame.getSolution(c);
 
 
 
 
+    }
 
     /**
      * Create the controls that allow the game to be restarted and the difficulty
