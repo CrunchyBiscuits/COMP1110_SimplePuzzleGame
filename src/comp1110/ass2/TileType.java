@@ -3,7 +3,24 @@ package comp1110.ass2;
 import static comp1110.ass2.State.*;
 
 public enum TileType {
-    A, B, C, D, E, F, G, H, I, J;
+    A(3, 2), B(4, 2), C(4, 2), D(3, 2), E(3, 2),
+    F(3, 1), G(3, 2), H(3, 3), I(2, 2), J(4, 2);
+
+    private int width;
+    private int height;
+
+    TileType(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    public int getWidth(int orientation) {
+        return orientation % 2 == 0 ? this.width : this.height;
+    }
+
+    public int getHeight(int orientation) {
+        return orientation % 2 == 0 ? this.height : this.width;
+    }
 
     public State getOnePointState(TileType tileType, Orientation orientation, int colOff, int rowOff) {
         State[] states = statemap[this.ordinal()];
