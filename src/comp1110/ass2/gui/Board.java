@@ -968,6 +968,8 @@ public class Board extends Application {
     }
 
 
+    // FIXME Task 10: Implement hints
+
     private String stateToPlacement() {
         String placement = "";
         for (int i = 0; i < 10; i++) {
@@ -988,10 +990,10 @@ public class Board extends Application {
         String nextMOve = "";
         if (!placement.isBlank()) {
             List<String> pieceNames = new ArrayList<>();
-            for (String piece: pPieces)
+            for (String piece : pPieces)
                 pieceNames.add(piece.substring(0, 1));
 
-            for (String piece: sPieces) {
+            for (String piece : sPieces) {
                 if (!pieceNames.contains(piece.substring(0, 1))) {
                     nextMOve = piece;
                     break;
@@ -1005,7 +1007,7 @@ public class Board extends Application {
     }
 
 
-    private void placeHintPiece(String nextMove){
+    private void placeHintPiece(String nextMove) {
         String pieceName = nextMove.substring(0, 1);
         Integer pieceX = Integer.parseInt(nextMove.substring(1, 2));
         Integer pieceY = Integer.parseInt(nextMove.substring(2, 3));
@@ -1022,79 +1024,24 @@ public class Board extends Application {
         pieceView.setY(PLAY_AREA_Y + pieceY * SQUARE_SIZE);
 
 
-
         try {
             hint.getChildren().add(pieceView);
             Thread.sleep(2000);
 
         } catch (InterruptedException e) {
+            hint.getChildren().clear();
         }
-        hint.getChildren().clear();
-
-
-
-//    hint.getChildren().add(pieceView);
-//                 Thread.sleep(2000);
-//
-//        hint.getChildren().clear();
-//        hint.getChildren().clear();
-//        FadeTransition fade = new FadeTransition(Duration.seconds(2));
-//        fade.getDelay();
-//
-
-//        Timeline time = new Timeline(new KeyFrame(Duration.seconds(2.0)));
-//        time.play();
-//        hint.getChildren().add(pieceView);
-//        time.stop();
-//
-
-        // Sleep 1 - 2 seconds
-
-//        Timeline t = new Timeline();
-
-//        Thread t = new Thread();
-//
-//
-//
-//            hint.getChildren().add(pieceView);
-//            Thread.sleep(1500);
-//            hint.getChildren().clear();
-
-
-//
 
 
     }
 
 
-
-
-
-//    private void timer(){
-//        try {
-//            Thread.sleep(1500);
-//        } catch (Exception e) {
-//        }
-//
-//    }
-
-
-    // FIXME Task 10: Implement hints
-    private void getHints(){
+    private void getHints() {
         String solution = FocusGame.getSolution(challengeString);
 
         Button button = new Button("Hints");
         button.setLayoutX(BOARD_X + 300);
         button.setLayoutY(GAME_HEIGHT - 55);
-//        button.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent e) {
-//                String placement = stateToPlacement();
-//                System.out.println(placement);
-//
-//            }
-//        });
-
         button.setOnAction(event -> {
             System.out.println("!!!!!!!!!!!!!!!!!!!!!");
 
