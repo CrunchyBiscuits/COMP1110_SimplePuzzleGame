@@ -281,7 +281,7 @@ public class FocusGame {
      * @param row      The location's row.
      * @return A set of viable piece placements, or null if there are none.
      */
-    static Set<String> getViablePiecePlacements(String placement, String challenge, int col, int row) {
+    public static Set<String> getViablePiecePlacements(String placement, String challenge, int col, int row) {
         // FIXME Task 6: determine the set of all viable piece placements given existing placements and a challenge
 
         int testCol = col;

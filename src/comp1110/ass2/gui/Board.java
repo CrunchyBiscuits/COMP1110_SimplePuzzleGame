@@ -1,37 +1,36 @@
 package comp1110.ass2.gui;
 
 import comp1110.ass2.*;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import static comp1110.ass2.FocusGame.*;
 
 public class Board extends Application {
 
@@ -78,8 +77,10 @@ public class Board extends Application {
     private final Group objective = new Group();
     private final Group challenge = new Group();
     private final Group shadow = new Group();
+    private final Group hint = new Group();
 //    private final Group window = new Group();
 
+    private static String challengeString;
     private static String solutionString;
 
     /* the state of the tiles */
@@ -296,9 +297,6 @@ public class Board extends Application {
             });
         }
 
-
-
-
         private void snapToGrid(){
                 if ((getLayoutX() >= (PLAY_AREA_X - (SQUARE_SIZE / 2))) && (getLayoutX() < (PLAY_AREA_X + (SQUARE_SIZE / 2)))) {
                     setLayoutX(PLAY_AREA_X);
@@ -385,7 +383,7 @@ public class Board extends Application {
         /**
          * Get the occupied place align with different tiles
          * */
-        private String getOccupiedPostion(int tileID, int col, int row, int orientation){
+        private String getOccupiedPosition(int tileID, int col, int row, int orientation){
             String result="";
 //            System.out.println(col);
 //            System.out.println(row);
@@ -785,7 +783,7 @@ public class Board extends Application {
             String block1="04";
             String block2="84";
 
-            String occupiedPlacement=getOccupiedPostion(tileID,x,y,orientation);
+            String occupiedPlacement= getOccupiedPosition(tileID,x,y,orientation);
             if (checkOccupied(block1,occupiedPlacement)||checkOccupied(block2,occupiedPlacement)){
                 return true;
             }
@@ -796,7 +794,7 @@ public class Board extends Application {
                 int tx = tileState[i]/100%10;
                 int ty = tileState[i]/10%10;
                 int tOri = tileState[i]%10;
-                String existedPlacement = getOccupiedPostion(i, tx, ty, tOri);
+                String existedPlacement = getOccupiedPosition(i, tx, ty, tOri);
                 if (checkOccupied(existedPlacement, occupiedPlacement)){
                     return true;
                 }
@@ -922,10 +920,10 @@ public class Board extends Application {
     * */
 
     private void getChallenge(){
-         String c = Challenge.randomChallenge();
-        for (int i =0;i<c.length();i++){
+        challengeString = Challenge.getInterestingChallenge();
+        for (int i =0;i<challengeString.length();i++){
             //loop to get each challenge and get the resource of pictures
-            String pic = getClass().getResource("assets/sq-" + c.charAt(i) + ".png").toString();
+            String pic = getClass().getResource("assets/sq-" + challengeString.charAt(i) + ".png").toString();
             ImageView image = new ImageView(pic); // basic
 //            image.setOpacity(0.5);
             int col = i%3;
@@ -970,32 +968,104 @@ public class Board extends Application {
         this.solution.setOpacity(0);
     }
 
+
     // FIXME Task 10: Implement hints
-    private void getHints(){
+
+    private String stateToPlacement() {
+        String placement = "";
+        for (int i = 0; i < 10; i++) {
+            if (tileState[i] == NOT_PLACED)
+                continue;
+
+            String currentPiece = Integer.toString(tileState[i]);
+            placement = placement + (char) (i + 'a') + currentPiece.substring(1, 4);
+
+        }
+        return placement;
+    }
+
+    private String findNextMove(String placement, String solution) {
+        String[] pPieces = placement.split("(?<=\\G.{4})");
+        String[] sPieces = solution.split("(?<=\\G.{4})");
+
+        String nextMOve = "";
+        if (!placement.isBlank()) {
+            List<String> pieceNames = new ArrayList<>();
+            for (String piece : pPieces)
+                pieceNames.add(piece.substring(0, 1));
+
+            for (String piece : sPieces) {
+                if (!pieceNames.contains(piece.substring(0, 1))) {
+                    nextMOve = piece;
+                    break;
+                }
+            }
+        } else {
+            nextMOve = sPieces[0];
+        }
+
+        return nextMOve;
+    }
+
+
+    private void placeHintPiece(String nextMove) {
+        String pieceName = nextMove.substring(0, 1);
+        Integer pieceX = Integer.parseInt(nextMove.substring(1, 2));
+        Integer pieceY = Integer.parseInt(nextMove.substring(2, 3));
+        String pieceOri = nextMove.substring(3, 4);
+        TileType pieceType = TileType.valueOf(pieceName.toUpperCase());
+
+        String piecePath = Board.class.getResource(URI_BASE + pieceName + "-" + pieceOri + ".png").toString();
+
+        ImageView pieceView = new ImageView(new Image(piecePath));
+        pieceView.setFitWidth(pieceType.getWidth(Integer.parseInt(pieceOri)) * SQUARE_SIZE);
+        pieceView.setFitHeight(pieceType.getHeight(Integer.parseInt(pieceOri)) * SQUARE_SIZE);
+
+        pieceView.setX(PLAY_AREA_X + pieceX * SQUARE_SIZE);
+        pieceView.setY(PLAY_AREA_Y + pieceY * SQUARE_SIZE);
+
+
+        try {
+            hint.getChildren().add(pieceView);
+            Thread.sleep(2000);
+
+        } catch (InterruptedException e) {
+            hint.getChildren().clear();
+        }
+
+
+    }
+
+
+    private void getHints() {
+        String solution = FocusGame.getSolution(challengeString);
+
         Button button = new Button("Hints");
         button.setLayoutX(BOARD_X + 300);
         button.setLayoutY(GAME_HEIGHT - 55);
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
+        button.setOnAction(event -> {
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!");
+
+            String placement = stateToPlacement();
+            String nextMove = findNextMove(placement, solution);
+
+            System.out.println(nextMove);
+
+            placeHintPiece(nextMove);
 
 
-
-            }
         });
+
         controls.getChildren().add(button);
     }
 
 
-
-
-
-
     // FIXME Task 11: Generate interesting challenges (each challenge may have just one solution)
+    private void setSolution() {
+        String c = Challenge.getInterestingChallenge();
+        String s = FocusGame.getSolution(c);
 
-
-
-
+    }
 
     /**
      * Create the controls that allow the game to be restarted and the difficulty
@@ -1182,6 +1252,7 @@ public class Board extends Application {
 
         root.getChildren().add(shadow);
 //        root.getChildren().add(window);
+        root.getChildren().add(hint);
 
 
         // TODO set handlers, sound, board, tiles
