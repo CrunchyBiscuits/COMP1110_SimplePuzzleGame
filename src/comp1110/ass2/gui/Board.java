@@ -80,7 +80,6 @@ public class Board extends Application {
 //    private final Group window = new Group();
 
     private static String challengeString;
-    private static String solutionString;
 
     /* the state of the tiles */
     int[] tileState = new int[10];   //  all off screen to begin with
@@ -261,7 +260,6 @@ public class Board extends Application {
             setLayoutY(homeY);
 
             //handling events
-            //TODO rotate and completion
             setOnScroll(event ->{
                 if (System.currentTimeMillis()-lastRotationTime>ROTATION_THRESHOLD){
                     lastRotationTime = System.currentTimeMillis();
@@ -283,7 +281,7 @@ public class Board extends Application {
 
             //dragging
             setOnMouseDragged(event->{
-                //hideCompletion();
+                hideCompletion();
                 toFront();
                 double movementX = event.getSceneX() - mouseX;
                 double movementY = event.getSceneY() - mouseY;
@@ -944,35 +942,35 @@ public class Board extends Application {
 
 
 
-    /**
-     * Set up the group that represents the solution (and make it transparent)
-     *
-     * @param solution The solution as an array of chars.
-     */
-    private void makeSolution(String solution) {
-        this.solution.getChildren().clear();
-
-        if (solution.length() == 0) {
-            return;
-        }
-
-        if (solution.length() != 40) {
-            throw new IllegalArgumentException("Solution incorrect length: " + solution);
-        }
-
-        solutionString = solution;
-        for (int i = 0; i < solution.length(); i+=4) {
-            GameTile gtile = new GameTile(solution.charAt(i), Tile.placementToOrientation(solution.substring(i,i+4)).ordinal());
-            int x = solution.charAt(i+1) - '0';
-            int y = solution.charAt(i+2) - '0';
-
-            gtile.setLayoutX(PLAY_AREA_X + (x * SQUARE_SIZE));
-            gtile.setLayoutY(PLAY_AREA_Y + (y * SQUARE_SIZE));
-
-            this.solution.getChildren().add(gtile);
-        }
-        this.solution.setOpacity(0);
-    }
+//    /**
+//     * Set up the group that represents the solution (and make it transparent)
+//     *
+//     * @param solution The solution as an array of chars.
+//     */
+//    private void makeSolution(String solution) {
+//        this.solution.getChildren().clear();
+//
+//        if (solution.length() == 0) {
+//            return;
+//        }
+//
+//        if (solution.length() != 40) {
+//            throw new IllegalArgumentException("Solution incorrect length: " + solution);
+//        }
+//
+//        solutionString = solution;
+//        for (int i = 0; i < solution.length(); i+=4) {
+//            GameTile gtile = new GameTile(solution.charAt(i), Tile.placementToOrientation(solution.substring(i,i+4)).ordinal());
+//            int x = solution.charAt(i+1) - '0';
+//            int y = solution.charAt(i+2) - '0';
+//
+//            gtile.setLayoutX(PLAY_AREA_X + (x * SQUARE_SIZE));
+//            gtile.setLayoutY(PLAY_AREA_Y + (y * SQUARE_SIZE));
+//
+//            this.solution.getChildren().add(gtile);
+//        }
+//        this.solution.setOpacity(0);
+//    }
 
 
     // FIXME Task 10: Implement hints
@@ -1169,33 +1167,59 @@ public class Board extends Application {
     }
 
 
-    /**
-     * Add the objective to the board
-     */
-    private void addObjectiveToBoard() {
-        objective.getChildren().clear();
-        //objective.getChildren().add(new GameTile(FocusGame.getObjective().getProblemNumber(), OBJECTIVE_MARGIN_X, OBJECTIVE_MARGIN_Y));
-    }
+//    /**
+//     * Add the objective to the board
+//     */
+//    private void addObjectiveToBoard() {
+//        objective.getChildren().clear();
+//        //objective.getChildren().add(new GameTile(FocusGame.getObjective().getProblemNumber(), OBJECTIVE_MARGIN_X, OBJECTIVE_MARGIN_Y));
+//    }
 
     /**
      * Check game completion and update status
      */
     private void checkCompletion() {
-        String state = new String("");
+        String solution = FocusGame.getSolution(challengeString);
+        String[] states = new String[10];
+        String[] answers = new String[10];
+        String stateString = "";
+
+
         for (int i = 0; i < 10; i++) {
             if (tileState[i] == NOT_PLACED)
                 return;
-            state = state +
+            states[i] = "" +
                     (char)(i + 'a') +
                     (tileState[i]/100%10) +
                     (tileState[i]/10%10) +
                     (tileState[i]%10);
+
+            answers[i]=solution.substring(i*4,i*4+4);
+            stateString += states[i];
         }
 
-        if (state.equals(solutionString))
-            showCompletion();
-        else
-            return;
+        for (int i=0;i<10;i++){
+            boolean equalFlag = false;
+            for (int j=0;j<10;j++){
+                if (answers[i].equals(states[j])){
+                    equalFlag = true;
+                } else if (answers[i].charAt(0)==states[j].charAt(0)){
+                    if ((states[j].charAt(3)+2)==answers[i].charAt(3)||(states[j].charAt(3)-2)==answers[i].charAt(3)){
+                        equalFlag = true;
+                    }
+                }
+            }
+            if (!equalFlag){
+                return;
+            }
+        }
+
+        showCompletion();
+//        System.out.println("--------------");
+//        System.out.println(solution);
+//        System.out.println(stateString);
+//        System.out.println("---------------");
+
     }
 
     /**
