@@ -977,8 +977,13 @@ public class Board extends Application {
             if (tileState[i] == NOT_PLACED)
                 continue;
 
-            String currentPiece = Integer.toString(tileState[i]);
-            placement = placement + (char) (i + 'a') + currentPiece.substring(1, 4);
+            int tx = tileState[i]/100%10;
+            int ty = tileState[i]/10%10;
+            int tOri = tileState[i]%10;
+            placement = placement + (char) (i + 'a') + tx;
+            placement = placement + ty;
+            placement = placement + tOri;
+
 
         }
         return placement;
@@ -1027,13 +1032,13 @@ public class Board extends Application {
 
         try {
             hint.getChildren().add(pieceView);
-            Thread.sleep(2000);
+            //Thread.sleep(2000);
+            //hint.getChildren().clear();
+        } catch (Exception e) {
+            System.err.print(e.getMessage());
+        }finally {
 
-        } catch (InterruptedException e) {
-            hint.getChildren().clear();
         }
-
-
     }
 
 
@@ -1044,7 +1049,6 @@ public class Board extends Application {
         button.setLayoutX(BOARD_X + 300);
         button.setLayoutY(GAME_HEIGHT - 55);
         button.setOnAction(event -> {
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!");
 
             String placement = stateToPlacement();
             String nextMove = findNextMove(placement, solution);
@@ -1154,11 +1158,7 @@ public class Board extends Application {
                 return;
             //TODO change the encode tpye
 
-            state = state +
-                    (char)(i + 'a') +
-                    (char)(((tileState[i]/4)%4)+'0') +
-                    (char)(((tileState[i]/4)/4)+'0') +
-                    (Orientation.values()[tileState[i]%4]);
+
         }
 
         if (state.equals(solutionString))
