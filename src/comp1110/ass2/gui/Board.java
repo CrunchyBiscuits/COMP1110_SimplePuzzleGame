@@ -448,7 +448,7 @@ public class Board extends Application {
 
                         for (int i=0;i<3;i++){
                             result += col+1;
-                            result += row+i;
+                            result += row+i+1;
                         }
                         return result;
                     }else if (orientation==2){
@@ -464,7 +464,7 @@ public class Board extends Application {
                     }else {
                         for (int i=0;i<2;i++){
                             result += col+1;
-                            result += row+i;
+                            result += row+i+2;
                         }
                         for (int i=0;i<3;i++){
                             result += col;
