@@ -3,6 +3,7 @@ package comp1110.ass2.gui;
 import comp1110.ass2.*;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -25,9 +26,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static comp1110.ass2.FocusGame.*;
@@ -85,6 +84,13 @@ public class Board extends Application {
 
     /* the state of the tiles */
     int[] tileState = new int[10];   //  all off screen to begin with
+
+    public void showTileStateNow() {
+        for(int i = 0; i < tileState.length; i++) {
+            System.out.print(tileState[i] + " ");
+        }
+        System.out.println();
+    }
 
     /* The underlying game */
     FocusGame focusgame;
@@ -291,6 +297,7 @@ public class Board extends Application {
             //finish drag
             setOnMouseReleased(event->{
                 snapToGrid();
+                showTileStateNow();
 //                System.out.println(getLayoutY());
 //                System.out.println(getLayoutX());
             });
@@ -441,7 +448,7 @@ public class Board extends Application {
 
                         for (int i=0;i<3;i++){
                             result += col+1;
-                            result += row+i;
+                            result += row+i+1;
                         }
                         return result;
                     }else if (orientation==2){
@@ -457,7 +464,7 @@ public class Board extends Application {
                     }else {
                         for (int i=0;i<2;i++){
                             result += col+1;
-                            result += row+i;
+                            result += row+i+2;
                         }
                         for (int i=0;i<3;i++){
                             result += col;
@@ -920,11 +927,11 @@ public class Board extends Application {
 
     private void getChallenge(){
         challengeString = Challenge.getInterestingChallenge();
+        System.out.println("这是这次的challenge的string " +challengeString);
         for (int i =0;i<challengeString.length();i++){
             //loop to get each challenge and get the resource of pictures
             String pic = getClass().getResource("assets/sq-" + challengeString.charAt(i) + ".png").toString();
             ImageView image = new ImageView(pic); // basic
-            image.setOpacity(0.5);
             int col = i%3;
             int row = i/3;
             image.setY(50+row*40);
@@ -976,8 +983,11 @@ public class Board extends Application {
             if (tileState[i] == NOT_PLACED)
                 continue;
 
-            String currentPiece = Integer.toString(tileState[i]);
-            placement = placement + (char) (i + 'a') + currentPiece.substring(1, 4);
+            int tx = tileState[i]/100%10;
+            int ty = tileState[i]/10%10;
+            int tOri = tileState[i]%10;
+            placement = placement + (char) (i + 'a') + tx + ty + tOri;
+            System.out.println(placement);
 
         }
         return placement;
@@ -985,7 +995,15 @@ public class Board extends Application {
 
     private String findNextMove(String placement, String solution) {
         String[] pPieces = placement.split("(?<=\\G.{4})");
+        System.out.println("打印placement的状态");
+        for(int i = 0; i < pPieces.length; i++) {
+            System.out.println(pPieces[i]);
+        }
+        System.out.println("输入的placement的状态打印完毕");
+
         String[] sPieces = solution.split("(?<=\\G.{4})");
+//        for(int i = 0; i < sPieces.length; i++)
+//            System.out.println(sPieces[i]);
 
         String nextMOve = "";
         if (!placement.isBlank()) {
@@ -1002,12 +1020,16 @@ public class Board extends Application {
         } else {
             nextMOve = sPieces[0];
         }
+        System.out.println("这里是推荐的下一块 "+ nextMOve);
+
+        System.out.println("下面是棋盘上的最新状态");
+        showTileStateNow();
 
         return nextMOve;
     }
 
 
-    private void placeHintPiece(String nextMove) throws InterruptedException {
+    private void placeHintPiece(String nextMove) {
         String pieceName = nextMove.substring(0, 1);
         Integer pieceX = Integer.parseInt(nextMove.substring(1, 2));
         Integer pieceY = Integer.parseInt(nextMove.substring(2, 3));
@@ -1023,18 +1045,32 @@ public class Board extends Application {
         pieceView.setX(PLAY_AREA_X + pieceX * SQUARE_SIZE);
         pieceView.setY(PLAY_AREA_Y + pieceY * SQUARE_SIZE);
 
-        hint.getChildren().add(pieceView);
-        try {
-            wait(10000);
-            hint.getChildren().clear();
-        } catch (InterruptedException e) {
-            System.out.println("cannot remove");
-        }
+        pieceView.setOpacity(0.5);
+        board.getChildren().add(pieceView);
+        PauseTransition wait = new PauseTransition(Duration.seconds(1.5));
+        wait.setOnFinished((e) -> {
+            /*YOUR METHOD*/
+            board.getChildren().remove(pieceView);
+            wait.playFromStart();
+        });
+        wait.play();
+
+//        try {
+//            hint.getChildren().add(pieceView);
+//
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            hint.getChildren().clear();
+//        }
+//        finally {
+//            hint.getChildren().remove(pieceView);
+//        }
     }
 
 
     private void getHints() {
         String solution = FocusGame.getSolution(challengeString);
+        System.out.println("对应的solution "+ solution);
 
         Button button = new Button("Hints");
         button.setLayoutX(BOARD_X + 300);
@@ -1047,16 +1083,12 @@ public class Board extends Application {
 
             System.out.println(nextMove);
 
-            try {
-                placeHintPiece(nextMove);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+            placeHintPiece(nextMove);
 
         });
 
         controls.getChildren().add(button);
+
     }
 
 
@@ -1081,6 +1113,7 @@ public class Board extends Application {
                 newGame();
                 challenge.getChildren().clear();
                 getChallenge();
+                getHints();
 
             }
         });
@@ -1152,13 +1185,11 @@ public class Board extends Application {
         for (int i = 0; i < 10; i++) {
             if (tileState[i] == NOT_PLACED)
                 return;
-            //TODO change the encode tpye
-
             state = state +
                     (char)(i + 'a') +
-                    (char)(((tileState[i]/4)%4)+'0') +
-                    (char)(((tileState[i]/4)/4)+'0') +
-                    (Orientation.values()[tileState[i]%4]);
+                    (tileState[i]/100%10) +
+                    (tileState[i]/10%10) +
+                    (tileState[i]%10);
         }
 
         if (state.equals(solutionString))
