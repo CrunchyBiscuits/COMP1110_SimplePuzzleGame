@@ -927,6 +927,7 @@ public class Board extends Application {
 
     private void getChallenge(){
         challengeString = Challenge.getInterestingChallenge();
+        System.out.println("这是这次的challenge的string " +challengeString);
         for (int i =0;i<challengeString.length();i++){
             //loop to get each challenge and get the resource of pictures
             String pic = getClass().getResource("assets/sq-" + challengeString.charAt(i) + ".png").toString();
@@ -1067,6 +1068,7 @@ public class Board extends Application {
 
     private void getHints() {
         String solution = FocusGame.getSolution(challengeString);
+        System.out.println("对应的solution "+ solution);
 
         Button button = new Button("Hints");
         button.setLayoutX(BOARD_X + 300);
@@ -1109,6 +1111,7 @@ public class Board extends Application {
                 newGame();
                 challenge.getChildren().clear();
                 getChallenge();
+                getHints();
 
             }
         });
