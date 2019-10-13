@@ -932,7 +932,6 @@ public class Board extends Application {
             //loop to get each challenge and get the resource of pictures
             String pic = getClass().getResource("assets/sq-" + challengeString.charAt(i) + ".png").toString();
             ImageView image = new ImageView(pic); // basic
-            image.setOpacity(0.5);
             int col = i%3;
             int row = i/3;
             image.setY(50+row*40);
@@ -984,8 +983,11 @@ public class Board extends Application {
             if (tileState[i] == NOT_PLACED)
                 continue;
 
-            String currentPiece = Integer.toString(tileState[i]);
-            placement = placement + (char) (i + 'a') + currentPiece.substring(1, 4);
+            int tx = tileState[i]/100%10;
+            int ty = tileState[i]/10%10;
+            int tOri = tileState[i]%10;
+            placement = placement + (char) (i + 'a') + tx + ty + tOri;
+            System.out.println(placement);
 
         }
         return placement;
@@ -1043,7 +1045,7 @@ public class Board extends Application {
         pieceView.setX(PLAY_AREA_X + pieceX * SQUARE_SIZE);
         pieceView.setY(PLAY_AREA_Y + pieceY * SQUARE_SIZE);
 
-
+        pieceView.setOpacity(0.5);
         board.getChildren().add(pieceView);
         PauseTransition wait = new PauseTransition(Duration.seconds(5));
         wait.setOnFinished((e) -> {
@@ -1183,13 +1185,11 @@ public class Board extends Application {
         for (int i = 0; i < 10; i++) {
             if (tileState[i] == NOT_PLACED)
                 return;
-            //TODO change the encode tpye
-
             state = state +
                     (char)(i + 'a') +
-                    (char)(((tileState[i]/4)%4)+'0') +
-                    (char)(((tileState[i]/4)/4)+'0') +
-                    (Orientation.values()[tileState[i]%4]);
+                    (tileState[i]/100%10) +
+                    (tileState[i]/10%10) +
+                    (tileState[i]%10);
         }
 
         if (state.equals(solutionString))
