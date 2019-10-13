@@ -3,6 +3,7 @@ package comp1110.ass2.gui;
 import comp1110.ass2.*;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -25,9 +26,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static comp1110.ass2.FocusGame.*;
@@ -85,6 +84,13 @@ public class Board extends Application {
 
     /* the state of the tiles */
     int[] tileState = new int[10];   //  all off screen to begin with
+
+    public void showTileStateNow() {
+        for(int i = 0; i < tileState.length; i++) {
+            System.out.print(tileState[i] + " ");
+        }
+        System.out.println();
+    }
 
     /* The underlying game */
     FocusGame focusgame;
@@ -291,6 +297,7 @@ public class Board extends Application {
             //finish drag
             setOnMouseReleased(event->{
                 snapToGrid();
+                showTileStateNow();
 //                System.out.println(getLayoutY());
 //                System.out.println(getLayoutX());
             });
@@ -985,7 +992,15 @@ public class Board extends Application {
 
     private String findNextMove(String placement, String solution) {
         String[] pPieces = placement.split("(?<=\\G.{4})");
+        System.out.println("打印placement的状态");
+        for(int i = 0; i < pPieces.length; i++) {
+            System.out.println(pPieces[i]);
+        }
+        System.out.println("输入的placement的状态打印完毕");
+
         String[] sPieces = solution.split("(?<=\\G.{4})");
+//        for(int i = 0; i < sPieces.length; i++)
+//            System.out.println(sPieces[i]);
 
         String nextMOve = "";
         if (!placement.isBlank()) {
@@ -1002,6 +1017,10 @@ public class Board extends Application {
         } else {
             nextMOve = sPieces[0];
         }
+        System.out.println("这里是推荐的下一块 "+ nextMOve);
+
+        System.out.println("下面是棋盘上的最新状态");
+        showTileStateNow();
 
         return nextMOve;
     }
@@ -1024,15 +1043,25 @@ public class Board extends Application {
         pieceView.setY(PLAY_AREA_Y + pieceY * SQUARE_SIZE);
 
 
-        try {
-            hint.getChildren().add(pieceView);
-            Thread.sleep(2000);
+        board.getChildren().add(pieceView);
+        PauseTransition wait = new PauseTransition(Duration.seconds(5));
+        wait.setOnFinished((e) -> {
+            /*YOUR METHOD*/
+            board.getChildren().remove(pieceView);
+            wait.playFromStart();
+        });
+        wait.play();
 
-        } catch (InterruptedException e) {
-            hint.getChildren().clear();
-        }
-
-
+//        try {
+//            hint.getChildren().add(pieceView);
+//
+//            Thread.sleep(2000);
+//        } catch (InterruptedException e) {
+//            hint.getChildren().clear();
+//        }
+//        finally {
+//            hint.getChildren().remove(pieceView);
+//        }
     }
 
 
@@ -1052,10 +1081,10 @@ public class Board extends Application {
 
             placeHintPiece(nextMove);
 
-
         });
 
         controls.getChildren().add(button);
+
     }
 
 
