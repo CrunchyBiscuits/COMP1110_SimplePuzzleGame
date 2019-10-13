@@ -1007,7 +1007,7 @@ public class Board extends Application {
     }
 
 
-    private void placeHintPiece(String nextMove) {
+    private void placeHintPiece(String nextMove) throws InterruptedException {
         String pieceName = nextMove.substring(0, 1);
         Integer pieceX = Integer.parseInt(nextMove.substring(1, 2));
         Integer pieceY = Integer.parseInt(nextMove.substring(2, 3));
@@ -1023,16 +1023,13 @@ public class Board extends Application {
         pieceView.setX(PLAY_AREA_X + pieceX * SQUARE_SIZE);
         pieceView.setY(PLAY_AREA_Y + pieceY * SQUARE_SIZE);
 
-
+        hint.getChildren().add(pieceView);
         try {
-            hint.getChildren().add(pieceView);
-            Thread.sleep(2000);
-
-        } catch (InterruptedException e) {
+            wait(10000);
             hint.getChildren().clear();
+        } catch (InterruptedException e) {
+            System.out.println("cannot remove");
         }
-
-
     }
 
 
@@ -1050,7 +1047,11 @@ public class Board extends Application {
 
             System.out.println(nextMove);
 
-            placeHintPiece(nextMove);
+            try {
+                placeHintPiece(nextMove);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
 
         });
