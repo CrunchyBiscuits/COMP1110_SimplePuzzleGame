@@ -285,7 +285,7 @@ public class Board extends Application {
                     hideCompletion();
                     rotate();
                     event.consume();
-                    checkCompletion();
+                    //checkCompletion();
                 }
             });
 
@@ -1142,6 +1142,15 @@ public class Board extends Application {
 
         controls.getChildren().add(ruleButton);
 
+        Button clearButton = new Button("Clear");
+        clearButton.setLayoutX(BOARD_X + 420);
+        clearButton.setLayoutY(GAME_HEIGHT - 55);
+
+        clearButton.setOnMouseClicked(e -> {
+            resetPieces();
+        });
+
+        controls.getChildren().add(clearButton);
 
 
 //        difficulty.setMin(1);
@@ -1211,6 +1220,27 @@ public class Board extends Application {
         String[] states = new String[10];
         String[] answers = new String[10];
  //       String stateString = "";
+
+//        ArrayList<String> statesList = new ArrayList<>();
+//        ArrayList<String> answersList = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            if (tileState[i] == NOT_PLACED)
+//                return;
+//
+//            String state_temp = "" +
+//                    (char)(i + 'a') +
+//                    (tileState[i]/100%10) +
+//                    (tileState[i]/10%10) +
+//                    (tileState[i]%10);
+//
+//            statesList.add(state_temp);
+//
+//            answersList.add(solution.substring(i*4,i*4+4));
+//        }
+//        for(String checkString : statesList) {
+//            if(!answersList.contains(checkString))
+//                return;
+//        }
 
 
         for (int i = 0; i < 10; i++) {
