@@ -44,9 +44,7 @@ public class Board extends Application {
     private static final int BOARD_MARGIN_X = 30;
     private static final int BOARD_MARGIN_Y = 60;
 
-    private static final int OBJECTIVE_WIDTH = 162;
-    private static final int OBJECTIVE_HEIGHT = 150;
-    private static final int OBJECTIVE_MARGIN_X = 100;
+    private static final int OBJECTIVE_HEIGHT = 50;
     private static final int OBJECTIVE_MARGIN_Y = 20;
 
     private static final int BOARD_Y = MARGIN_Y;
@@ -256,7 +254,7 @@ public class Board extends Application {
             tileState[tile-'a'] = NOT_PLACED;
             homeX = MARGIN_X + ((tile-'a')%3)*4*SQUARE_SIZE;
             setLayoutX(homeX);
-            homeY = OBJECTIVE_MARGIN_Y + OBJECTIVE_HEIGHT + MARGIN_Y+((tile-'a')/3)*3*SQUARE_SIZE;
+            homeY = OBJECTIVE_MARGIN_Y + OBJECTIVE_HEIGHT + MARGIN_Y+((tile-'a')/3)*4*SQUARE_SIZE;
             setLayoutY(homeY);
 
             //handling events
@@ -932,8 +930,8 @@ public class Board extends Application {
             ImageView image = new ImageView(pic); // basic
             int col = i%3;
             int row = i/3;
-            image.setY(50+row*40);
-            image.setX(200+col*40);
+            image.setY(350+row*40);
+            image.setX(750+col*40);
             image.setFitHeight(SQUARE_SIZE);
             image.setFitWidth(SQUARE_SIZE);
             challenge.getChildren().add(image);
