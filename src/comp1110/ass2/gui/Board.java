@@ -1073,6 +1073,7 @@ public class Board extends Application {
         Button button = new Button("Hints");
         button.setLayoutX(BOARD_X + 300);
         button.setLayoutY(GAME_HEIGHT - 55);
+
         button.setOnAction(event -> {
             System.out.println("!!!!!!!!!!!!!!!!!!!!!");
 
@@ -1085,6 +1086,8 @@ public class Board extends Application {
                 placeHintPiece(nextMove);
 
         });
+
+
 
         controls.getChildren().add(button);
 
