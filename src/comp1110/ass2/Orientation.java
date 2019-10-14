@@ -1,6 +1,10 @@
 package comp1110.ass2;
 
 /**
+ * author: Jianwu Yao
+ */
+
+/**
  * difine the four orientation: N E S W
  */
 public enum Orientation {
