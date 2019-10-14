@@ -927,6 +927,7 @@ public class Board extends Application {
     private String music = getClass().getResource( "assets/Toby Fox - MEGALOVANIA.mp3").toString();
     private AudioClip loop;
 
+    
     private void setUpSoundLoop() {
             loop = new AudioClip(music);
             loop.setCycleCount(AudioClip.INDEFINITE);
