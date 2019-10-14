@@ -1,7 +1,6 @@
 package comp1110.ass2;
 
 
-//import com.sun.javafx.scene.control.behavior.FocusTraversalInputMap;
 
 import java.util.*;
 
@@ -17,6 +16,10 @@ import static comp1110.ass2.State.*;
  * (https://www.smartgames.eu/uk/one-player-games/iq-focus)
  */
 public class FocusGame {
+
+    /**
+     * author: Jianwu Yao (task2 and task3 were solved by Zheyuan Zhang)
+     */
 
     private boolean ifchallenge = false;
     private int testCol = 0;

@@ -1,5 +1,9 @@
 package comp1110.ass2;
 
+/**
+ * author: Jianwu Yao
+ */
+
 public enum State {
     RED, // the color of piece is red
     GREEN, // the color of piece is green

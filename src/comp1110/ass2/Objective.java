@@ -4,6 +4,10 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+/**
+ * author: Jianwu Yao
+ */
+
 public class Objective {
     static final Solution[] SOLUTIONS = {
             new Solution("RRRBWBBRB",

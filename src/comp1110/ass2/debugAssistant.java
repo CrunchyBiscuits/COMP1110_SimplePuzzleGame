@@ -1,14 +1,14 @@
 package comp1110.ass2;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+
 
 /**
+ * author: Jianwu Yao
  * some functions may be useful when debugging
  * For example print the board state or print the tiles state
- *
+ * may this loooks stupid, but it was way helpful when I was working on task5-6-9
+ * thanks to debugAssistant
  */
 public class debugAssistant {
     public static void main(String[] args) {
