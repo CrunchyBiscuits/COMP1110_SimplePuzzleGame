@@ -991,6 +991,9 @@ public class Board extends Application {
 
     private String findNextMove(String placement, String solution) {
         String[] pPieces = placement.split("(?<=\\G.{4})");
+        if(pPieces.length == 10) {
+            return null;
+        }
         System.out.println("打印placement的状态");
         for(int i = 0; i < pPieces.length; i++) {
             System.out.println(pPieces[i]);
@@ -1079,7 +1082,8 @@ public class Board extends Application {
 
             System.out.println(nextMove);
 
-            placeHintPiece(nextMove);
+            if(nextMove != null)
+                placeHintPiece(nextMove);
 
         });
 
