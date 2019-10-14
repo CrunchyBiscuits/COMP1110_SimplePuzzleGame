@@ -1,6 +1,8 @@
 package comp1110.ass2.gui;
 
 import comp1110.ass2.*;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
@@ -12,12 +14,10 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -1122,7 +1122,36 @@ public class Board extends Application {
                 getHints();
             }
         });
+
         controls.getChildren().add(button);
+
+        // go there
+        Button ruleButton = new Button("PlayRule");
+        ruleButton.setLayoutX(BOARD_X + 350);
+        ruleButton.setLayoutY(GAME_HEIGHT - 55);
+
+        ruleButton.setOnMouseClicked((e) -> {
+            Group anotherRoot = new Group();
+            Stage popRuleWindow = new Stage();
+            Scene scene = new Scene(anotherRoot, 300, 275);
+            popRuleWindow.setTitle("How To Play This Game");
+            popRuleWindow.setScene(scene);
+
+            VBox vBox = new VBox();
+            vBox.setLayoutX(0);
+            vBox.setSpacing(0);
+
+            TextArea ruleTextArea = new TextArea();
+            ruleTextArea.setText("nedd to be completed");
+            ruleTextArea.getScrollTop();
+            vBox.getChildren().add(ruleTextArea);
+            anotherRoot.getChildren().add(vBox);
+
+            popRuleWindow.show();
+        });
+
+        controls.getChildren().add(ruleButton);
+
 
 
 //        difficulty.setMin(1);
