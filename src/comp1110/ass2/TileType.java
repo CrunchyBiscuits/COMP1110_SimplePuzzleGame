@@ -1,5 +1,9 @@
 package comp1110.ass2;
 
+/**
+ * author: Jianwu Yao
+ */
+
 import static comp1110.ass2.State.*;
 
 public enum TileType {

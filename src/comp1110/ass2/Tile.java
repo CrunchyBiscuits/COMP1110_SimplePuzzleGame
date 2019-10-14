@@ -1,6 +1,8 @@
 package comp1110.ass2;
 
-import static comp1110.ass2.TileType.*;
+/**
+ * author: Jianwu Yao
+ */
 
 public class Tile {
 

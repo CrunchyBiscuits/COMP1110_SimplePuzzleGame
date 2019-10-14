@@ -13,6 +13,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -33,7 +34,10 @@ import static comp1110.ass2.FocusGame.*;
 
 public class Board extends Application {
 
-    //variable setting author Zheyuan Zhang u6870923
+    /**
+     * variable setting
+     * author Zheyuan Zhang u6870923   line 40 - line 81
+     */
     private static final int SQUARE_SIZE = 40;
 
     private static final int MARGIN_X = 15;
@@ -44,13 +48,11 @@ public class Board extends Application {
     private static final int BOARD_MARGIN_X = 30;
     private static final int BOARD_MARGIN_Y = 60;
 
-    private static final int OBJECTIVE_WIDTH = 162;
-    private static final int OBJECTIVE_HEIGHT = 150;
-    private static final int OBJECTIVE_MARGIN_X = 100;
+    private static final int OBJECTIVE_HEIGHT = 50;
     private static final int OBJECTIVE_MARGIN_Y = 20;
 
-    private static final int BOARD_Y = MARGIN_Y;
-    private static final int BOARD_X = 500;
+    private static final int BOARD_Y = 350;
+    private static final int BOARD_X = 200;
 
     private static final int PLAY_AREA_Y = BOARD_Y + BOARD_MARGIN_Y;
     private static final int PLAY_AREA_X = BOARD_X + BOARD_MARGIN_X;
@@ -80,8 +82,11 @@ public class Board extends Application {
 //    private final Group window = new Group();
 
     private static String challengeString;
-    private static String solutionString;
 
+    /**
+     * tile state setting
+     * author Zheyuan Zhang u6870923
+     */
     /* the state of the tiles */
     int[] tileState = new int[10];   //  all off screen to begin with
 
@@ -92,6 +97,10 @@ public class Board extends Application {
         System.out.println();
     }
 
+    /**
+     * finish text and difficulty choice
+     * author Zheyuan Zhang u6870923   line 109 - line 126
+     */
     /* The underlying game */
     FocusGame focusgame;
 
@@ -111,7 +120,12 @@ public class Board extends Application {
         dropShadow.setColor(Color.color(0, 0, 0, .4));
     }
 
-    //GameTile class author Zheyuan Zhang u6870923
+
+    /**
+     * GameTile class
+     * Construct particular playing tiles
+     * author Zheyuan Zhang u6870923   line 134 - line 249
+     */
     class GameTile extends ImageView{
         int tileID;
 
@@ -159,7 +173,7 @@ public class Board extends Application {
             char row = getRowAndCol(tileID, orientation).charAt(1);
             setFitHeight(row*SQUARE_SIZE);
             setFitWidth(col*SQUARE_SIZE);
-            /*if (orientation%2 == 0) {
+            if (orientation%2 == 0) {
                 if (tileID==0||tileID==3||tileID==4||tileID==6){
                     setFitHeight(2*SQUARE_SIZE);
                     setFitWidth(3*SQUARE_SIZE);
@@ -194,7 +208,7 @@ public class Board extends Application {
                     setFitHeight(2*SQUARE_SIZE);
                     setFitWidth(2*SQUARE_SIZE);
                 }
-            }*/
+            }
             setImage(new Image(Board.class.getResource(URI_BASE + tile + "-" + (char)(orientation+'0') + ".png").toString()));
         }
 
@@ -227,11 +241,15 @@ public class Board extends Application {
                 }
             }
         }
-        //TODO another constructor for objective tile
     }
 
     // FIXME Task 7: Implement a basic playable Focus Game in JavaFX that only allows pieces to be placed in valid places
     // DraggableTile class author Zheyuan Zhang u6870923
+    /**
+     * DraggableTile class
+     * Construct particular draggable tiles
+     * author Zheyuan Zhang u6870923   line 253 - line 912
+     */
     class DraggableTile extends GameTile{
         int homeX, homeY;
 
@@ -255,13 +273,12 @@ public class Board extends Application {
             setImage(images[0]);
             orientation = 0;
             tileState[tile-'a'] = NOT_PLACED;
-            homeX = MARGIN_X + ((tile-'a')%3)*4*SQUARE_SIZE;
+            homeX = MARGIN_X + ((tile-'a')%5)*4*SQUARE_SIZE;
             setLayoutX(homeX);
-            homeY = OBJECTIVE_MARGIN_Y + OBJECTIVE_HEIGHT + MARGIN_Y+((tile-'a')/3)*3*SQUARE_SIZE;
+            homeY = OBJECTIVE_MARGIN_Y  + MARGIN_Y+((tile-'a')/5)*4*SQUARE_SIZE;
             setLayoutY(homeY);
 
             //handling events
-            //TODO rotate and completion
             setOnScroll(event ->{
                 if (System.currentTimeMillis()-lastRotationTime>ROTATION_THRESHOLD){
                     lastRotationTime = System.currentTimeMillis();
@@ -283,7 +300,7 @@ public class Board extends Application {
 
             //dragging
             setOnMouseDragged(event->{
-                //hideCompletion();
+                hideCompletion();
                 toFront();
                 double movementX = event.getSceneX() - mouseX;
                 double movementY = event.getSceneY() - mouseY;
@@ -760,6 +777,9 @@ public class Board extends Application {
             return "";
         }
 
+        /**
+         * check whether the square of board is occupied or not
+         * */
         private boolean checkOccupied(String existedPlacement, String currentPlacement){
             String existedString[]=new String[existedPlacement.length()/2];
             String currentString[]=new String[currentPlacement.length()/2];
@@ -779,6 +799,9 @@ public class Board extends Application {
             return false;
         }
 
+        /**
+         * Get the occupied squares and new tile can not be placed on them
+         */
         private boolean alreadyOccupied(){
             int x = (int) (getLayoutX() - PLAY_AREA_X) / SQUARE_SIZE;
             int y = (int) (getLayoutY() - PLAY_AREA_Y) / SQUARE_SIZE;
@@ -808,6 +831,10 @@ public class Board extends Application {
             return false;
         }
 
+        /**
+         * set the position of tile
+         * update the tile state
+         */
         private void setPosition(){
             int x = (int) (getLayoutX() - PLAY_AREA_X) / SQUARE_SIZE;
             int y = (int) (getLayoutY() - PLAY_AREA_Y) / SQUARE_SIZE;
@@ -896,26 +923,16 @@ public class Board extends Application {
 
 
     // add sound
-    private boolean startLoop = false;
 
-    private String music = getClass().getResource( "assets/484103__greenfiresound__click-08.wav").toString();
+    private String music = getClass().getResource( "assets/Toby Fox - MEGALOVANIA.mp3").toString();
     private AudioClip loop;
 
+    
     private void setUpSoundLoop() {
             loop = new AudioClip(music);
             loop.setCycleCount(AudioClip.INDEFINITE);
+            loop.play();
     }
-
-    private void setUpHandlers(Scene scene) {
-        /* create handlers for key press and release events */
-       /* scene.setOnMouseClicked(event -> {
-            if (startLoop)
-                loop.stop();
-            else
-                loop.play();
-            startLoop = !startLoop;
-        });*/
-}
 
 
 
@@ -934,44 +951,12 @@ public class Board extends Application {
             ImageView image = new ImageView(pic); // basic
             int col = i%3;
             int row = i/3;
-            image.setY(50+row*40);
-            image.setX(200+col*40);
+            image.setY(350+row*40);
+            image.setX(750+col*40);
             image.setFitHeight(SQUARE_SIZE);
             image.setFitWidth(SQUARE_SIZE);
             challenge.getChildren().add(image);
         }
-    }
-
-
-
-    /**
-     * Set up the group that represents the solution (and make it transparent)
-     *
-     * @param solution The solution as an array of chars.
-     */
-    private void makeSolution(String solution) {
-        this.solution.getChildren().clear();
-
-        if (solution.length() == 0) {
-            return;
-        }
-
-        if (solution.length() != 40) {
-            throw new IllegalArgumentException("Solution incorrect length: " + solution);
-        }
-
-        solutionString = solution;
-        for (int i = 0; i < solution.length(); i+=4) {
-            GameTile gtile = new GameTile(solution.charAt(i), Tile.placementToOrientation(solution.substring(i,i+4)).ordinal());
-            int x = solution.charAt(i+1) - '0';
-            int y = solution.charAt(i+2) - '0';
-
-            gtile.setLayoutX(PLAY_AREA_X + (x * SQUARE_SIZE));
-            gtile.setLayoutY(PLAY_AREA_Y + (y * SQUARE_SIZE));
-
-            this.solution.getChildren().add(gtile);
-        }
-        this.solution.setOpacity(0);
     }
 
 
@@ -995,6 +980,9 @@ public class Board extends Application {
 
     private String findNextMove(String placement, String solution) {
         String[] pPieces = placement.split("(?<=\\G.{4})");
+        if(pPieces.length == 10) {
+            return null;
+        }
         System.out.println("打印placement的状态");
         for(int i = 0; i < pPieces.length; i++) {
             System.out.println(pPieces[i]);
@@ -1083,7 +1071,8 @@ public class Board extends Application {
 
             System.out.println(nextMove);
 
-            placeHintPiece(nextMove);
+            if(nextMove != null)
+                placeHintPiece(nextMove);
 
         });
 
@@ -1100,8 +1089,12 @@ public class Board extends Application {
     }
 
     /**
+     * GameTile class
      * Create the controls that allow the game to be restarted and the difficulty
      * level set.
+     * author Zheyuan Zhang u6870923
+     * author Siyu Zhou u6692356
+     * line 1107 - line 1142
      */
     private void makeControls() {
         Button button = new Button("Restart");
@@ -1114,14 +1107,13 @@ public class Board extends Application {
                 challenge.getChildren().clear();
                 getChallenge();
                 getHints();
-
             }
         });
         controls.getChildren().add(button);
 
 
 //        difficulty.setMin(1);
-//        difficulty.setMax(4);
+//        difficulty.setMax(5);
 //        difficulty.setValue(0);
 //        difficulty.setShowTickLabels(true);
 //        difficulty.setShowTickMarks(true);
@@ -1142,7 +1134,8 @@ public class Board extends Application {
 
 
     /**
-     * Set the gaming board
+     * Set the gaming board and tiles
+     * author Zheyuan Zhang u6870923   line 1149 - line 1161
      */
     private void showBoard(){
         board.getChildren().clear();
@@ -1159,7 +1152,8 @@ public class Board extends Application {
     }
 
     /**
-     * Set the ten tiles
+     * Set the gaming board and tiles
+     * author Zheyuan Zhang u6870923   line 1167 - line 1171
      */
     private void showTiles(){
         gtiles.getChildren().clear();
@@ -1169,37 +1163,59 @@ public class Board extends Application {
     }
 
 
-    /**
-     * Add the objective to the board
-     */
-    private void addObjectiveToBoard() {
-        objective.getChildren().clear();
-        //objective.getChildren().add(new GameTile(FocusGame.getObjective().getProblemNumber(), OBJECTIVE_MARGIN_X, OBJECTIVE_MARGIN_Y));
-    }
-
+//    /**
+//     * Add the objective to the board
+//     */
+//    private void addObjectiveToBoard() {
+//        objective.getChildren().clear();
+//        //objective.getChildren().add(new GameTile(FocusGame.getObjective().getProblemNumber(), OBJECTIVE_MARGIN_X, OBJECTIVE_MARGIN_Y));
+//    }
     /**
      * Check game completion and update status
+     * author Zheyuan Zhang u6870923   line 1186 - line 1223
      */
     private void checkCompletion() {
-        String state = new String("");
+        String solution = FocusGame.getSolution(challengeString);
+        String[] states = new String[10];
+        String[] answers = new String[10];
+ //       String stateString = "";
+
+
         for (int i = 0; i < 10; i++) {
             if (tileState[i] == NOT_PLACED)
                 return;
-            state = state +
+            states[i] = "" +
                     (char)(i + 'a') +
                     (tileState[i]/100%10) +
                     (tileState[i]/10%10) +
                     (tileState[i]%10);
+
+            answers[i]=solution.substring(i*4,i*4+4);
+           // stateString += states[i];
         }
 
-        if (state.equals(solutionString))
-            showCompletion();
-        else
-            return;
+        for (int i=0;i<10;i++){
+            boolean equalFlag = false;
+            for (int j=0;j<10;j++){
+                if (answers[i].equals(states[j])){
+                    equalFlag = true;
+                } else if (answers[i].charAt(0)==states[j].charAt(0)){
+                    if ((states[j].charAt(3)+2)==answers[i].charAt(3)||(states[j].charAt(3)-2)==answers[i].charAt(3)){
+                        equalFlag = true;
+                    }
+                }
+            }
+            if (!equalFlag){
+                return;
+            }
+        }
+
+        showCompletion();
     }
 
     /**
      * Show the completion message
+     * author Zheyuan Zhang u6870923   line 1229 - line 1232
      */
     private void showCompletion() {
         completionText.toFront();
@@ -1208,6 +1224,7 @@ public class Board extends Application {
 
     /**
      * Hide the completion message
+     * author Zheyuan Zhang u6870923   line 1238 - line 1241
      */
     private void hideCompletion() {
         completionText.toBack();
@@ -1219,6 +1236,7 @@ public class Board extends Application {
 
     /**
      * Create the message to be displayed when the player completes the puzzle.
+     * author Zheyuan Zhang u6870923   line 1250 - line 1259
      */
     private void makeCompletion() {
         completionText.setFill(Color.BLACK);
@@ -1234,6 +1252,7 @@ public class Board extends Application {
 
     /**
      * Put all of the tiles back in their home position
+     * author Zheyuan Zhang u6870923   line 1267 - line 1272
      */
     private void resetPieces() {
         gtiles.toFront();
@@ -1242,30 +1261,27 @@ public class Board extends Application {
         }
     }
 
+    /**
+     * Create a new game
+     * author Zheyuan Zhang u6870923   line 1278 - line 1288
+     */
     private void newGame(){
         try{
             hideCompletion();
-
-
             focusgame = new FocusGame();
-
-            String[] reSet={""};
-//            String sol = FocusGame.getSolution("");
-//            if (sol!=null)
-//                makeSolution(sol);
             showTiles();
-
-
-            // TODO check solution
         }catch (IllegalArgumentException e){
             System.err.println(e);
             e.printStackTrace();
             Platform.exit();
         }
-
     }
 
 
+    /**
+     * Start a game
+     * author Zheyuan Zhang u6870923   line 1296 - line 1328
+     */
     @Override
     public void start(Stage primaryStage) {
 
@@ -1285,12 +1301,8 @@ public class Board extends Application {
 //        root.getChildren().add(window);
         root.getChildren().add(hint);
 
-
-        // TODO set handlers, sound, board, tiles
-
-        setUpHandlers(scene);
 //        popUpWindow();
-//        setUpSoundLoop();
+        setUpSoundLoop();
         showBoard();
         makeControls();
         makeCompletion();

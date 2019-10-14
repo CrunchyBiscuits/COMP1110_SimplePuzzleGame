@@ -1,5 +1,9 @@
 package comp1110.ass2;
 
+/**
+ * author: Jianwu Yao
+ */
+
 
 /**
  *  param col: the first number of placement
