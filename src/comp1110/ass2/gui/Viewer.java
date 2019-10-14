@@ -20,6 +20,10 @@ import javafx.stage.Stage;
  * class does not play a game, it just illustrates various piece
  * placements.
  */
+
+/**
+ * author Zheyuan Zhang u6870923
+ */
 public class Viewer extends Application {
 
     /* board layout */
@@ -27,11 +31,8 @@ public class Viewer extends Application {
     private static final int VIEWER_WIDTH = 720;
     private static final int VIEWER_HEIGHT = 480;
 
-    private static final String URI_BASE = "assets/";
-
     private final Group root = new Group();
     private final Group controls = new Group();
-    private TextField textField;
     private final Group image = new Group();
 
     /**
@@ -44,54 +45,50 @@ public class Viewer extends Application {
         for(int i = 0; i<placement.length() - 3;i += 4){
             String place = placement.substring(i, i + 4);
             char tile = place.charAt(0);
-            char orientetion = place.charAt(3);
+            char ori = place.charAt(3);
             if (tile > 'j' || tile < 'a') {
                 throw new IllegalArgumentException("Bad tile: \"" + tile + "\"");
             }
-            ImageView imageView = new ImageView();
-            imageView.imageProperty().set(null);
+            ImageView imgView = new ImageView();
+            imgView.imageProperty().set(null);
 
             if (tile == 'a' || tile == 'd' || tile == 'e' || tile == 'g') {
-                imageView.setFitHeight(2 * SQUARE_SIZE);
-                imageView.setFitWidth(3 * SQUARE_SIZE);
+                imgView.setFitHeight(2 * SQUARE_SIZE);
+                imgView.setFitWidth(3 * SQUARE_SIZE);
             } else if (tile == 'b' || tile == 'c' || tile == 'j') {
-                imageView.setFitHeight(2 * SQUARE_SIZE);
-                imageView.setFitWidth(4 * SQUARE_SIZE);
+                imgView.setFitHeight(2 * SQUARE_SIZE);
+                imgView.setFitWidth(4 * SQUARE_SIZE);
             } else if (tile == 'f') {
-                imageView.setFitHeight(SQUARE_SIZE);
-                imageView.setFitWidth(3 * SQUARE_SIZE);
+                imgView.setFitHeight(SQUARE_SIZE);
+                imgView.setFitWidth(3 * SQUARE_SIZE);
             } else if (tile == 'i') {
-                imageView.setFitHeight(2 * SQUARE_SIZE);
-                imageView.setFitWidth(2 * SQUARE_SIZE);
+                imgView.setFitHeight(2 * SQUARE_SIZE);
+                imgView.setFitWidth(2 * SQUARE_SIZE);
             } else {
-                imageView.setFitHeight(3 * SQUARE_SIZE);
-                imageView.setFitWidth(3 * SQUARE_SIZE);
+                imgView.setFitHeight(3 * SQUARE_SIZE);
+                imgView.setFitWidth(3 * SQUARE_SIZE);
             }
 
-            switch (orientetion){
-                case '0':
-                    imageView.setRotate(0);
-                    break;
-                case '1':
-                    imageView.setRotate(90);
-                    break;
-                case '2':
-                    imageView.setRotate(180);
-                    break;
-                case '3':
-                    imageView.setRotate(270);
-                    break;
+            if (ori=='0'){
+                imgView.setRotate(0);
+            }else if (ori=='1'){
+                imgView.setRotate(90);
+            }else if (ori=='2'){
+                imgView.setRotate(180);
+            }else {
+                imgView.setRotate(270);
             }
-            double x = Character.getNumericValue(place.charAt(1));
-            double y = Character.getNumericValue(place.charAt(2));
+
+            double col = Character.getNumericValue(place.charAt(1));
+            double row = Character.getNumericValue(place.charAt(2));
+            imgView.setX(col*SQUARE_SIZE);
+            imgView.setY(row*SQUARE_SIZE);
 
 
-            imageView.setX(x*SQUARE_SIZE);
-            imageView.setY(y*SQUARE_SIZE);
-            String imgPath = (URI_BASE + tile + "-0.png");
+            String imgPath = ("assets/" + tile + "-0.png");
             Image img = new Image(Viewer.class.getResourceAsStream(imgPath));
-            imageView.setImage(img);
-            image.getChildren().add(imageView);
+            imgView.setImage(img);
+            image.getChildren().add(imgView);
         }
     }
 
@@ -99,23 +96,22 @@ public class Viewer extends Application {
      * Create a basic text field for input and a refresh button.
      */
     private void makeControls() {
-        Label label1 = new Label("Placement:");
-        textField = new TextField();
+
+        TextField textField = new TextField();
         textField.setPrefWidth(300);
-        Button button = new Button("Refresh");
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                makePlacement(textField.getText());
-                textField.clear();
-            }
+        Button btn = new Button("Show");
+        btn.setOnAction(e -> {
+            makePlacement(textField.getText());
+            textField.clear();
         });
-        HBox hb = new HBox();
-        hb.getChildren().addAll(label1, textField, button);
-        hb.setSpacing(10);
-        hb.setLayoutX(130);
-        hb.setLayoutY(VIEWER_HEIGHT - 50);
-        controls.getChildren().add(hb);
+
+        HBox hBox = new HBox();
+        hBox.getChildren().addAll(new Label("Placement"), textField, btn);
+
+        hBox.setLayoutX(130);
+        hBox.setLayoutY(VIEWER_HEIGHT - 30);
+
+        controls.getChildren().add(hBox);
     }
 
     @Override

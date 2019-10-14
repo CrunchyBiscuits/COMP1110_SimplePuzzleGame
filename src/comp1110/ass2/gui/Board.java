@@ -51,8 +51,8 @@ public class Board extends Application {
     private static final int OBJECTIVE_HEIGHT = 50;
     private static final int OBJECTIVE_MARGIN_Y = 20;
 
-    private static final int BOARD_Y = MARGIN_Y;
-    private static final int BOARD_X = 500;
+    private static final int BOARD_Y = 350;
+    private static final int BOARD_X = 200;
 
     private static final int PLAY_AREA_Y = BOARD_Y + BOARD_MARGIN_Y;
     private static final int PLAY_AREA_X = BOARD_X + BOARD_MARGIN_X;
@@ -273,9 +273,9 @@ public class Board extends Application {
             setImage(images[0]);
             orientation = 0;
             tileState[tile-'a'] = NOT_PLACED;
-            homeX = MARGIN_X + ((tile-'a')%3)*4*SQUARE_SIZE;
+            homeX = MARGIN_X + ((tile-'a')%5)*4*SQUARE_SIZE;
             setLayoutX(homeX);
-            homeY = OBJECTIVE_MARGIN_Y + OBJECTIVE_HEIGHT + MARGIN_Y+((tile-'a')/3)*4*SQUARE_SIZE;
+            homeY = OBJECTIVE_MARGIN_Y  + MARGIN_Y+((tile-'a')/5)*4*SQUARE_SIZE;
             setLayoutY(homeY);
 
             //handling events
@@ -923,26 +923,15 @@ public class Board extends Application {
 
 
     // add sound
-    private boolean startLoop = false;
 
-    private String music = getClass().getResource( "assets/484103__greenfiresound__click-08.wav").toString();
+    private String music = getClass().getResource( "assets/Toby Fox - MEGALOVANIA.mp3").toString();
     private AudioClip loop;
 
     private void setUpSoundLoop() {
             loop = new AudioClip(music);
             loop.setCycleCount(AudioClip.INDEFINITE);
+            loop.play();
     }
-
-    private void setUpHandlers(Scene scene) {
-        /* create handlers for key press and release events */
-       /* scene.setOnMouseClicked(event -> {
-            if (startLoop)
-                loop.stop();
-            else
-                loop.play();
-            startLoop = !startLoop;
-        });*/
-}
 
 
 
@@ -1220,7 +1209,7 @@ public class Board extends Application {
         String solution = FocusGame.getSolution(challengeString);
         String[] states = new String[10];
         String[] answers = new String[10];
-        String stateString = "";
+ //       String stateString = "";
 
 
         for (int i = 0; i < 10; i++) {
@@ -1233,7 +1222,7 @@ public class Board extends Application {
                     (tileState[i]%10);
 
             answers[i]=solution.substring(i*4,i*4+4);
-            stateString += states[i];
+           // stateString += states[i];
         }
 
         for (int i=0;i<10;i++){
@@ -1343,9 +1332,8 @@ public class Board extends Application {
 //        root.getChildren().add(window);
         root.getChildren().add(hint);
 
-        setUpHandlers(scene);
 //        popUpWindow();
-//        setUpSoundLoop();
+        setUpSoundLoop();
         showBoard();
         makeControls();
         makeCompletion();
