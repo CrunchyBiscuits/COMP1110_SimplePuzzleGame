@@ -284,8 +284,8 @@ public class Board extends Application {
                     lastRotationTime = System.currentTimeMillis();
                     hideCompletion();
                     rotate();
-                    event.consume();
                     checkCompletion();
+                    event.consume();
                 }
             });
 
@@ -1061,7 +1061,7 @@ public class Board extends Application {
         System.out.println("对应的solution "+ solution);
 
         Button button = new Button("Hints");
-        button.setLayoutX(BOARD_X + 300);
+        button.setLayoutX(BOARD_X + 650);
         button.setLayoutY(GAME_HEIGHT - 55);
         button.setOnAction(event -> {
             System.out.println("!!!!!!!!!!!!!!!!!!!!!");
@@ -1098,7 +1098,7 @@ public class Board extends Application {
      */
     private void makeControls() {
         Button button = new Button("Restart");
-        button.setLayoutX(BOARD_X + 240);
+        button.setLayoutX(BOARD_X + 550);
         button.setLayoutY(GAME_HEIGHT - 55);
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
