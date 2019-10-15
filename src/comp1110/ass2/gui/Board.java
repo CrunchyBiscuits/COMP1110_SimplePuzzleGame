@@ -1,6 +1,8 @@
 package comp1110.ass2.gui;
 
 import comp1110.ass2.*;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
@@ -12,12 +14,10 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -284,8 +284,8 @@ public class Board extends Application {
                     lastRotationTime = System.currentTimeMillis();
                     hideCompletion();
                     rotate();
-                    checkCompletion();
                     event.consume();
+                    //checkCompletion();
                 }
             });
 
@@ -1061,8 +1061,9 @@ public class Board extends Application {
         System.out.println("对应的solution "+ solution);
 
         Button button = new Button("Hints");
-        button.setLayoutX(BOARD_X + 650);
+        button.setLayoutX(BOARD_X + 300);
         button.setLayoutY(GAME_HEIGHT - 55);
+
         button.setOnAction(event -> {
             System.out.println("!!!!!!!!!!!!!!!!!!!!!");
 
@@ -1075,6 +1076,8 @@ public class Board extends Application {
                 placeHintPiece(nextMove);
 
         });
+
+
 
         controls.getChildren().add(button);
 
@@ -1098,7 +1101,7 @@ public class Board extends Application {
      */
     private void makeControls() {
         Button button = new Button("Restart");
-        button.setLayoutX(BOARD_X + 550);
+        button.setLayoutX(BOARD_X + 240);
         button.setLayoutY(GAME_HEIGHT - 55);
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -1109,7 +1112,45 @@ public class Board extends Application {
                 getHints();
             }
         });
+
         controls.getChildren().add(button);
+
+        // go there
+        Button ruleButton = new Button("PlayRule");
+        ruleButton.setLayoutX(BOARD_X + 350);
+        ruleButton.setLayoutY(GAME_HEIGHT - 55);
+
+        ruleButton.setOnMouseClicked((e) -> {
+            Group anotherRoot = new Group();
+            Stage popRuleWindow = new Stage();
+            Scene scene = new Scene(anotherRoot, 300, 275);
+            popRuleWindow.setTitle("How To Play This Game");
+            popRuleWindow.setScene(scene);
+
+            VBox vBox = new VBox();
+            vBox.setLayoutX(0);
+            vBox.setSpacing(0);
+
+            TextArea ruleTextArea = new TextArea();
+            ruleTextArea.setText("nedd to be completed");
+            ruleTextArea.getScrollTop();
+            vBox.getChildren().add(ruleTextArea);
+            anotherRoot.getChildren().add(vBox);
+
+            popRuleWindow.show();
+        });
+
+        controls.getChildren().add(ruleButton);
+
+        Button clearButton = new Button("Clear");
+        clearButton.setLayoutX(BOARD_X + 420);
+        clearButton.setLayoutY(GAME_HEIGHT - 55);
+
+        clearButton.setOnMouseClicked(e -> {
+            resetPieces();
+        });
+
+        controls.getChildren().add(clearButton);
 
 
 //        difficulty.setMin(1);
@@ -1179,6 +1220,27 @@ public class Board extends Application {
         String[] states = new String[10];
         String[] answers = new String[10];
  //       String stateString = "";
+
+//        ArrayList<String> statesList = new ArrayList<>();
+//        ArrayList<String> answersList = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            if (tileState[i] == NOT_PLACED)
+//                return;
+//
+//            String state_temp = "" +
+//                    (char)(i + 'a') +
+//                    (tileState[i]/100%10) +
+//                    (tileState[i]/10%10) +
+//                    (tileState[i]%10);
+//
+//            statesList.add(state_temp);
+//
+//            answersList.add(solution.substring(i*4,i*4+4));
+//        }
+//        for(String checkString : statesList) {
+//            if(!answersList.contains(checkString))
+//                return;
+//        }
 
 
         for (int i = 0; i < 10; i++) {

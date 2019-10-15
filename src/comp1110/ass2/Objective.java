@@ -253,10 +253,17 @@ public class Objective {
     };
 
     int selectedQ;
+    int difficulty;
 
-    // can input a special index to get the corresponding objective
-    public Objective(int selectedQ) {
-        this.selectedQ = selectedQ;
+    // base on the difficulty given by the front size to return a corresponding difficulty game.
+    public Objective(int difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public String getChallenegeBydiff() {
+        Random random = new Random();
+        int compareDiff = this.difficulty;
+        return SOLUTIONS[random.nextInt(24) + (compareDiff - 1) * 24].getObjective();
     }
 
     // if do not want to input a index, we can randomly generate a index and get its objective
@@ -268,6 +275,8 @@ public class Objective {
     public String getIObjective() {
         return SOLUTIONS[this.selectedQ].getObjective();
     }
+
+
 
 
 
