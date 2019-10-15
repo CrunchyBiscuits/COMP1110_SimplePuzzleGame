@@ -1016,7 +1016,6 @@ public class Board extends Application {
         return nextMOve;
     }
 
-
     private void placeHintPiece(String nextMove) {
         String pieceName = nextMove.substring(0, 1);
         Integer pieceX = Integer.parseInt(nextMove.substring(1, 2));
