@@ -1305,8 +1305,8 @@ public class Board extends Application {
         completionText.setEffect(dropShadow);
         completionText.setCache(true);
         completionText.setFont(Font.font("Arial", FontWeight.EXTRA_BOLD, 80));
-        completionText.setLayoutX(20);
-        completionText.setLayoutY(375);
+        completionText.setLayoutX(300);
+        completionText.setLayoutY(175);
         completionText.setTextAlignment(TextAlignment.CENTER);
         root.getChildren().add(completionText);
     }
