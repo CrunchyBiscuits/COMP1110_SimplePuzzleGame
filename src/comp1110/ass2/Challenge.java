@@ -17,16 +17,16 @@ import static comp1110.ass2.Objective.SOLUTIONS;
  */
 public class Challenge {
 
-    public static String randomChallenge() {
-        String challenge = "";
-        Random random = new Random();
-        List<String> strings = Arrays.asList("R", "G", "B", "W");
-        for (int i=0; i<9; i++) {
-            int rand = random.nextInt(4);
-            challenge += strings.get(rand);
-        }
-        return challenge;
-    }
+//    public static String randomChallenge() {
+//        String challenge = "";
+//        Random random = new Random();
+//        List<String> strings = Arrays.asList("R", "G", "B", "W");
+//        for (int i=0; i<9; i++) {
+//            int rand = random.nextInt(4);
+//            challenge += strings.get(rand);
+//        }
+//        return challenge;
+//    }
 
     public static String getInterestingChallenge() {
         Random random = new Random();

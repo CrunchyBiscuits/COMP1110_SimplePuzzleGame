@@ -15,14 +15,15 @@ declaration: >-
 
 # I wish to submit the following classes as entirely my own (remove this if
 # you want to just submit methods):
-class: Challenge.java
-   - 
-   - 
+class:
+   - Challenge.java
+
 
 # I wish to submit the following methods as entirely my own (remove this if
 # you want to just submit classes):
-method: findNextMove(String placement, String solution)
-  -
+method:
+  - findNextMove(String placement, String solution)
+  - getChallenge()
 
 # sign *your* name and uid here
 name: Siyu Zhou
