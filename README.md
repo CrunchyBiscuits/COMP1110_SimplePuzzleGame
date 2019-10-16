@@ -59,6 +59,8 @@ easier than others.  Note that as a general rule for puzzles, the more
 constrained the player is, the fewer options they have, and
 consequently the solution to the challenge is simpler.
 
+The game comes with five difficulty levels: _starter_, _junior_, _expert_, _master_, and _wizard_, and offers 24 challenges at each level, for a total of 120 prescribed challenges.   These challenges are provided for you in the [Solutions class](https://gitlab.cecs.anu.edu.au/comp1110/comp1110-ass2/blob/master/src/comp1110/ass2/Solution.java#L28), and the different difficulty levels are tested in the [SolutionsTest](https://gitlab.cecs.anu.edu.au/comp1110/comp1110-ass2/blob/master/tests/comp1110/ass2/SolutionsTest.java#L38) test.
+
 #### Solutions
 
 Each challenge has just one solution.  When we refer to solutions, we

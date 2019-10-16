@@ -8,7 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static comp1110.ass2.TestUtility.SOLUTIONS;
+import static comp1110.ass2.Solution.SOLUTIONS;
 import static org.junit.Assert.assertTrue;
 
 public class SolutionsTest {

@@ -930,6 +930,7 @@ public class Board extends Application {
     private void setUpSoundLoop() {
             loop = new AudioClip(music);
             loop.setCycleCount(AudioClip.INDEFINITE);
+            loop.setVolume(5.0);
             loop.play();
     }
 
@@ -1130,10 +1131,22 @@ public class Board extends Application {
             vBox.setLayoutX(0);
             vBox.setSpacing(0);
 
-            TextArea ruleTextArea = new TextArea();
-            ruleTextArea.setText("nedd to be completed");
-            ruleTextArea.getScrollTop();
-            vBox.getChildren().add(ruleTextArea);
+            Label label = new Label("hello world aahdadDbhdbjasdbsajsadhasjduidiqdjawdhiuadhasdad");
+            label.setWrapText(true);
+
+//            Text text = new Text(0,0,"hello world aahdadDbhdbjasdbsajsadhasjduidiqdjawdhiuadhasdad");
+
+
+//            TextField textField = new TextField();
+//            textField.setText("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbba"+"ccccccccccccccccccccc");
+
+            vBox.getChildren().add(label);
+
+//            TextArea ruleTextArea = new TextArea();
+//            ruleTextArea.setText("nedd to be completed");
+//            ruleTextArea.getScrollTop();
+//            vBox.getChildren().add(ruleTextArea);
+            vBox.maxWidth(10);
             anotherRoot.getChildren().add(vBox);
 
             popRuleWindow.show();
