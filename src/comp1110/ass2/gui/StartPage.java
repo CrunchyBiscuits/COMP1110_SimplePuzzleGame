@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -38,15 +39,15 @@ public class StartPage extends Application {
                 new Board().start(stage);
         });
 
-        Button developerBtn = new Button("developers");
-        developerBtn.setLayoutX(700);
-        developerBtn.setLayoutY(120);
+        Label developerLabel = new Label("developers:\nZheyuan Zhang u6870923\nJianwu Yao u6987162\nSiyu Zhou u6692356");
+        developerLabel.setLayoutX(700);
+        developerLabel.setLayoutY(120);
 
-        developerBtn.setPrefSize(150,50);
+        developerLabel.setPrefSize(150,100);
 
         root.getChildren().add(new ImageView(IQFOCUS_URI));
         root.getChildren().add(startBtn);
-        root.getChildren().add(developerBtn);
+        root.getChildren().add(developerLabel);
         stage.setScene(scene);
         stage.show();
     }
