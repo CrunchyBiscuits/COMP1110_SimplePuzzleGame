@@ -1103,14 +1103,11 @@ public class Board extends Application {
         Button button = new Button("Restart");
         button.setLayoutX(BOARD_X + 240);
         button.setLayoutY(GAME_HEIGHT - 55);
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                newGame();
-                challenge.getChildren().clear();
-                getChallenge();
-                getHints();
-            }
+        button.setOnAction(e -> {
+            newGame();
+            challenge.getChildren().clear();
+            getChallenge();
+            getHints();
         });
 
         controls.getChildren().add(button);
@@ -1124,15 +1121,18 @@ public class Board extends Application {
             Group anotherRoot = new Group();
             Stage popRuleWindow = new Stage();
             Scene scene = new Scene(anotherRoot, 300, 275);
-            popRuleWindow.setTitle("How To Play This Game");
+            popRuleWindow.setTitle("Game Play");
             popRuleWindow.setScene(scene);
 
-            VBox vBox = new VBox();
+          /*  VBox vBox = new VBox();
             vBox.setLayoutX(0);
-            vBox.setSpacing(0);
+            vBox.setSpacing(0);*/
 
             Label label = new Label("hello world aahdadDbhdbjasdbsajsadhasjduidiqdjawdhiuadhasdad");
             label.setWrapText(true);
+            label.setMaxWidth(150);
+
+
 
 //            Text text = new Text(0,0,"hello world aahdadDbhdbjasdbsajsadhasjduidiqdjawdhiuadhasdad");
 
@@ -1140,14 +1140,14 @@ public class Board extends Application {
 //            TextField textField = new TextField();
 //            textField.setText("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbba"+"ccccccccccccccccccccc");
 
-            vBox.getChildren().add(label);
+          //  vBox.getChildren().add(label);
 
 //            TextArea ruleTextArea = new TextArea();
 //            ruleTextArea.setText("nedd to be completed");
 //            ruleTextArea.getScrollTop();
 //            vBox.getChildren().add(ruleTextArea);
-            vBox.maxWidth(10);
-            anotherRoot.getChildren().add(vBox);
+      //      vBox.prefWidth(100);
+            anotherRoot.getChildren().add(label);
 
             popRuleWindow.show();
         });
@@ -1202,6 +1202,7 @@ public class Board extends Application {
         board.getChildren().add(baseboard);
 
         board.toBack();
+        hideCompletion();
     }
 
     /**
