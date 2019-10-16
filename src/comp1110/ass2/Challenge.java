@@ -1,11 +1,10 @@
 package comp1110.ass2;
 
-
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
-import static comp1110.ass2.Objective.SOLUTIONS;
+//
+//import static comp1110.tests.TestUtility;
+//import static comp1110.ass2.tests.TestUtility.Solution;
 
 /**
  * define the states of the central nine pieces like 'RRRRRRRRR'
@@ -14,6 +13,9 @@ import static comp1110.ass2.Objective.SOLUTIONS;
  *
  * For example: RRRGBWWBG each line no matter this is a vertical line or horientional line has the same color
  * which means the player wins
+ *
+ *
+ * author: Siyu Zhou
  */
 public class Challenge {
 
@@ -28,11 +30,11 @@ public class Challenge {
 //        return challenge;
 //    }
 
-    public static String getInterestingChallenge() {
-        Random random = new Random();
-        int randInt = random.nextInt(SOLUTIONS.length);
-        return SOLUTIONS[randInt].objective;
-    }
+//    public static String getInterestingChallenge() {
+//        Random random = new Random();
+//        int randInt = random.nextInt(SOLUTIONS.length);
+//        return SOLUTIONS[randInt].objective;
+//    }
 }
 
 
