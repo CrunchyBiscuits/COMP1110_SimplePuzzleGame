@@ -923,7 +923,7 @@ public class Board extends Application {
 
     // add sound
 
-    private String music = getClass().getResource( "assets/Toby Fox - MEGALOVANIA.mp3").toString();
+    private String music = getClass().getResource( "assets/Toby Fox - Start Menu.mp3").toString();
     private AudioClip loop;
 
     
