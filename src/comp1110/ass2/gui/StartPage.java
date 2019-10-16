@@ -9,8 +9,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import java.awt.*;
-
 /**
  * author Zheyuan Zhang u6870923
  */
