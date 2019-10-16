@@ -4,7 +4,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
 
-import static comp1110.ass2.TestUtility.SOLUTIONS;
+import static comp1110.ass2.Solution.SOLUTIONS;
 import static org.junit.Assert.assertTrue;
 
 public class PiecePlacementWellFormedTest {
