@@ -33,7 +33,6 @@ import java.util.concurrent.TimeUnit;
 import static comp1110.ass2.FocusGame.*;
 
 public class Board extends Application {
-
     /**
      * variable setting
      * author Zheyuan Zhang u6870923   line 40 - line 81
