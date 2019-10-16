@@ -9,6 +9,8 @@ import static comp1110.ass2.Objective.SOLUTIONS;
 
 
 
+
+
 /**
  * define the states of the central nine pieces like 'RRRRRRRRR'
  * based on the game requirement such as when the player achieve the consistant three pieces present the same color,
