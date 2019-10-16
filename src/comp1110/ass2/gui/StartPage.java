@@ -19,8 +19,8 @@ public class StartPage extends Application {
     private static final int GAME_WIDTH = 933;
     private static final int GAME_HEIGHT = 700;
 
-    private static final String URI_BASE = "assets/";
-    private static final String IQFOCUS_URI = StartPage.class.getResource(URI_BASE + "iqfocus.png").toString();
+    private static final String URI_BASE_Stage = "assets/";
+    private static final String IQFOCUS_URI = StartPage.class.getResource(URI_BASE_Stage + "iqfocus.png").toString();
 
     /* node groups */
     private final Group root = new Group();

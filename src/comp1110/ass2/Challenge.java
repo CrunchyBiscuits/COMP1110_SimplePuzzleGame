@@ -1,11 +1,13 @@
 package comp1110.ass2;
 
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import static comp1110.ass2.Objective.SOLUTIONS;
+
+
+
 
 /**
  * define the states of the central nine pieces like 'RRRRRRRRR'
