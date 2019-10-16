@@ -267,4 +267,8 @@ public class Solution {
           new Solution("BRBBRBBWB",
                   "a021b102c502d223e411f811g611h000i333j432")
   };
+
+  public String getObjective() {
+    return objective;
+  }
 }
