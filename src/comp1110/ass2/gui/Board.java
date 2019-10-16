@@ -1160,6 +1160,7 @@ public class Board extends Application {
 
         clearButton.setOnMouseClicked(e -> {
             resetPieces();
+            hideCompletion();
         });
 
         controls.getChildren().add(clearButton);
