@@ -4,9 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import static comp1110.ass2.Objective.SOLUTIONS;
-
-
+//import static comp1110.ass2.Objective.SOLUTIONS;
 
 
 /**
@@ -32,8 +30,8 @@ public class Challenge {
 
     public static String getInterestingChallenge() {
         Random random = new Random();
-        int randInt = random.nextInt(SOLUTIONS.length);
-        return SOLUTIONS[randInt].objective;
+        int randInt = random.nextInt(Solution.SOLUTIONS.length);
+        return Solution.SOLUTIONS[randInt].objective;
     }
 }
 

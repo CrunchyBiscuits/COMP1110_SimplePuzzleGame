@@ -1061,8 +1061,8 @@ public class Board extends Application {
         System.out.println("对应的solution "+ solution);
 
         Button button = new Button("Hints");
-        button.setLayoutX(BOARD_X + 300);
-        button.setLayoutY(GAME_HEIGHT - 55);
+        button.setLayoutX(BOARD_X + 500);
+        button.setLayoutY(GAME_HEIGHT - 100);
 
         button.setOnAction(event -> {
             System.out.println("!!!!!!!!!!!!!!!!!!!!!");
@@ -1100,9 +1100,9 @@ public class Board extends Application {
      * line 1107 - line 1142
      */
     private void makeControls() {
-        Button button = new Button("Restart");
-        button.setLayoutX(BOARD_X + 240);
-        button.setLayoutY(GAME_HEIGHT - 55);
+        Button button = new Button("NewGame");
+        button.setLayoutX(BOARD_X + 500);
+        button.setLayoutY(GAME_HEIGHT - 170);
         button.setOnAction(e -> {
             newGame();
             challenge.getChildren().clear();
@@ -1114,49 +1114,69 @@ public class Board extends Application {
 
         // go there
         Button ruleButton = new Button("PlayRule");
-        ruleButton.setLayoutX(BOARD_X + 350);
-        ruleButton.setLayoutY(GAME_HEIGHT - 55);
+        ruleButton.setLayoutX(BOARD_X + 600);
+        ruleButton.setLayoutY(GAME_HEIGHT - 170);
 
         ruleButton.setOnMouseClicked((e) -> {
             Group anotherRoot = new Group();
             Stage popRuleWindow = new Stage();
-            Scene scene = new Scene(anotherRoot, 300, 275);
-            popRuleWindow.setTitle("Game Play");
+            Scene scene = new Scene(anotherRoot, 300, 350);
+            popRuleWindow.setTitle("How To Play");
             popRuleWindow.setScene(scene);
 
-          /*  VBox vBox = new VBox();
-            vBox.setLayoutX(0);
-            vBox.setSpacing(0);*/
 
-            Label label = new Label("hello world aahdadDbhdbjasdbsajsadhasjduidiqdjawdhiuadhasdad");
-            label.setWrapText(true);
-            label.setMaxWidth(150);
+            Label labelGamePlay = new Label("Gameplay: We need to fill the top ten differently shaped blocks into the lower board. We can use the mouse to place the block on a separate block to rotate the block to adjust the pose of the block to get the shape we need. In addition, we have the color requirements of the nine points of the center on the right side, that is, the third point of the second line to the sixth point of the fourth line. When we put all the blocks into the board and the nine points in the center meet the challenge requirements, you win!");
+            labelGamePlay.setWrapText(true);
+            labelGamePlay.setFont(new Font("Arial", 14));
+            labelGamePlay.setMaxWidth(300);
+
+            Label labelRestart = new Label("NewGame is to restart a new game");
+            Label labelHints = new Label("Hints are giving hints, such as placing a block in a location");
+            Label labelPlayRule = new Label("Playrule will introduce the gameplay");
+            Label labelClear = new Label("Restart will empty the board, but will not start a new game");
+
+            labelRestart.setWrapText((true));
+            labelRestart.setLayoutX(0);
+            labelRestart.setLayoutY(200);
+            labelRestart.setFont(new Font("Arial", 14));
+            labelRestart.setMaxWidth(300);
+
+            labelHints.setWrapText((true));
+            labelHints.setLayoutX(0);
+            labelHints.setLayoutY(220);
+            labelHints.setFont(new Font("Arial", 14));
+            labelHints.setMaxWidth(300);
+
+            labelPlayRule.setWrapText((true));
+            labelPlayRule.setLayoutX(0);
+            labelPlayRule.setLayoutY(260);
+            labelPlayRule.setFont(new Font("Arial", 14));
+            labelPlayRule.setMaxWidth(300);
+
+            labelClear.setWrapText((true));
+            labelClear.setLayoutX(0);
+            labelClear.setLayoutY(280);
+            labelClear.setFont(new Font("Arial", 14));
+            labelClear.setMaxWidth(300);
+
+
+            anotherRoot.getChildren().add(labelGamePlay);
+            anotherRoot.getChildren().add(labelRestart);
+            anotherRoot.getChildren().add(labelHints);
+            anotherRoot.getChildren().add(labelPlayRule);
+            anotherRoot.getChildren().add(labelClear);
 
 
 
-//            Text text = new Text(0,0,"hello world aahdadDbhdbjasdbsajsadhasjduidiqdjawdhiuadhasdad");
-
-
-//            TextField textField = new TextField();
-//            textField.setText("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbba"+"ccccccccccccccccccccc");
-
-          //  vBox.getChildren().add(label);
-
-//            TextArea ruleTextArea = new TextArea();
-//            ruleTextArea.setText("nedd to be completed");
-//            ruleTextArea.getScrollTop();
-//            vBox.getChildren().add(ruleTextArea);
-      //      vBox.prefWidth(100);
-            anotherRoot.getChildren().add(label);
 
             popRuleWindow.show();
         });
 
         controls.getChildren().add(ruleButton);
 
-        Button clearButton = new Button("Clear");
-        clearButton.setLayoutX(BOARD_X + 420);
-        clearButton.setLayoutY(GAME_HEIGHT - 55);
+        Button clearButton = new Button("Restart");
+        clearButton.setLayoutX(BOARD_X + 600);
+        clearButton.setLayoutY(GAME_HEIGHT - 100);
 
         clearButton.setOnMouseClicked(e -> {
             resetPieces();
