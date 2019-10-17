@@ -18,7 +18,8 @@ import static comp1110.ass2.State.*;
 public class FocusGame {
 
     /**
-     * author: Jianwu Yao (task2 and task3 were solved by Zheyuan Zhang)
+     * author: Jianwu Yao u6987162 (task2 and task3 were solved by Zheyuan Zhang)
+     * first part from line25 to line 63
      */
 
     private boolean ifchallenge = false;
@@ -36,10 +37,12 @@ public class FocusGame {
 
     private Tile[][] tilesState = new Tile[5][9]; // same type with the game : col/row
 
+    //just to show the state of the one point of the board
     public State printPointState(int col, int row) {
         return boardStates[row][col];
     }
 
+    //just to show all state of the points of the board
     public void printBoardStates() {
         for(int i = 0; i < 5; ++ i) {
             for(int j = 0; j < 9; ++ j) {
@@ -49,6 +52,7 @@ public class FocusGame {
         }
     }
 
+    //just to show the tilesStates's state
     public void printTilesStates() {
         for(int i = 0; i < 4; ++ i) {
             for(int j = 0; j < 8; ++ j) {
@@ -58,7 +62,19 @@ public class FocusGame {
         }
     }
 
-    // initialize the state of the board
+    /**
+     * author: Jianwu Yao u6987162 from line 78 to line 191
+     * initialize the state of the board
+     * @param boardState :
+     * @param ifchallenge :
+     *      - when ifchallenge is false, we check the placement and put tiles on the borad i.e. we would change the board states;
+     *      - otherwise, we would just check the qualification of the tiles but not put the tile on the board.
+     * @param testCol
+     *      - this parameter is the column value of the point we need to put a tile on it
+     * @param testRow
+     *      - this parameter is the row value of the point we need to put a tile on it
+     * @return
+     */
     public boolean initializeBoardState(String boardState, boolean ifchallenge, int testCol, int testRow) {
         for(int i = 0; i < boardState.length()/4; i ++) {
             String placement = boardState.substring(i*4, (i+1)*4);
@@ -69,7 +85,7 @@ public class FocusGame {
 
     }
 
-    // method: add a tile into the board
+    // add a tile into the board and destrcture the placement to Tile type
     public boolean addTileToBoard(String placement, boolean ifchallenge, int testCol, int testRow) {
         Tile tile = new Tile(placement);
         return updateBoardStateAndTilesState(tile, ifchallenge, testCol, testRow);
@@ -253,9 +269,16 @@ public class FocusGame {
      * @param placement A placement string
      * @return True if the placement sequence is valid
      */
-    public static boolean isPlacementStringValid(String placement) {
 
-//        // FIXME Task 5: determine whether a placement string is valid
+    /**
+     * task 5
+     * author: Jianwu Yao u6987162
+     * comment: at this task, I mainly use the method defined from line 79 to line 191 to fix this problem
+     * @param placement
+     * @return
+     */
+    public static boolean isPlacementStringValid(String placement) {
+        // FIXME Task 5: determine whether a placement string is valid
         FocusGame focusGame = new FocusGame();
         if(isPlacementStringWellFormed(placement))
             return focusGame.initializeBoardState(placement, false, 0, 0);
@@ -287,6 +310,17 @@ public class FocusGame {
      * @param row      The location's row.
      * @return A set of viable piece placements, or null if there are none.
      */
+
+    /**
+     * task6
+     * author: Jianwu Yao u6987162
+     * from line 324 to line 431
+     * @param placement
+     * @param challenge
+     * @param col
+     * @param row
+     * @return
+     */
     public static Set<String> getViablePiecePlacements(String placement, String challenge, int col, int row) {
         // FIXME Task 6: determine the set of all viable piece placements given existing placements and a challenge
 
@@ -294,8 +328,16 @@ public class FocusGame {
         int testRow = row;
 
         FocusGame focusGame = new FocusGame();
+
+        // initialize the board state
         focusGame.initializeBoardState(placement, false, 0, 0);
 
+        /**
+         * to do some work to prepare for possible solution(placement type)
+         * 1-the tile type
+         * 2-the tile orientation
+         * I think the most important part is to get the possible left-up point including the row value and column value of the point
+         */
         ArrayList<String> typeList = new ArrayList<>() {{
             add("a");
             add("b");
@@ -316,7 +358,7 @@ public class FocusGame {
         }};
 
         ArrayList<String> possiblePoints = new ArrayList<>();
-        // add possible points
+        // add possible points (focus on the left-up point)
         for(int i = 0; i < 4 && testCol - i >= 0; ++ i) {
             for(int j = 0; j < 4 && testRow - j >= 0; ++ j) {
                 StringBuilder res = new StringBuilder();
@@ -327,12 +369,15 @@ public class FocusGame {
 
         focusGame.challengeBoardStates(focusGame, challenge);
 
+        // to remove the tile almost in the inout placement which is on the board
         for(int i = 0; i < placement.length()/4; i ++) {
             String piecePlacement = placement.substring(i * 4, (i + 1) * 4);
             String usedtype = Character.toString(piecePlacement.charAt(0));
             if (typeList.contains(usedtype))
                 typeList.remove(usedtype);
         }
+
+        // construct the possible solution which will put on the board
         ArrayList<String> possibleSolutions = new ArrayList<>();
         for(String type : typeList) {
             for(Integer orien : orientationList) {
@@ -346,6 +391,7 @@ public class FocusGame {
 
         Set<String> solutionSet = new HashSet<>();
 
+        // to check the qualification of the tiles imagining we put it on the board
         for(String possibleSolution : possibleSolutions) {
             if (focusGame.initializeBoardState(possibleSolution, true, testCol, testRow)) {
                 solutionSet.add(possibleSolution);
@@ -356,17 +402,18 @@ public class FocusGame {
         return (solutionSet.size() != 0) ? solutionSet : null;
     }
 
+    // according to the challenge string to change the central nine points correspondingly
     public void challengeBoardStates(FocusGame focusGame, String challenge) {
         int iter = 0;
         for(int i = 1; i < 4; ++ i) {
             for(int j = 3; j < 6; ++ j) {
                 focusGame.boardStates[i][j] = charToState(challenge.charAt(iter));
-                //focusGame.tilesState[i][j] = new Tile("a000");
                 iter ++;
             }
         }
     }
 
+    // transfer from the char to the state correspondingly
     public State charToState(char ch) {
         String str = Character.toString(ch);
         switch (str) {
@@ -400,6 +447,13 @@ public class FocusGame {
      * the challenge.
      */
 
+    /**
+     * task9
+     * author: Jianwu Yao
+     * from line 456 to line 845
+     */
+
+    // transfer the Set to the String type just like to get the full String from the set
     static String stringSetToString(Set<String> stringSet) {
         if(stringSet.size() == 0)
             return null;
@@ -410,6 +464,8 @@ public class FocusGame {
         return sb.toString();
     }
 
+    // checkValidAround and checlValidBoardState was designed to exclude the situation of worry placement as earlier as possible
+    // but I found may be it did lettle help
     public boolean checkValidAround(int col, int row) {
         ArrayList<Boolean> checkBooleanList = new ArrayList<>();
         //|| row - 1 < 0 || col + 1 > 9 || row + 1 > 4
@@ -526,11 +582,7 @@ public class FocusGame {
                     continue;
                 if(focusGame.printPointState(j, i) != EMPTY)
                     continue;
-//                if(i == 1 && j == 1)
-//                    System.out.println(checkValidAround(1,1));
-                //System.out.println("points "+ i + " , " + j);
                 if(!checkValidAround(j, i)) {
-                    //System.out.println("point:" + i + " " + j);
                     return false;
                 }
                 continue;
@@ -539,6 +591,7 @@ public class FocusGame {
         return true;
     }
 
+    // getAllNineCentralPointsSolution focus on solving the central nine points firstly
     static Set<String> getAllNineCentralPointsSolution(String challenge) {
         Set<String> triggerStrings = new HashSet<>();
         triggerStrings = getViablePiecePlacements("", challenge, 3, 1);
@@ -549,12 +602,22 @@ public class FocusGame {
             allNineSolutions.add(middleArrayList);
         }
 
+        /**
+         * this garbageSet is very important
+         * it works as collecting the worry possibilities and excluding the old way and worry way timely
+         */
         Set<Set<String>> garbageSet = new HashSet<>();
 
         for(int i = 3; i < 6; ++ i) {
             for (int j = 1; j < 4; ++j) {
                 if(i == 3 && j == 1)
                     continue;
+
+                /**
+                 * oldAllNineSolutuons is very important
+                 * because the reference mechanism we need to use old String set but not change its state so we can go ahead
+                 * we use addAll method to low copy the former solution set to achieve our idea
+                 */
                 Set<Set<String>> oldAllNineSolutuons = new HashSet<>();
                 oldAllNineSolutuons.addAll(allNineSolutions);
 
@@ -599,16 +662,22 @@ public class FocusGame {
         return allNineSolutionStringStyle;
     }
 
-
-
-
+    /**
+     * the getSolution method's idea is just like getAllNineCentralPointsSolution method but we need to precess the final result and
+     * other conditions
+     * @param challenge
+     * @return
+     */
     public static String getSolution(String challenge) {
         // FIXME Task 9: determine the solution to the game, given a particular challenge
+
+        // get possible solutions from the method beyond
         Set<String> possibleSolutionsForCentralNine = getAllNineCentralPointsSolution(challenge);
 
         for(String strFromNineSolutions: possibleSolutionsForCentralNine) {
 
             FocusGame focusGame = new FocusGame();
+            //initialize
             focusGame.initializeBoardState(strFromNineSolutions, false, 0, 0);
 
 //            if(!focusGame.checkValidBoardState(strFromNineSolutions))
@@ -616,6 +685,7 @@ public class FocusGame {
 
             Set<String> outsideString = new HashSet<>();
 
+            // to get the first tile's possibilities
             if(outsideString.size() == 0) {
 
                 outsideString = getViablePiecePlacements(strFromNineSolutions, challenge, 0, 0);
@@ -640,6 +710,10 @@ public class FocusGame {
                     if (focusGame.printPointState(j, i) != EMPTY)
                         continue;
 
+                    /**
+                     * this garbageSet is very important
+                     * it works as collecting the worry possibilities and excluding the old way and worry way timely
+                     */
                     Set<String> garbageSet = new HashSet<>();
                     Set<String> outsideStringUpdate = new HashSet<>();
 
@@ -701,6 +775,9 @@ public class FocusGame {
     }
 
     /**
+     * this version is because the old way when I solve this problem, I always found the boarder solution set
+     * just like the different between depth-first search and width-first search.
+     * but because the time limit
      * recursive version for task9
      */
     static boolean checkCentralNine(String placement) {
