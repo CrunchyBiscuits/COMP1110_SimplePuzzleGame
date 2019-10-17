@@ -5,13 +5,12 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 /**
  * author Zheyuan Zhang u6870923
+ * The start UI of the game
  */
 public class StartPage extends Application {
 
