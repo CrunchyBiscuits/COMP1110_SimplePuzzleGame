@@ -19,17 +19,6 @@ import java.util.Random;
  */
 public class Challenge {
 
-    public static String randomChallenge() {
-        String challenge = "";
-        Random random = new Random();
-        List<String> strings = Arrays.asList("R", "G", "B", "W");
-        for (int i=0; i<9; i++) {
-            int rand = random.nextInt(4);
-            challenge += strings.get(rand);
-        }
-        return challenge;
-    }
-
     public static String getInterestingChallenge() {
         Random random = new Random();
         int randInt = random.nextInt(Solution.SOLUTIONS.length);
