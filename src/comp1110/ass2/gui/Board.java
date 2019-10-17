@@ -33,7 +33,6 @@ import java.util.concurrent.TimeUnit;
 import static comp1110.ass2.FocusGame.*;
 
 public class Board extends Application {
-
     /**
      * variable setting
      * author Zheyuan Zhang u6870923   line 40 - line 81
@@ -99,7 +98,7 @@ public class Board extends Application {
 
     /**
      * finish text and difficulty choice
-     * author Zheyuan Zhang u6870923   line 109 - line 126
+     * author Zheyuan Zhang u6870923   line 109 - line 126,   author Siyu Zhou line 113-120
      */
     /* The underlying game */
     FocusGame focusgame;
@@ -920,34 +919,35 @@ public class Board extends Application {
         }
     }
 
+
+
     // add sound
 
-    private String music = getClass().getResource( "assets/Toby Fox - MEGALOVANIA.mp3").toString();
+    private String music = getClass().getResource( "assets/Toby Fox - Start Menu.mp3").toString();
     private AudioClip loop;
 
     /**
-     * set music loop
-     * author Siyu Zhou u6692356
-     */
+     * set the background music repeating
+     * author Siyu Zhou u6692356 line 933-938
+     * */
     private void setUpSoundLoop() {
             loop = new AudioClip(music);
             loop.setCycleCount(AudioClip.INDEFINITE);
+            loop.setVolume(5.0);
             loop.play();
     }
 
 
 
     // FIXME Task 8: Implement challenges (you may use challenges and assets provided for you in comp1110.ass2.gui.assets: sq-b.png, sq-g.png, sq-r.png & sq-w.png)
-
     /**
      * show the images of challenge align with challenge string
-     * author Siyu Zhou u6692356
+     * author Siyu Zhou u6692356 line 944-958
      * */
     private void getChallenge(){
-//        challengeString = Challenge.getInterestingChallenge();
-        System.out.println("这是这次的challenge的string " +challengeString);
+        challengeString = Challenge.getInterestingChallenge();
         for (int i =0;i<challengeString.length();i++){
-            //loop to get each challenge and get the resource of pictures
+            /*loop to get each challenge and get the resource of pictures*/
             String pic = getClass().getResource("assets/sq-" + challengeString.charAt(i) + ".png").toString();
             ImageView image = new ImageView(pic); // basic
             int col = i%3;
@@ -962,11 +962,11 @@ public class Board extends Application {
 
 
     // FIXME Task 10: Implement hints
-
     /**
      * create hints for players
-     * author Siyu Zhou u6692356
+     * author Siyu Zhou u6692356 line 967-1036, 1055-1072
      */
+    /* transform the state into the placement */
     private String stateToPlacement() {
         String placement = "";
         for (int i = 0; i < 10; i++) {
@@ -983,7 +983,9 @@ public class Board extends Application {
         return placement;
     }
 
+    /* find next move based on placement and solution */
     private String findNextMove(String placement, String solution) {
+        /* split placement into groups and the length of each group is four */
         String[] pPieces = placement.split("(?<=\\G.{4})");
         if(pPieces.length == 10) {
             return null;
@@ -991,7 +993,11 @@ public class Board extends Application {
         for(int i = 0; i < pPieces.length; i++) {
             System.out.println(pPieces[i]);
         }
-       String[] sPieces = solution.split("(?<=\\G.{4})");
+
+        /* split solution into groups and the length of each group is four */
+        String[] sPieces = solution.split("(?<=\\G.{4})");
+
+        /* set the initial nextMove is a empty string, once it find the placement for nextMove, then add into nextMove */
        String nextMOve = "";
         if (!placement.isBlank()) {
             List<String> pieceNames = new ArrayList<>();
@@ -1012,38 +1018,50 @@ public class Board extends Application {
         return nextMOve;
     }
 
+    /* place the hint piece on the board */
     private void placeHintPiece(String nextMove) {
+        /* get hint placement details from the substring of nextMove*/
         String pieceName = nextMove.substring(0, 1);
         Integer pieceX = Integer.parseInt(nextMove.substring(1, 2));
         Integer pieceY = Integer.parseInt(nextMove.substring(2, 3));
         String pieceOri = nextMove.substring(3, 4);
         TileType pieceType = TileType.valueOf(pieceName.toUpperCase());
 
+        /* based on hint placement and find the relevant the tile piece image */
         String piecePath = Board.class.getResource(URI_BASE + pieceName + "-" + pieceOri + ".png").toString();
 
+        /* display the hint*/
         ImageView pieceView = new ImageView(new Image(piecePath));
+
+        /* set hint view size which can fit on the board */
         pieceView.setFitWidth(pieceType.getWidth(Integer.parseInt(pieceOri)) * SQUARE_SIZE);
         pieceView.setFitHeight(pieceType.getHeight(Integer.parseInt(pieceOri)) * SQUARE_SIZE);
 
         pieceView.setX(PLAY_AREA_X + pieceX * SQUARE_SIZE);
         pieceView.setY(PLAY_AREA_Y + pieceY * SQUARE_SIZE);
 
+        /**
+         * author: Jianwu Yao u6987162 from line 1030 to line 1037
+         * this part of code was learned from stackOverFlow mainly on the use of PauseTransition
+         * reason: did not know all methods of JavaFx but we just need those method to help us
+         * thanks stackOverFlow
+         */
         pieceView.setOpacity(0.5);
         board.getChildren().add(pieceView);
         PauseTransition wait = new PauseTransition(Duration.seconds(1.5));
         wait.setOnFinished((e) -> {
-            /*YOUR METHOD*/
             board.getChildren().remove(pieceView);
             wait.playFromStart();
         });
         wait.play();
     }
 
+    /* create a hint button and implement the button with nextMove */
     private void getHints() {
         String solution = FocusGame.getSolution(challengeString);
         Button button = new Button("Hints");
-        button.setLayoutX(BOARD_X + 300);
-        button.setLayoutY(GAME_HEIGHT - 55);
+        button.setLayoutX(BOARD_X + 500);
+        button.setLayoutY(GAME_HEIGHT - 100);
 
         button.setOnAction(event -> {
             String placement = stateToPlacement();
@@ -1060,11 +1078,11 @@ public class Board extends Application {
 
 
     // FIXME Task 11: Generate interesting challenges (each challenge may have just one solution)
-//    private void setSolution() {
-//        String c = Challenge.getInterestingChallenge();
-//        String s = FocusGame.getSolution(c);
-//
-//    }
+    private void setSolution() {
+        String c = Challenge.getInterestingChallenge();
+        String s = FocusGame.getSolution(c);
+
+    }
 
     /**
      * GameTile class
@@ -1075,54 +1093,85 @@ public class Board extends Application {
      * line 1107 - line 1142
      */
     private void makeControls() {
-        Button button = new Button("Restart");
-        button.setLayoutX(BOARD_X + 240);
-        button.setLayoutY(GAME_HEIGHT - 55);
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent e) {
-                newGame();
-                challenge.getChildren().clear();
-                getChallenge();
-                getHints();
-            }
+        Button button = new Button("NewGame");
+        button.setLayoutX(BOARD_X + 500);
+        button.setLayoutY(GAME_HEIGHT - 170);
+        button.setOnAction(e -> {
+            newGame();
+            challenge.getChildren().clear();
+            getChallenge();
+            getHints();
         });
 
         controls.getChildren().add(button);
 
-        // go there
+        // author: Jianwu Yao u6987162 From line 1112 to line 1180
+        // co-author: zheyuan Zhang
         Button ruleButton = new Button("PlayRule");
-        ruleButton.setLayoutX(BOARD_X + 350);
-        ruleButton.setLayoutY(GAME_HEIGHT - 55);
+        ruleButton.setLayoutX(BOARD_X + 600);
+        ruleButton.setLayoutY(GAME_HEIGHT - 170);
 
         ruleButton.setOnMouseClicked((e) -> {
             Group anotherRoot = new Group();
             Stage popRuleWindow = new Stage();
-            Scene scene = new Scene(anotherRoot, 300, 275);
-            popRuleWindow.setTitle("How To Play This Game");
+            Scene scene = new Scene(anotherRoot, 300, 350);
+            popRuleWindow.setTitle("How To Play");
             popRuleWindow.setScene(scene);
 
-            VBox vBox = new VBox();
-            vBox.setLayoutX(0);
-            vBox.setSpacing(0);
 
-            TextArea ruleTextArea = new TextArea();
-            ruleTextArea.setText("nedd to be completed");
-            ruleTextArea.getScrollTop();
-            vBox.getChildren().add(ruleTextArea);
-            anotherRoot.getChildren().add(vBox);
+            Label labelGamePlay = new Label("Gameplay: We need to fill the top ten differently shaped blocks into the lower board. We can use the mouse to place the block on a separate block to rotate the block to adjust the pose of the block to get the shape we need. In addition, we have the color requirements of the nine points of the center on the right side, that is, the third point of the second line to the sixth point of the fourth line. When we put all the blocks into the board and the nine points in the center meet the challenge requirements, you win!");
+            labelGamePlay.setWrapText(true);
+            labelGamePlay.setFont(new Font("Arial", 14));
+            labelGamePlay.setMaxWidth(300);
+
+            Label labelRestart = new Label("NewGame is to restart a new game");
+            Label labelHints = new Label("Hints are giving hints, such as placing a block in a location");
+            Label labelPlayRule = new Label("Playrule will introduce the gameplay");
+            Label labelClear = new Label("Restart will empty the board, but will not start a new game");
+
+            labelRestart.setWrapText((true));
+            labelRestart.setLayoutX(0);
+            labelRestart.setLayoutY(200);
+            labelRestart.setFont(new Font("Arial", 14));
+            labelRestart.setMaxWidth(300);
+
+            labelHints.setWrapText((true));
+            labelHints.setLayoutX(0);
+            labelHints.setLayoutY(220);
+            labelHints.setFont(new Font("Arial", 14));
+            labelHints.setMaxWidth(300);
+
+            labelPlayRule.setWrapText((true));
+            labelPlayRule.setLayoutX(0);
+            labelPlayRule.setLayoutY(260);
+            labelPlayRule.setFont(new Font("Arial", 14));
+            labelPlayRule.setMaxWidth(300);
+
+            labelClear.setWrapText((true));
+            labelClear.setLayoutX(0);
+            labelClear.setLayoutY(280);
+            labelClear.setFont(new Font("Arial", 14));
+            labelClear.setMaxWidth(300);
+
+
+            anotherRoot.getChildren().add(labelGamePlay);
+            anotherRoot.getChildren().add(labelRestart);
+            anotherRoot.getChildren().add(labelHints);
+            anotherRoot.getChildren().add(labelPlayRule);
+            anotherRoot.getChildren().add(labelClear);
 
             popRuleWindow.show();
         });
 
         controls.getChildren().add(ruleButton);
 
-        Button clearButton = new Button("Clear");
-        clearButton.setLayoutX(BOARD_X + 420);
-        clearButton.setLayoutY(GAME_HEIGHT - 55);
+        Button clearButton = new Button("Restart");
+        clearButton.setLayoutX(BOARD_X + 600);
+        clearButton.setLayoutY(GAME_HEIGHT - 100);
 
         clearButton.setOnMouseClicked(e -> {
             resetPieces();
+            hideCompletion();
         });
 
         controls.getChildren().add(clearButton);
@@ -1165,6 +1214,7 @@ public class Board extends Application {
         board.getChildren().add(baseboard);
 
         board.toBack();
+        hideCompletion();
     }
 
     /**
@@ -1177,7 +1227,6 @@ public class Board extends Application {
             gtiles.getChildren().add(new DraggableTile(m));
         }
     }
-
 
 //    /**
 //     * Add the objective to the board

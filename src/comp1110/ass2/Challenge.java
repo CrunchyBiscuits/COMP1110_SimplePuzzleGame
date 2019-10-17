@@ -1,10 +1,10 @@
 package comp1110.ass2;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
-//
-//import static comp1110.tests.TestUtility;
-//import static comp1110.ass2.tests.TestUtility.Solution;
+
 
 /**
  * define the states of the central nine pieces like 'RRRRRRRRR'
@@ -19,22 +19,22 @@ import java.util.Random;
  */
 public class Challenge {
 
-//    public static String randomChallenge() {
-//        String challenge = "";
-//        Random random = new Random();
-//        List<String> strings = Arrays.asList("R", "G", "B", "W");
-//        for (int i=0; i<9; i++) {
-//            int rand = random.nextInt(4);
-//            challenge += strings.get(rand);
-//        }
-//        return challenge;
-//    }
+    public static String randomChallenge() {
+        String challenge = "";
+        Random random = new Random();
+        List<String> strings = Arrays.asList("R", "G", "B", "W");
+        for (int i=0; i<9; i++) {
+            int rand = random.nextInt(4);
+            challenge += strings.get(rand);
+        }
+        return challenge;
+    }
 
-//    public static String getInterestingChallenge() {
-//        Random random = new Random();
-//        int randInt = random.nextInt(SOLUTIONS.length);
-//        return SOLUTIONS[randInt].objective;
-//    }
+    public static String getInterestingChallenge() {
+        Random random = new Random();
+        int randInt = random.nextInt(Solution.SOLUTIONS.length);
+        return Solution.SOLUTIONS[randInt].objective;
+    }
 }
 
 
