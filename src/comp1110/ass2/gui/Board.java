@@ -920,14 +920,15 @@ public class Board extends Application {
         }
     }
 
-
-
     // add sound
 
     private String music = getClass().getResource( "assets/Toby Fox - MEGALOVANIA.mp3").toString();
     private AudioClip loop;
 
-    
+    /**
+     * set music loop
+     * author Siyu Zhou u6692356
+     */
     private void setUpSoundLoop() {
             loop = new AudioClip(music);
             loop.setCycleCount(AudioClip.INDEFINITE);
@@ -940,10 +941,10 @@ public class Board extends Application {
 
     /**
      * show the images of challenge align with challenge string
-    * */
-
+     * author Siyu Zhou u6692356
+     * */
     private void getChallenge(){
-        challengeString = Challenge.getInterestingChallenge();
+//        challengeString = Challenge.getInterestingChallenge();
         System.out.println("这是这次的challenge的string " +challengeString);
         for (int i =0;i<challengeString.length();i++){
             //loop to get each challenge and get the resource of pictures
@@ -962,6 +963,10 @@ public class Board extends Application {
 
     // FIXME Task 10: Implement hints
 
+    /**
+     * create hints for players
+     * author Siyu Zhou u6692356
+     */
     private String stateToPlacement() {
         String placement = "";
         for (int i = 0; i < 10; i++) {
@@ -983,17 +988,11 @@ public class Board extends Application {
         if(pPieces.length == 10) {
             return null;
         }
-        System.out.println("打印placement的状态");
         for(int i = 0; i < pPieces.length; i++) {
             System.out.println(pPieces[i]);
         }
-        System.out.println("输入的placement的状态打印完毕");
-
-        String[] sPieces = solution.split("(?<=\\G.{4})");
-//        for(int i = 0; i < sPieces.length; i++)
-//            System.out.println(sPieces[i]);
-
-        String nextMOve = "";
+       String[] sPieces = solution.split("(?<=\\G.{4})");
+       String nextMOve = "";
         if (!placement.isBlank()) {
             List<String> pieceNames = new ArrayList<>();
             for (String piece : pPieces)
@@ -1008,9 +1007,6 @@ public class Board extends Application {
         } else {
             nextMOve = sPieces[0];
         }
-        System.out.println("这里是推荐的下一块 "+ nextMOve);
-
-        System.out.println("下面是棋盘上的最新状态");
         showTileStateNow();
 
         return nextMOve;
@@ -1041,31 +1037,15 @@ public class Board extends Application {
             wait.playFromStart();
         });
         wait.play();
-
-//        try {
-//            hint.getChildren().add(pieceView);
-//
-//            Thread.sleep(2000);
-//        } catch (InterruptedException e) {
-//            hint.getChildren().clear();
-//        }
-//        finally {
-//            hint.getChildren().remove(pieceView);
-//        }
     }
-
 
     private void getHints() {
         String solution = FocusGame.getSolution(challengeString);
-        System.out.println("对应的solution "+ solution);
-
         Button button = new Button("Hints");
         button.setLayoutX(BOARD_X + 300);
         button.setLayoutY(GAME_HEIGHT - 55);
 
         button.setOnAction(event -> {
-            System.out.println("!!!!!!!!!!!!!!!!!!!!!");
-
             String placement = stateToPlacement();
             String nextMove = findNextMove(placement, solution);
 
@@ -1075,20 +1055,16 @@ public class Board extends Application {
                 placeHintPiece(nextMove);
 
         });
-
-
-
         controls.getChildren().add(button);
-
     }
 
 
     // FIXME Task 11: Generate interesting challenges (each challenge may have just one solution)
-    private void setSolution() {
-        String c = Challenge.getInterestingChallenge();
-        String s = FocusGame.getSolution(c);
-
-    }
+//    private void setSolution() {
+//        String c = Challenge.getInterestingChallenge();
+//        String s = FocusGame.getSolution(c);
+//
+//    }
 
     /**
      * GameTile class
