@@ -944,7 +944,6 @@ public class Board extends Application {
 
     private void getChallenge(){
         challengeString = Challenge.getInterestingChallenge();
-        System.out.println("这是这次的challenge的string " +challengeString);
         for (int i =0;i<challengeString.length();i++){
             //loop to get each challenge and get the resource of pictures
             String pic = getClass().getResource("assets/sq-" + challengeString.charAt(i) + ".png").toString();
@@ -983,15 +982,10 @@ public class Board extends Application {
         if(pPieces.length == 10) {
             return null;
         }
-        System.out.println("打印placement的状态");
         for(int i = 0; i < pPieces.length; i++) {
             System.out.println(pPieces[i]);
         }
-        System.out.println("输入的placement的状态打印完毕");
-
         String[] sPieces = solution.split("(?<=\\G.{4})");
-//        for(int i = 0; i < sPieces.length; i++)
-//            System.out.println(sPieces[i]);
 
         String nextMOve = "";
         if (!placement.isBlank()) {
@@ -1008,9 +1002,6 @@ public class Board extends Application {
         } else {
             nextMOve = sPieces[0];
         }
-        System.out.println("这里是推荐的下一块 "+ nextMOve);
-
-        System.out.println("下面是棋盘上的最新状态");
         showTileStateNow();
 
         return nextMOve;
@@ -1033,11 +1024,16 @@ public class Board extends Application {
         pieceView.setX(PLAY_AREA_X + pieceX * SQUARE_SIZE);
         pieceView.setY(PLAY_AREA_Y + pieceY * SQUARE_SIZE);
 
+        /**
+         * author: Jianwu Yao u6987162 from line 1030 to line 1037
+         * this part of code was learned from stackOverFlow mainly on the use of PauseTransition
+         * reason: did not know all methods of JavaFx but we just need those method to help us
+         * thanks stackOverFlow
+         */
         pieceView.setOpacity(0.5);
         board.getChildren().add(pieceView);
         PauseTransition wait = new PauseTransition(Duration.seconds(5));
         wait.setOnFinished((e) -> {
-            /*YOUR METHOD*/
             board.getChildren().remove(pieceView);
             wait.playFromStart();
         });
@@ -1112,7 +1108,8 @@ public class Board extends Application {
 
         controls.getChildren().add(button);
 
-        // go there
+        // author: Jianwu Yao u6987162 From line 1112 to line 1180
+        // co-author: zheyuan Zhang
         Button ruleButton = new Button("PlayRule");
         ruleButton.setLayoutX(BOARD_X + 600);
         ruleButton.setLayoutY(GAME_HEIGHT - 170);
@@ -1165,9 +1162,6 @@ public class Board extends Application {
             anotherRoot.getChildren().add(labelHints);
             anotherRoot.getChildren().add(labelPlayRule);
             anotherRoot.getChildren().add(labelClear);
-
-
-
 
             popRuleWindow.show();
         });
@@ -1236,7 +1230,6 @@ public class Board extends Application {
             gtiles.getChildren().add(new DraggableTile(m));
         }
     }
-
 
 //    /**
 //     * Add the objective to the board

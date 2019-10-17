@@ -2,6 +2,7 @@ package comp1110.ass2;
 
 /**
  * author: Jianwu Yao
+ * from line 8 to line 44
  */
 
 public class Tile {
@@ -19,33 +20,6 @@ public class Tile {
     public Location getLocation() { return location; }
     public TileType getTileType() { return tileType; }
     public Orientation getOrientation() { return orientation; }
-
-    /*public static TileType placementToTiletype(String placement) {
-        char tileType = placement.charAt(0);
-        switch (tileType) {
-            case 'a':
-                return A;
-            case 'b':
-                return B;
-            case 'c':
-                return C;
-            case 'd':
-                return D;
-            case 'e':
-                return E;
-            case 'f':
-                return F;
-            case 'g':
-                return G;
-            case 'h':
-                return H;
-            case 'i':
-                return I;
-            case 'j':
-                return J;
-        }
-        return null;
-    }*/
 
     public static Orientation placementToOrientation(String placement) {
         int direction = placement.charAt(3) - '0';
@@ -67,8 +41,4 @@ public class Tile {
         int y = placement.charAt(2) - '0';
         return new Location(x, y);
     }
-
-
-
-
 }
