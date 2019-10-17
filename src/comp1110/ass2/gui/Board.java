@@ -1035,11 +1035,9 @@ public class Board extends Application {
             String placement = stateToPlacement();
             String nextMove = findNextMove(placement, solution);
 
-            if(nextMove != null)
+            if (nextMove != null)
                 placeHintPiece(nextMove);
-
         });
-
         controls.getChildren().add(button);
     }
 
