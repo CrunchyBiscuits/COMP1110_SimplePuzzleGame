@@ -14,13 +14,13 @@ declaration: >-
   everything we have submitted for for all stages of this assignment was
   entirely our own work, with the following exceptions:
 
- Use this to list any code that you used that you did not write,
- aside from code provided by the lecturer.  Provide a comment
- explaining your use and the URL to that code and the licence for
- that code
-
- Add as many "url+licence+comment" entries as necessary
- (or remove it altogether if you haven't used any external code)
+# Use this to list any code that you used that you did not write,
+# aside from code provided by the lecturer.  Provide a comment
+# explaining your use and the URL to that code and the licence for
+# that code
+#
+# Add as many "url+licence+comment" entries as necessary
+# (or remove it altogether if you haven't used any external code)
 code:
   - comment: find a way to solve the time pause function and get the idea from the url below, and thanks this guy for offer a better way to handle this problem
     url: https://stackoverflow.com/questions/9966136/javafx-periodic-background-task
