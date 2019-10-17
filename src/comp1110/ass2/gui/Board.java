@@ -922,7 +922,7 @@ public class Board extends Application {
         challengeString = Challenge.getInterestingChallenge();
         for (int i =0;i<challengeString.length();i++){
             /*loop to get each challenge and get the resource of pictures*/
-            String pic = getClass().getResource("assets/sq-" + challengeString.charAt(i) + ".png").toString();
+            String pic = getClass().getResource("assets/sq-" + String.valueOf(challengeString.charAt(i)).toLowerCase() + ".png").toString();
             ImageView image = new ImageView(pic); // basic
             int col = i%3;
             int row = i/3;
